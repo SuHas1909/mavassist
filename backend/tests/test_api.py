@@ -75,6 +75,22 @@ def test_admin_service_crud_archive_and_notices(client,admin,student):
     assert any(s['id']==sid for s in client.get('/api/admin/services',headers=admin).json())
     assert client.patch(f'/api/admin/services/{sid}/active',json={'active':True},headers=admin).status_code==200
 
+def test_versioned_admin_service_crud_and_soft_delete(client,admin,student):
+    cid=client.get('/api/categories').json()[0]['id'];body=payload(cid)
+    created=client.post('/api/v1/admin/services',json=body,headers=admin)
+    assert created.status_code==201
+    sid=created.json()['id']
+    body['description']='Updated through the versioned administration API.'
+    updated=client.put(f'/api/v1/admin/services/{sid}',json=body,headers=admin)
+    assert updated.status_code==200 and updated.json()['description']==body['description']
+    assert any(service['id']==sid for service in client.get('/api/v1/admin/services',headers=admin).json())
+    archived=client.delete(f'/api/v1/admin/services/{sid}',headers=admin)
+    assert archived.status_code==200 and archived.json()['active'] is False
+    assert client.get(f'/api/services/{sid}',headers=student).status_code==404
+    assert any(service['id']==sid and service['active'] is False for service in client.get('/api/v1/admin/services',headers=admin).json())
+    restored=client.patch(f'/api/v1/admin/services/{sid}',json={'active':True},headers=admin)
+    assert restored.status_code==200 and restored.json()['active'] is True
+
 def test_category_validation_errors(client,admin):
     r=client.post('/api/admin/categories',json={'name':'New Category'},headers=admin);assert r.status_code==201;cid=r.json()['id']
     assert client.post('/api/admin/categories',json={'name':'New Category'},headers=admin).status_code==409

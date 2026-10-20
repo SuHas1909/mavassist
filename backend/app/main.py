@@ -188,17 +188,20 @@ def feedback(answer_id: str,body: Feedback,db: DB,user: USER):
     entry.helpful=body.helpful;save(db);return {'recorded':True}
 
 @app.get('/api/admin/services')
+@app.get('/api/v1/admin/services')
 def admin_services(db: DB,user: ADMIN): return [service_json(s,db) for s in db.scalars(select(Service).order_by(Service.name))]
 def assign_service(s,body,db):
     if not db.get(Category,body.category_id): raise HTTPException(422,'Select an existing category')
     for key,value in body.model_dump().items(): setattr(s,key,value)
     s.updated_at=now();ai.embed(s)
 @app.post('/api/admin/services',status_code=201)
+@app.post('/api/v1/admin/services',status_code=201)
 def create_service(body: ServiceInput,db: DB,user: ADMIN):
     s=Service();assign_service(s,body,db);db.add(s);db.flush()
     from .knowledge import sync_directory
     sync_directory(db,s);save(db);return service_json(s,db)
 @app.put('/api/admin/services/{sid}')
+@app.put('/api/v1/admin/services/{sid}')
 def edit_service(sid: int,body: ServiceInput,db: DB,user: ADMIN):
     s=db.get(Service,sid)
     if not s: raise HTTPException(404,'Service not found')
@@ -206,10 +209,16 @@ def edit_service(sid: int,body: ServiceInput,db: DB,user: ADMIN):
     from .knowledge import sync_directory
     sync_directory(db,s);save(db);return service_json(s,db)
 @app.patch('/api/admin/services/{sid}/active')
+@app.patch('/api/v1/admin/services/{sid}')
 def archive(sid: int,body: ActiveInput,db: DB,user: ADMIN):
     s=db.get(Service,sid)
     if not s: raise HTTPException(404,'Service not found')
     s.active=body.active;s.updated_at=now();save(db);return service_json(s,db)
+@app.delete('/api/v1/admin/services/{sid}')
+def delete_service(sid: int,db: DB,user: ADMIN):
+    s=db.get(Service,sid)
+    if not s: raise HTTPException(404,'Service not found')
+    s.active=False;s.updated_at=now();save(db);return service_json(s,db)
 @app.post('/api/admin/categories',status_code=201)
 def create_category(body: CategoryInput,db: DB,user: ADMIN):
     c=Category(name=body.name);db.add(c);save(db);return {'id':c.id,'name':c.name}
