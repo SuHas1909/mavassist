@@ -1,98 +1,62 @@
 {
-  "date": "2026-10-15",
+  "date": "2026-10-20",
+  "build": "Sprint 2 progress build (local)",
   "backend": {
-    "tests_passed": 22,
-    "statement_coverage_percent": 92.51,
-    "database": "SQLite isolated tests; PostgreSQL CI supplied but not executed locally"
+    "tests_passed": 28,
+    "statement_coverage_percent": 93.35,
+    "database": "SQLite isolated tests"
   },
   "frontend_unit_tests_passed": 3,
   "production_build": "passed",
-  "browser_tests": [
-    {
-      "browser": "chromium",
-      "test": "student: registration, search/filter, detail, notices, bookmark, recent, chat and rating",
-      "status": "passed",
-      "duration_ms": 8694
+  "browser_tests": {
+    "browser": "chromium",
+    "passed": 4,
+    "failed": 0,
+    "axe_serious_or_critical": 0,
+    "mobile_overflow_px": 0
+  },
+  "load_test_50_vus_60s": {
+    "non_ai_p95_ms": 391,
+    "chat_p95_ms": 756,
+    "error_rate": 0
+  },
+  "forced_ai_outage_50_vus_60s": {
+    "fallback_p95_ms": 643,
+    "non_ai_p95_ms": 291,
+    "error_rate": 0
+  },
+  "ai_routing_offline": {
+    "v2_100": {
+      "top1": 0.97,
+      "top3": 1.0,
+      "unknown_offices": 0
     },
-    {
-      "browser": "chromium",
-      "test": "primary student pages: no serious or critical WCAG issues; responsive navigation",
-      "status": "passed",
-      "duration_ms": 16339
+    "holdout_50": {
+      "top1": 0.9,
+      "top3": 1.0,
+      "unknown_offices": 0
     },
-    {
-      "browser": "chromium",
-      "test": "admin: resource lifecycle, category and notice CRUD, analytics",
-      "status": "passed",
-      "duration_ms": 10991
-    },
-    {
-      "browser": "firefox",
-      "test": "student: registration, search/filter, detail, notices, bookmark, recent, chat and rating",
-      "status": "passed",
-      "duration_ms": 21342
-    },
-    {
-      "browser": "firefox",
-      "test": "primary student pages: no serious or critical WCAG issues; responsive navigation",
-      "status": "passed",
-      "duration_ms": 21405
-    },
-    {
-      "browser": "firefox",
-      "test": "admin: resource lifecycle, category and notice CRUD, analytics",
-      "status": "passed",
-      "duration_ms": 14371
-    },
-    {
-      "browser": "webkit",
-      "test": "student: registration, search/filter, detail, notices, bookmark, recent, chat and rating",
-      "status": "passed",
-      "duration_ms": 29938
-    },
-    {
-      "browser": "webkit",
-      "test": "primary student pages: no serious or critical WCAG issues; responsive navigation",
-      "status": "passed",
-      "duration_ms": 44025
-    },
-    {
-      "browser": "webkit",
-      "test": "admin: resource lifecycle, category and notice CRUD, analytics",
-      "status": "passed",
-      "duration_ms": 35237
+    "baseline_sprint1_on_v2": {
+      "top1": 0.64,
+      "top3": 0.64
     }
-  ],
-  "npm_audit": {
-    "info": 0,
-    "low": 0,
-    "moderate": 0,
-    "high": 0,
-    "critical": 0,
-    "total": 0
   },
-  "docker_compose_config": "passed",
-  "docker_engine": "not running; image/container integration not executed",
-  "hosted_ai": "no API key supplied; real provider call not executed",
-  "performance_and_human_study": "not measured",
-  "backend_installed_dependency_audit": {
-    "vulnerabilities": 0,
-    "scope": "installed backend/test dependencies in isolated target directory; re-audit deployment image"
+  "dependency_audits": {
+    "backend_pip_audit": 0,
+    "frontend_npm_audit": 0
   },
-  "rag_update": {
-    "retrieval": "BM25 with optional MiniLM/pgvector hybrid",
-    "answers": "generated cited paragraphs/steps when a key/model are configured; curated source summaries otherwise",
-    "conversation_history": "last 3 turns, redacted, not persisted",
-    "reviewed_policy_passages": 5,
-    "regressions": [
-      "exact tuition-refund question",
-      "refund timing follow-up",
-      "new-topic switch",
-      "Flywire conditions",
-      "unknown citations",
-      "archive exclusion",
-      "import validation"
-    ]
+  "directory": {
+    "services": 50,
+    "verified": 48,
+    "data_collected": "2026-10-20"
   },
-  "browser_run_note": "Chromium/Firefox passed in the combined run; WebKit rerun passed after ignoring test artifacts in the dev watcher and increasing the full-workflow timeout to 60s."
+  "not_executed": [
+    "hosted OpenAI model",
+    "MiniLM/pgvector real model",
+    "PostgreSQL CI job",
+    "Firefox/WebKit/BrowserStack",
+    "OWASP ZAP",
+    "SUS study",
+    "cloud staging load test"
+  ]
 }

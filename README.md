@@ -4,10 +4,13 @@ A UTA student-services assistant built for **CSE 6324 — Team 3**. Find campus 
 
 ## Features
 
-- Campus directory with search and category filters.
-- Chat with follow-up context, source citations, and suggested questions.
-- Student accounts, saved resources, and recently viewed services.
-- Admin tools for managing resources, notices, and usage analytics.
+- Directory of 50 UTA offices and services with location, hours, contact details and the date they were checked against the official page.
+- Relevance-ranked keyword search, popular searches and multi-select category filters.
+- Assistant that routes a plain-language question to one recommended office (with the reason, details and next steps), up to two alternatives and numbered sources, or asks a clarifying question when nothing matches confidently.
+- Student accounts, saved resources and recently viewed services.
+- Admin tools: service create/edit/archive with filtering and pagination, categories, time-limited notices and a usage dashboard with a daily activity chart.
+
+Screenshots of every screen are in `docs/screenshots/`; test, load and AI-evaluation results are in `docs/VERIFICATION.md`.
 
 ## Technology
 
@@ -54,6 +57,7 @@ The local setup works without an API key. It returns cited source summaries; AI-
 - [User guide](docs/USER_GUIDE.md)
 - [Requirements](docs/REQUIREMENTS.md)
 - [Test results](docs/VERIFICATION.md)
+- [Directory data sources](docs/DATA_SOURCES.md)
 
 ## Contributors
 

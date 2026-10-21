@@ -24,16 +24,18 @@ test('student: registration, search/filter, detail, notices, bookmark, recent, c
   await expect(page.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Recently viewed',exact:true}).click();
   await expect(page.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
-  await page.getByRole('button',{name:'Ask MavAssist',exact:false}).first().click();
+  await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name:'Ask MavAssist'}).click();
   await page.getByLabel('Your campus question').fill('I have paid extra tuition fee to accounts how to get refund!');
-  await page.getByRole('button',{name:'Ask MavAssist',exact:true}).click();
+  await page.getByRole('button',{name:'Send question'}).click();
   await expect(page.locator('.answer-paragraph').first()).toContainText('credit balance');
   await expect(page.getByRole('heading',{name:'Sources',exact:true})).toBeVisible();
-  await page.getByText('Related campus resource',{exact:true}).click();
-  await expect(page.getByRole('button',{name:'Student Accounts',exact:false})).toBeVisible();
+  // FR-04: recommended office with reason, details and last-updated date.
+  const slip=page.getByRole('region',{name:'Recommended office'}).first();
+  await expect(slip.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
+  await expect(slip).toContainText('Last updated');
   await expect(page.getByRole('button',{name:'OIT Help Desk',exact:false})).toHaveCount(0);
   await page.getByLabel('Your campus question').fill('How long does it take?');
-  await page.getByRole('button',{name:'Ask MavAssist',exact:true}).click();
+  await page.getByRole('button',{name:'Send question'}).click();
   await expect(page.locator('.conversation>article').last().locator('.answer-paragraph')).toContainText([/processing|refund/i]);
   await page.getByRole('button',{name:'Helpful answer',exact:true}).last().click();
   await expect(page.getByText('Thanks for your feedback.')).toBeVisible();
@@ -55,13 +57,22 @@ test('primary student pages: no serious or critical WCAG issues; responsive navi
   await page.getByRole('button',{name:'Create student account'}).click();
   await expect(page.getByRole('heading',{name:'Find your next step.'})).toBeVisible();
   for(const name of ['Explore resources','Saved resources','Recently viewed','Ask MavAssist']){
-    await page.getByRole('navigation').getByRole('button',{name,exact:false}).click();
+    await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name,exact:true}).click();
     await page.waitForTimeout(200);
     results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
     expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
   }
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+});
+test('assistant asks for clarification instead of guessing on out-of-scope questions',async({page})=>{
+  await page.goto('/');await page.getByRole('button',{name:'Create an account'}).click();
+  await page.getByLabel('Full name').fill('Clarify Student');await page.getByLabel('Email address').fill(`clarify-${Date.now()}@example.com`);
+  await page.getByLabel('Password',{exact:true}).fill('Clarify-pass123!');await page.getByRole('button',{name:'Create student account'}).click();
+  await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name:'Ask MavAssist'}).click();
+  await page.getByLabel('Your campus question').fill('tell me a joke');await page.getByRole('button',{name:'Send question'}).click();
+  await expect(page.getByText('Needs a detail')).toBeVisible();
+  await expect(page.getByRole('region',{name:'Recommended office'})).toHaveCount(0);
 });
 test('admin: resource lifecycle, category and notice CRUD, analytics',async({page})=>{
   test.skip(!process.env.E2E_ADMIN_EMAIL||!process.env.E2E_ADMIN_PASSWORD,'Provision a test administrator and set E2E_ADMIN_EMAIL/PASSWORD');

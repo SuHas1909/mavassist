@@ -11,12 +11,12 @@
       "total": 0
     },
     "dependencies": {
-      "prod": 5,
+      "prod": 7,
       "dev": 223,
       "optional": 76,
       "peer": 10,
       "peerOptional": 0,
-      "total": 227
+      "total": 229
     }
   }
 }

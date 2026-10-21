@@ -1,0 +1,592 @@
+{
+  "dataset_status": "Held-out draft (2026-10-20): written after v2 tuning, not used for tuning. 50 routing questions + 5 out-of-scope questions that should trigger clarification. Requires team review.",
+  "cases": 50,
+  "top1_accuracy": 0.9,
+  "top3_accuracy": 1.0,
+  "unknown_offices": 0,
+  "all_hosted_rag": false,
+  "results": [
+    {
+      "case_id": "HO-001",
+      "expected": "Student Accounts",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 16
+    },
+    {
+      "case_id": "HO-002",
+      "expected": "Student Accounts",
+      "returned": [
+        "Student Accounts",
+        "Student Employment"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 15
+    },
+    {
+      "case_id": "HO-003",
+      "expected": "Financial Aid & Scholarships",
+      "returned": [
+        "Financial Aid & Scholarships"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 13
+    },
+    {
+      "case_id": "HO-004",
+      "expected": "Financial Aid & Scholarships",
+      "returned": [
+        "Financial Aid & Scholarships",
+        "Study Abroad",
+        "Student Employment"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 13
+    },
+    {
+      "case_id": "HO-005",
+      "expected": "Emergency Financial Assistance",
+      "returned": [
+        "Emergency Financial Assistance",
+        "Mav Express",
+        "University Police Resources"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 17
+    },
+    {
+      "case_id": "HO-006",
+      "expected": "Veteran Education Benefits",
+      "returned": [
+        "Veteran Education Benefits",
+        "Study Abroad",
+        "New Student Orientation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-007",
+      "expected": "University Advising",
+      "returned": [
+        "University Advising",
+        "New Student Orientation",
+        "Student Organizations"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-008",
+      "expected": "Tutoring & Academic Success",
+      "returned": [
+        "Tutoring & Academic Success"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-009",
+      "expected": "Writing Center",
+      "returned": [
+        "Writing Center"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-010",
+      "expected": "UTA Libraries",
+      "returned": [
+        "UTA Libraries"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 13
+    },
+    {
+      "case_id": "HO-011",
+      "expected": "Registrar",
+      "returned": [
+        "Registrar",
+        "University Police Resources"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 16
+    },
+    {
+      "case_id": "HO-012",
+      "expected": "Transcript Requests",
+      "returned": [
+        "Transcript Requests"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 17
+    },
+    {
+      "case_id": "HO-013",
+      "expected": "Graduation Information",
+      "returned": [
+        "Graduation Information",
+        "Graduate School"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-014",
+      "expected": "Graduate School",
+      "returned": [
+        "Graduate School"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "HO-015",
+      "expected": "Math Support",
+      "returned": [
+        "Math Support",
+        "OIT Help Desk"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 15
+    },
+    {
+      "case_id": "HO-016",
+      "expected": "Health Services",
+      "returned": [
+        "Health Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 18
+    },
+    {
+      "case_id": "HO-017",
+      "expected": "Health Services",
+      "returned": [
+        "Health Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 16
+    },
+    {
+      "case_id": "HO-018",
+      "expected": "Counseling & Psychological Services",
+      "returned": [
+        "Counseling & Psychological Services",
+        "Supplemental Instruction",
+        "New Student Orientation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 16
+    },
+    {
+      "case_id": "HO-019",
+      "expected": "Counseling & Psychological Services",
+      "returned": [
+        "Counseling & Psychological Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 16
+    },
+    {
+      "case_id": "HO-020",
+      "expected": "Student Access & Resource Center",
+      "returned": [
+        "Student Access & Resource Center",
+        "TRIO Student Support Services",
+        "Canvas Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 15
+    },
+    {
+      "case_id": "HO-021",
+      "expected": "Maverick Pantry",
+      "returned": [
+        "Maverick Pantry"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-022",
+      "expected": "Campus Recreation",
+      "returned": [
+        "Computer Labs",
+        "Campus Recreation",
+        "Student Employment"
+      ],
+      "top1": false,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 17
+    },
+    {
+      "case_id": "HO-023",
+      "expected": "Health Insurance Information",
+      "returned": [
+        "Health Insurance Information"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-024",
+      "expected": "Relationship Violence & Sexual Assault Prevention",
+      "returned": [
+        "Relationship Violence & Sexual Assault Prevention",
+        "Maverick Pantry",
+        "Canvas Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 15
+    },
+    {
+      "case_id": "HO-025",
+      "expected": "International Student & Scholar Services",
+      "returned": [
+        "International Student & Scholar Services",
+        "Registrar"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-026",
+      "expected": "International Student & Scholar Services",
+      "returned": [
+        "International Student & Scholar Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 13
+    },
+    {
+      "case_id": "HO-027",
+      "expected": "International Employment Guidance",
+      "returned": [
+        "International Employment Guidance"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "HO-028",
+      "expected": "Study Abroad",
+      "returned": [
+        "Study Abroad"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "HO-029",
+      "expected": "English Language Resources",
+      "returned": [
+        "English Language Resources"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-030",
+      "expected": "OIT Help Desk",
+      "returned": [
+        "OIT Help Desk"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 13
+    },
+    {
+      "case_id": "HO-031",
+      "expected": "OIT Help Desk",
+      "returned": [
+        "University Housing",
+        "OIT Help Desk"
+      ],
+      "top1": false,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "HO-032",
+      "expected": "Canvas Support",
+      "returned": [
+        "Canvas Support",
+        "Browser Test Resource 1792534673443"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 13
+    },
+    {
+      "case_id": "HO-033",
+      "expected": "Student Software",
+      "returned": [
+        "Student Software"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "HO-034",
+      "expected": "Computer Labs",
+      "returned": [
+        "Computer Labs",
+        "International Student & Scholar Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 11
+    },
+    {
+      "case_id": "HO-035",
+      "expected": "University Housing",
+      "returned": [
+        "University Housing",
+        "Student Employment",
+        "Canvas Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 11
+    },
+    {
+      "case_id": "HO-036",
+      "expected": "Dining Services",
+      "returned": [
+        "Dining Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "HO-037",
+      "expected": "Parking & Transportation",
+      "returned": [
+        "Parking & Transportation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "HO-038",
+      "expected": "Parking & Transportation",
+      "returned": [
+        "Parking & Transportation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "HO-039",
+      "expected": "Mav Express",
+      "returned": [
+        "Mav Express"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "HO-040",
+      "expected": "Student Organizations",
+      "returned": [
+        "Student Organizations"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 11
+    },
+    {
+      "case_id": "HO-041",
+      "expected": "New Student Orientation",
+      "returned": [
+        "New Student Orientation",
+        "International Orientation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-042",
+      "expected": "Multicultural Affairs",
+      "returned": [
+        "Multicultural Affairs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 13
+    },
+    {
+      "case_id": "HO-043",
+      "expected": "Parent & Family Programs",
+      "returned": [
+        "Parent & Family Programs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-044",
+      "expected": "Career Development Center",
+      "returned": [
+        "Career Development Center",
+        "Writing Center"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-045",
+      "expected": "Career Development Center",
+      "returned": [
+        "Career Development Center"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "HO-046",
+      "expected": "Student Employment",
+      "returned": [
+        "Student Employment"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "HO-047",
+      "expected": "Dean of Students",
+      "returned": [
+        "Maverick Pantry",
+        "Dean of Students"
+      ],
+      "top1": false,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "HO-048",
+      "expected": "Student Conduct",
+      "returned": [
+        "Student Conduct"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "HO-049",
+      "expected": "University Police Resources",
+      "returned": [
+        "Parking & Transportation",
+        "University Police Resources"
+      ],
+      "top1": false,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "HO-050",
+      "expected": "University Police Resources",
+      "returned": [
+        "Library Technology Lending",
+        "University Police Resources",
+        "UTA Libraries"
+      ],
+      "top1": false,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    }
+  ]
+}

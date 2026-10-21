@@ -1,605 +1,705 @@
 {
-  "status": "Synthetic draft: human label/paraphrase review required; not an independent acceptance dataset",
-  "cases": [
-    {
-      "id": "AI-001",
-      "question": "Where can I find Student Accounts?",
-      "expected_service": "Student Accounts",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-002",
-      "question": "I need assistance with tuition, payment, bill, balance, fees.",
-      "expected_service": "Student Accounts",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-003",
-      "question": "Where can I find Financial Aid & Scholarships?",
-      "expected_service": "Financial Aid & Scholarships",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-004",
-      "question": "I need assistance with fafsa, financial, aid, award, grant.",
-      "expected_service": "Financial Aid & Scholarships",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-005",
-      "question": "Where can I find Scholarship Support?",
-      "expected_service": "Scholarship Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-006",
-      "question": "I need assistance with scholarship, funding, merit.",
-      "expected_service": "Scholarship Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-007",
-      "question": "Where can I find Student Money Management?",
-      "expected_service": "Student Money Management",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-008",
-      "question": "I need assistance with budget, money, finance, savings, debt.",
-      "expected_service": "Student Money Management",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-009",
-      "question": "Where can I find Emergency Financial Assistance?",
-      "expected_service": "Emergency Financial Assistance",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-010",
-      "question": "I need assistance with emergency, financial, crisis, unexpected, expenses.",
-      "expected_service": "Emergency Financial Assistance",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-011",
-      "question": "Where can I find Veteran Education Benefits?",
-      "expected_service": "Veteran Education Benefits",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-012",
-      "question": "I need assistance with veteran, military, gi, bill, benefits.",
-      "expected_service": "Veteran Education Benefits",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-013",
-      "question": "Where can I find University Advising?",
-      "expected_service": "University Advising",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-014",
-      "question": "I need assistance with advising, classes, degree, courses, major.",
-      "expected_service": "University Advising",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-015",
-      "question": "Where can I find Tutoring & Academic Success?",
-      "expected_service": "Tutoring & Academic Success",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-016",
-      "question": "I need assistance with tutoring, tutor, homework, study, coursework.",
-      "expected_service": "Tutoring & Academic Success",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-017",
-      "question": "Where can I find Writing Center?",
-      "expected_service": "Writing Center",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-018",
-      "question": "I need assistance with writing, essay, paper, draft, proofreading.",
-      "expected_service": "Writing Center",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-019",
-      "question": "Where can I find UTA Libraries?",
-      "expected_service": "UTA Libraries",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-020",
-      "question": "I need assistance with library, research, books, databases.",
-      "expected_service": "UTA Libraries",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-021",
-      "question": "Where can I find Registrar?",
-      "expected_service": "Registrar",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-022",
-      "question": "I need assistance with registrar, enrollment, registration, records.",
-      "expected_service": "Registrar",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-023",
-      "question": "Where can I find Transcript Requests?",
-      "expected_service": "Transcript Requests",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-024",
-      "question": "I need assistance with transcript, official, academic, record.",
-      "expected_service": "Transcript Requests",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-025",
-      "question": "Where can I find Graduation Information?",
-      "expected_service": "Graduation Information",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-026",
-      "question": "I need assistance with graduation, commencement, graduate, application.",
-      "expected_service": "Graduation Information",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-027",
-      "question": "Where can I find TRIO Student Support Services?",
-      "expected_service": "TRIO Student Support Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-028",
-      "question": "I need assistance with trio, first, generation, academic, coaching.",
-      "expected_service": "TRIO Student Support Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-029",
-      "question": "Where can I find Undergraduate Research?",
-      "expected_service": "Undergraduate Research",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-030",
-      "question": "I need assistance with undergraduate, research, faculty, laboratory.",
-      "expected_service": "Undergraduate Research",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-031",
-      "question": "Where can I find Graduate School?",
-      "expected_service": "Graduate School",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-032",
-      "question": "I need assistance with graduate, masters, phd, doctoral, dissertation.",
-      "expected_service": "Graduate School",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-033",
-      "question": "Where can I find Supplemental Instruction?",
-      "expected_service": "Supplemental Instruction",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-034",
-      "question": "I need assistance with supplemental, instruction, group, study, review.",
-      "expected_service": "Supplemental Instruction",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-035",
-      "question": "Where can I find Math Support?",
-      "expected_service": "Math Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-036",
-      "question": "I need assistance with math, mathematics, calculus, algebra.",
-      "expected_service": "Math Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-037",
-      "question": "Where can I find Health Services?",
-      "expected_service": "Health Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-038",
-      "question": "I need assistance with health, doctor, clinic, sick, medical.",
-      "expected_service": "Health Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-039",
-      "question": "Where can I find Counseling & Psychological Services?",
-      "expected_service": "Counseling & Psychological Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-040",
-      "question": "I need assistance with counseling, anxiety, stress, mental, wellbeing.",
-      "expected_service": "Counseling & Psychological Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-041",
-      "question": "Where can I find Student Access & Resource Center?",
-      "expected_service": "Student Access & Resource Center",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-042",
-      "question": "I need assistance with disability, accommodations, access, accessible.",
-      "expected_service": "Student Access & Resource Center",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-043",
-      "question": "Where can I find Maverick Pantry?",
-      "expected_service": "Maverick Pantry",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-044",
-      "question": "I need assistance with food, pantry, hunger, groceries.",
-      "expected_service": "Maverick Pantry",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-045",
-      "question": "Where can I find Campus Recreation?",
-      "expected_service": "Campus Recreation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-046",
-      "question": "I need assistance with gym, fitness, recreation, exercise, sport.",
-      "expected_service": "Campus Recreation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-047",
-      "question": "Where can I find Health Insurance Information?",
-      "expected_service": "Health Insurance Information",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-048",
-      "question": "I need assistance with insurance, coverage, health, policy.",
-      "expected_service": "Health Insurance Information",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-049",
-      "question": "Where can I find Relationship Violence & Sexual Assault Prevention?",
-      "expected_service": "Relationship Violence & Sexual Assault Prevention",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-050",
-      "question": "I need assistance with relationship, violence, assault, prevention, support.",
-      "expected_service": "Relationship Violence & Sexual Assault Prevention",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-051",
-      "question": "Where can I find Student Outreach & Support?",
-      "expected_service": "Student Outreach & Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-052",
-      "question": "I need assistance with personal, difficulty, outreach, support, crisis.",
-      "expected_service": "Student Outreach & Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-053",
-      "question": "Where can I find International Student & Scholar Services?",
-      "expected_service": "International Student & Scholar Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-054",
-      "question": "I need assistance with visa, immigration, f1, j1, i20, sevis, international.",
-      "expected_service": "International Student & Scholar Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-055",
-      "question": "Where can I find International Employment Guidance?",
-      "expected_service": "International Employment Guidance",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-056",
-      "question": "I need assistance with cpt, opt, employment, authorization, international.",
-      "expected_service": "International Employment Guidance",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-057",
-      "question": "Where can I find Study Abroad?",
-      "expected_service": "Study Abroad",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-058",
-      "question": "I need assistance with study, abroad, exchange, overseas.",
-      "expected_service": "Study Abroad",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-059",
-      "question": "Where can I find International Orientation?",
-      "expected_service": "International Orientation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-060",
-      "question": "I need assistance with international, orientation, arrival, welcome.",
-      "expected_service": "International Orientation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-061",
-      "question": "Where can I find English Language Resources?",
-      "expected_service": "English Language Resources",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-062",
-      "question": "I need assistance with english, language, speaking, language, learning.",
-      "expected_service": "English Language Resources",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-063",
-      "question": "Where can I find OIT Help Desk?",
-      "expected_service": "OIT Help Desk",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-064",
-      "question": "I need assistance with it, wifi, password, computer, login, netid, technology.",
-      "expected_service": "OIT Help Desk",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-065",
-      "question": "Where can I find Canvas Support?",
-      "expected_service": "Canvas Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-066",
-      "question": "I need assistance with canvas, online, course, assignment, learning.",
-      "expected_service": "Canvas Support",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-067",
-      "question": "Where can I find Student Software?",
-      "expected_service": "Student Software",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-068",
-      "question": "I need assistance with software, microsoft, office, applications, download.",
-      "expected_service": "Student Software",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-069",
-      "question": "Where can I find Computer Labs?",
-      "expected_service": "Computer Labs",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-070",
-      "question": "I need assistance with computer, lab, desktop, workstation.",
-      "expected_service": "Computer Labs",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-071",
-      "question": "Where can I find Library Technology Lending?",
-      "expected_service": "Library Technology Lending",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-072",
-      "question": "I need assistance with borrow, laptop, technology, equipment, camera.",
-      "expected_service": "Library Technology Lending",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-073",
-      "question": "Where can I find University Housing?",
-      "expected_service": "University Housing",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-074",
-      "question": "I need assistance with housing, dorm, residence, apartment.",
-      "expected_service": "University Housing",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-075",
-      "question": "Where can I find Dining Services?",
-      "expected_service": "Dining Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-076",
-      "question": "I need assistance with dining, meal, plan, cafeteria, restaurant.",
-      "expected_service": "Dining Services",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-077",
-      "question": "Where can I find Parking & Transportation?",
-      "expected_service": "Parking & Transportation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-078",
-      "question": "I need assistance with parking, permit, shuttle, transport, bus.",
-      "expected_service": "Parking & Transportation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-079",
-      "question": "Where can I find Mav Express?",
-      "expected_service": "Mav Express",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-080",
-      "question": "I need assistance with mav, id, card, identification, express.",
-      "expected_service": "Mav Express",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-081",
-      "question": "Where can I find Student Organizations?",
-      "expected_service": "Student Organizations",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-082",
-      "question": "I need assistance with clubs, organizations, involvement, join.",
-      "expected_service": "Student Organizations",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-083",
-      "question": "Where can I find New Student Orientation?",
-      "expected_service": "New Student Orientation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-084",
-      "question": "I need assistance with orientation, freshman, transfer, new, student.",
-      "expected_service": "New Student Orientation",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-085",
-      "question": "Where can I find Student Governance?",
-      "expected_service": "Student Governance",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-086",
-      "question": "I need assistance with student, government, representation, senate.",
-      "expected_service": "Student Governance",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-087",
-      "question": "Where can I find Multicultural Affairs?",
-      "expected_service": "Multicultural Affairs",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-088",
-      "question": "I need assistance with multicultural, diversity, cultural, inclusion.",
-      "expected_service": "Multicultural Affairs",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-089",
-      "question": "Where can I find Parent & Family Programs?",
-      "expected_service": "Parent & Family Programs",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-090",
-      "question": "I need assistance with parent, family, support.",
-      "expected_service": "Parent & Family Programs",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-091",
-      "question": "Where can I find Career Development Center?",
-      "expected_service": "Career Development Center",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-092",
-      "question": "I need assistance with career, resume, internship, job, interview.",
-      "expected_service": "Career Development Center",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-093",
-      "question": "Where can I find Student Employment?",
-      "expected_service": "Student Employment",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-094",
-      "question": "I need assistance with student, job, on, campus, employment, work.",
-      "expected_service": "Student Employment",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-095",
-      "question": "Where can I find Dean of Students?",
-      "expected_service": "Dean of Students",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-096",
-      "question": "I need assistance with dean, student, concern, support.",
-      "expected_service": "Dean of Students",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-097",
-      "question": "Where can I find Student Conduct?",
-      "expected_service": "Student Conduct",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-098",
-      "question": "I need assistance with conduct, policy, disciplinary, appeal.",
-      "expected_service": "Student Conduct",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-099",
-      "question": "Where can I find University Police Resources?",
-      "expected_service": "University Police Resources",
-      "human_reviewed": false
-    },
-    {
-      "id": "AI-100",
-      "question": "I need assistance with police, safety, lost, property, security.",
-      "expected_service": "University Police Resources",
-      "human_reviewed": false
-    }
-  ]
+ "status": "Draft v2 (2026-10-20): natural-language routing set; 2 questions per directory service, 30 non-native phrasings. Labels require team review (PB-12 owners Harmanpreet Kaur / Suhas Surendra Kumar) before use as acceptance evidence.",
+ "cases": [
+  {
+   "id": "AI-001",
+   "question": "I got a bill for my tuition and I want to set up a payment plan",
+   "expected_service": "Student Accounts",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-002",
+   "question": "how much I still owe to university for this semester fees?",
+   "expected_service": "Student Accounts",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-003",
+   "question": "My FAFSA was submitted but I don't see my aid award yet",
+   "expected_service": "Financial Aid & Scholarships",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-004",
+   "question": "who can explain me about grants and loans for paying college",
+   "expected_service": "Financial Aid & Scholarships",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-005",
+   "question": "Are there merit scholarships I can apply for as a continuing student?",
+   "expected_service": "Scholarship Support",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-006",
+   "question": "where i apply for scholarship money for next year",
+   "expected_service": "Scholarship Support",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-007",
+   "question": "I keep running out of money each month, is there help with budgeting?",
+   "expected_service": "Student Money Management",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-008",
+   "question": "I want learn how to manage my money and student debt",
+   "expected_service": "Student Money Management",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-009",
+   "question": "My apartment flooded and I lost everything, can the school help with emergency funds?",
+   "expected_service": "Emergency Financial Assistance",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-010",
+   "question": "I got evicted suddenly and need emergency money",
+   "expected_service": "Emergency Financial Assistance",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-011",
+   "question": "I'm a veteran, how do I use my GI Bill for classes?",
+   "expected_service": "Veteran Education Benefits",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-012",
+   "question": "my father was in military, can I get education benefits as dependent",
+   "expected_service": "Veteran Education Benefits",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-013",
+   "question": "I'm not sure which classes to take next semester for my major",
+   "expected_service": "University Advising",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-014",
+   "question": "I am undecided and want talk to advisor about my degree plan",
+   "expected_service": "University Advising",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-015",
+   "question": "I'm failing chemistry and need a tutor",
+   "expected_service": "Tutoring & Academic Success",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-016",
+   "question": "is there free tutoring on campus for my courses",
+   "expected_service": "Tutoring & Academic Success",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-017",
+   "question": "Can someone review my essay draft before I submit it?",
+   "expected_service": "Writing Center",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-018",
+   "question": "I need help with grammar in my research paper, english is not my first language",
+   "expected_service": "Writing Center",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-019",
+   "question": "I need to find peer-reviewed articles for my research project",
+   "expected_service": "UTA Libraries",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-020",
+   "question": "where I can find quiet place to study late night with books",
+   "expected_service": "UTA Libraries",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-021",
+   "question": "How do I change my major or update my enrollment record?",
+   "expected_service": "Registrar",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-022",
+   "question": "I need an enrollment verification letter for my insurance",
+   "expected_service": "Registrar",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-023",
+   "question": "How do I send my official transcript to another university?",
+   "expected_service": "Transcript Requests",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-024",
+   "question": "i need copy of my grades official for job application",
+   "expected_service": "Transcript Requests",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-025",
+   "question": "When is the deadline to apply to graduate this semester?",
+   "expected_service": "Graduation Information",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-026",
+   "question": "how do i apply for commencement ceremony",
+   "expected_service": "Graduation Information",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-027",
+   "question": "I'm a first-generation college student and want academic coaching",
+   "expected_service": "TRIO Student Support Services",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-028",
+   "question": "program for low income first gen students support",
+   "expected_service": "TRIO Student Support Services",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-029",
+   "question": "How can I join a professor's research lab as an undergrad?",
+   "expected_service": "Undergraduate Research",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-030",
+   "question": "I want to do research and present a poster",
+   "expected_service": "Undergraduate Research",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-031",
+   "question": "I'm a master's student and need help with thesis submission rules",
+   "expected_service": "Graduate School",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-032",
+   "question": "question about PhD dissertation format and deadlines",
+   "expected_service": "Graduate School",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-033",
+   "question": "Are there group review sessions for hard courses like physics?",
+   "expected_service": "Supplemental Instruction",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-034",
+   "question": "peer led study session for my biology class",
+   "expected_service": "Supplemental Instruction",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-035",
+   "question": "I don't understand calculus, where can I get help?",
+   "expected_service": "Math Support",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-036",
+   "question": "need help for algebra homework urgently",
+   "expected_service": "Math Support",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-037",
+   "question": "I have a fever and sore throat, where can I see a doctor on campus?",
+   "expected_service": "Health Services",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-038",
+   "question": "where I get vaccine shots or immunization records",
+   "expected_service": "Health Services",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-039",
+   "question": "I've been feeling really anxious and depressed lately",
+   "expected_service": "Counseling & Psychological Services",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-040",
+   "question": "I want to talk with a therapist, too much stress",
+   "expected_service": "Counseling & Psychological Services",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-041",
+   "question": "I have ADHD and need extra time on exams",
+   "expected_service": "Student Access & Resource Center",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-042",
+   "question": "how to get accommodation for my disability in class",
+   "expected_service": "Student Access & Resource Center",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-043",
+   "question": "I can't afford groceries this week",
+   "expected_service": "Maverick Pantry",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-044",
+   "question": "is there free food for students who are hungry",
+   "expected_service": "Maverick Pantry",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-045",
+   "question": "Where is the gym and can students use it for free?",
+   "expected_service": "Campus Recreation",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-046",
+   "question": "I want to join intramural basketball",
+   "expected_service": "Campus Recreation",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-047",
+   "question": "Do I need health insurance as a student and how do I waive it?",
+   "expected_service": "Health Insurance Information",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-048",
+   "question": "what is insurance plan for students, my coverage question",
+   "expected_service": "Health Insurance Information",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-049",
+   "question": "My partner is abusive and I don't know who to talk to",
+   "expected_service": "Relationship Violence & Sexual Assault Prevention",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-050",
+   "question": "someone sexually assaulted me, where can I get confidential support",
+   "expected_service": "Relationship Violence & Sexual Assault Prevention",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-051",
+   "question": "I'm going through a hard time personally and it's affecting my classes",
+   "expected_service": "Student Outreach & Support",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-052",
+   "question": "I'm worried about my friend who seems in distress, how do I refer them",
+   "expected_service": "Student Outreach & Support",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-053",
+   "question": "I need a travel signature on my I-20 before going home",
+   "expected_service": "International Student & Scholar Services",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-054",
+   "question": "my visa status problem, F1 student, who can I ask",
+   "expected_service": "International Student & Scholar Services",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-055",
+   "question": "How do I apply for OPT after graduation?",
+   "expected_service": "International Employment Guidance",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-056",
+   "question": "can international student do CPT internship off campus",
+   "expected_service": "International Employment Guidance",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-057",
+   "question": "I want to spend a semester studying in Spain",
+   "expected_service": "Study Abroad",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-058",
+   "question": "exchange program to other country for credit",
+   "expected_service": "Study Abroad",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-059",
+   "question": "I'm a new international student arriving next month, is there orientation?",
+   "expected_service": "International Orientation",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-060",
+   "question": "first time coming to USA for study, what to do when I arrive at campus",
+   "expected_service": "International Orientation",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-061",
+   "question": "I want to improve my English speaking before starting classes",
+   "expected_service": "English Language Resources",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-062",
+   "question": "intensive english program for international",
+   "expected_service": "English Language Resources",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-063",
+   "question": "I forgot my NetID password and can't log in",
+   "expected_service": "OIT Help Desk",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-064",
+   "question": "wifi on campus not connecting on my laptop",
+   "expected_service": "OIT Help Desk",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-065",
+   "question": "Canvas won't let me submit my assignment",
+   "expected_service": "Canvas Support",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-066",
+   "question": "I cannot see my online course in canvas",
+   "expected_service": "Canvas Support",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-067",
+   "question": "Can I get Microsoft Office for free as a student?",
+   "expected_service": "Student Software",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-068",
+   "question": "how to download adobe creative cloud with student account",
+   "expected_service": "Student Software",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-069",
+   "question": "Where can I print and use a computer on campus?",
+   "expected_service": "Computer Labs",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-070",
+   "question": "which lab has Mac computers and scanners",
+   "expected_service": "Computer Labs",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-071",
+   "question": "Can I borrow a laptop or calculator from the library?",
+   "expected_service": "Library Technology Lending",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-072",
+   "question": "I need rent camera or charger for project",
+   "expected_service": "Library Technology Lending",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-073",
+   "question": "How do I apply to live in a residence hall?",
+   "expected_service": "University Housing",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-074",
+   "question": "looking for on campus apartment for next semester",
+   "expected_service": "University Housing",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-075",
+   "question": "What meal plans are available for commuters?",
+   "expected_service": "Dining Services",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-076",
+   "question": "where can i eat on campus and how much is meal plan",
+   "expected_service": "Dining Services",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-077",
+   "question": "How do I buy a parking permit?",
+   "expected_service": "Parking & Transportation",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-078",
+   "question": "is there a shuttle bus around campus",
+   "expected_service": "Parking & Transportation",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-079",
+   "question": "I lost my student ID card, how do I get a new one?",
+   "expected_service": "Mav Express",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-080",
+   "question": "where to make my mav id photo card",
+   "expected_service": "Mav Express",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-081",
+   "question": "How can I join a club or start a new student organization?",
+   "expected_service": "Student Organizations",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-082",
+   "question": "I want to make friends by joining clubs",
+   "expected_service": "Student Organizations",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-083",
+   "question": "I'm a transfer student, when is my orientation?",
+   "expected_service": "New Student Orientation",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-084",
+   "question": "freshman orientation registration",
+   "expected_service": "New Student Orientation",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-085",
+   "question": "How do I run for student government?",
+   "expected_service": "Student Governance",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-086",
+   "question": "I want to be a student senator and represent my college",
+   "expected_service": "Student Governance",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-087",
+   "question": "Are there cultural centers or heritage month events on campus?",
+   "expected_service": "Multicultural Affairs",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-088",
+   "question": "programs for diversity and inclusion for students of color",
+   "expected_service": "Multicultural Affairs",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-089",
+   "question": "My parents want to know how to support me at UTA",
+   "expected_service": "Parent & Family Programs",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-090",
+   "question": "resources for family members of students",
+   "expected_service": "Parent & Family Programs",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-091",
+   "question": "Can someone review my resume before the career fair?",
+   "expected_service": "Career Development Center",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-092",
+   "question": "I need help to prepare for job interview",
+   "expected_service": "Career Development Center",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-093",
+   "question": "Are there part-time jobs on campus for students?",
+   "expected_service": "Student Employment",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-094",
+   "question": "I want work on campus while studying",
+   "expected_service": "Student Employment",
+   "phrasing": "non-native",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-095",
+   "question": "I have a complaint about how I was treated and don't know where to go",
+   "expected_service": "Dean of Students",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-096",
+   "question": "I need a medical withdrawal from all my classes this semester",
+   "expected_service": "Dean of Students",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-097",
+   "question": "I received a conduct violation notice, how does the hearing process work?",
+   "expected_service": "Student Conduct",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-098",
+   "question": "I was accused of academic dishonesty, what happens now",
+   "expected_service": "Student Conduct",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-099",
+   "question": "Someone stole my bike on campus, how do I report it?",
+   "expected_service": "University Police Resources",
+   "phrasing": "standard",
+   "human_reviewed": false
+  },
+  {
+   "id": "AI-100",
+   "question": "I want a safety escort to my car at night",
+   "expected_service": "University Police Resources",
+   "phrasing": "standard",
+   "human_reviewed": false
+  }
+ ]
 }

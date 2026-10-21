@@ -1,0 +1,1096 @@
+{
+  "dataset_status": "Draft v2 (2026-10-20): natural-language routing set; 2 questions per directory service, 30 non-native phrasings. Labels require team review (PB-12 owners Harmanpreet Kaur / Suhas Surendra Kumar) before use as acceptance evidence.",
+  "cases": 100,
+  "top1_accuracy": 0.64,
+  "top3_accuracy": 0.64,
+  "unknown_offices": 0,
+  "all_hosted_rag": false,
+  "results": [
+    {
+      "case_id": "AI-001",
+      "expected": "Student Accounts",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "AI-002",
+      "expected": "Student Accounts",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-003",
+      "expected": "Financial Aid & Scholarships",
+      "returned": [
+        "Financial Aid & Scholarships"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-004",
+      "expected": "Financial Aid & Scholarships",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-005",
+      "expected": "Scholarship Support",
+      "returned": [
+        "Scholarship Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-006",
+      "expected": "Scholarship Support",
+      "returned": [
+        "Student Money Management"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-007",
+      "expected": "Student Money Management",
+      "returned": [
+        "Student Money Management"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-008",
+      "expected": "Student Money Management",
+      "returned": [
+        "Student Money Management"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-009",
+      "expected": "Emergency Financial Assistance",
+      "returned": [
+        "University Police Resources"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-010",
+      "expected": "Emergency Financial Assistance",
+      "returned": [
+        "Student Money Management"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-011",
+      "expected": "Veteran Education Benefits",
+      "returned": [
+        "Veteran Education Benefits"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-012",
+      "expected": "Veteran Education Benefits",
+      "returned": [
+        "Veteran Education Benefits"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-013",
+      "expected": "University Advising",
+      "returned": [
+        "University Advising"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-014",
+      "expected": "University Advising",
+      "returned": [
+        "University Advising"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-015",
+      "expected": "Tutoring & Academic Success",
+      "returned": [
+        "Tutoring & Academic Success"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-016",
+      "expected": "Tutoring & Academic Success",
+      "returned": [
+        "Math Support"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-017",
+      "expected": "Writing Center",
+      "returned": [
+        "Writing Center"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-018",
+      "expected": "Writing Center",
+      "returned": [
+        "English Language Resources"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-019",
+      "expected": "UTA Libraries",
+      "returned": [
+        "Undergraduate Research"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-020",
+      "expected": "UTA Libraries",
+      "returned": [
+        "UTA Libraries"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-021",
+      "expected": "Registrar",
+      "returned": [
+        "Registrar"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-022",
+      "expected": "Registrar",
+      "returned": [
+        "Health Insurance Information"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-023",
+      "expected": "Transcript Requests",
+      "returned": [
+        "Transcript Requests"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-024",
+      "expected": "Transcript Requests",
+      "returned": [
+        "Student Employment"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-025",
+      "expected": "Graduation Information",
+      "returned": [
+        "Graduate School"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-026",
+      "expected": "Graduation Information",
+      "returned": [
+        "Graduation Information"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-027",
+      "expected": "TRIO Student Support Services",
+      "returned": [
+        "TRIO Student Support Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-028",
+      "expected": "TRIO Student Support Services",
+      "returned": [
+        "TRIO Student Support Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-029",
+      "expected": "Undergraduate Research",
+      "returned": [
+        "Computer Labs"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-030",
+      "expected": "Undergraduate Research",
+      "returned": [
+        "Undergraduate Research"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-031",
+      "expected": "Graduate School",
+      "returned": [
+        "Graduate School"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-032",
+      "expected": "Graduate School",
+      "returned": [
+        "Graduate School"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-033",
+      "expected": "Supplemental Instruction",
+      "returned": [
+        "Supplemental Instruction"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-034",
+      "expected": "Supplemental Instruction",
+      "returned": [
+        "Supplemental Instruction"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-035",
+      "expected": "Math Support",
+      "returned": [
+        "Math Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-036",
+      "expected": "Math Support",
+      "returned": [
+        "Math Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-037",
+      "expected": "Health Services",
+      "returned": [
+        "Health Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-038",
+      "expected": "Health Services",
+      "returned": [
+        "Registrar"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-039",
+      "expected": "Counseling & Psychological Services",
+      "returned": [],
+      "top1": false,
+      "top3": false,
+      "mode": "clarification",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-040",
+      "expected": "Counseling & Psychological Services",
+      "returned": [
+        "Counseling & Psychological Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 14
+    },
+    {
+      "case_id": "AI-041",
+      "expected": "Student Access & Resource Center",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 11
+    },
+    {
+      "case_id": "AI-042",
+      "expected": "Student Access & Resource Center",
+      "returned": [
+        "Student Access & Resource Center"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-043",
+      "expected": "Maverick Pantry",
+      "returned": [
+        "Maverick Pantry"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-044",
+      "expected": "Maverick Pantry",
+      "returned": [
+        "Maverick Pantry"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-045",
+      "expected": "Campus Recreation",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-046",
+      "expected": "Campus Recreation",
+      "returned": [
+        "Student Organizations"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-047",
+      "expected": "Health Insurance Information",
+      "returned": [
+        "Health Insurance Information"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-048",
+      "expected": "Health Insurance Information",
+      "returned": [
+        "Health Insurance Information"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-049",
+      "expected": "Relationship Violence & Sexual Assault Prevention",
+      "returned": [],
+      "top1": false,
+      "top3": false,
+      "mode": "clarification",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-050",
+      "expected": "Relationship Violence & Sexual Assault Prevention",
+      "returned": [
+        "Student Outreach & Support"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-051",
+      "expected": "Student Outreach & Support",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-052",
+      "expected": "Student Outreach & Support",
+      "returned": [],
+      "top1": false,
+      "top3": false,
+      "mode": "clarification",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-053",
+      "expected": "International Student & Scholar Services",
+      "returned": [],
+      "top1": false,
+      "top3": false,
+      "mode": "clarification",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-054",
+      "expected": "International Student & Scholar Services",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-055",
+      "expected": "International Employment Guidance",
+      "returned": [
+        "Graduation Information"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-056",
+      "expected": "International Employment Guidance",
+      "returned": [
+        "International Employment Guidance"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-057",
+      "expected": "Study Abroad",
+      "returned": [],
+      "top1": false,
+      "top3": false,
+      "mode": "clarification",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-058",
+      "expected": "Study Abroad",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-059",
+      "expected": "International Orientation",
+      "returned": [
+        "New Student Orientation"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-060",
+      "expected": "International Orientation",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-061",
+      "expected": "English Language Resources",
+      "returned": [
+        "English Language Resources"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-062",
+      "expected": "English Language Resources",
+      "returned": [
+        "English Language Resources"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-063",
+      "expected": "OIT Help Desk",
+      "returned": [
+        "OIT Help Desk"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-064",
+      "expected": "OIT Help Desk",
+      "returned": [
+        "OIT Help Desk"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-065",
+      "expected": "Canvas Support",
+      "returned": [
+        "Canvas Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-066",
+      "expected": "Canvas Support",
+      "returned": [
+        "Canvas Support"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-067",
+      "expected": "Student Software",
+      "returned": [
+        "Student Software"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-068",
+      "expected": "Student Software",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-069",
+      "expected": "Computer Labs",
+      "returned": [
+        "Computer Labs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-070",
+      "expected": "Computer Labs",
+      "returned": [
+        "Computer Labs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-071",
+      "expected": "Library Technology Lending",
+      "returned": [
+        "Library Technology Lending"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-072",
+      "expected": "Library Technology Lending",
+      "returned": [
+        "Writing Center"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-073",
+      "expected": "University Housing",
+      "returned": [
+        "University Housing"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-074",
+      "expected": "University Housing",
+      "returned": [
+        "University Housing"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-075",
+      "expected": "Dining Services",
+      "returned": [
+        "Dining Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-076",
+      "expected": "Dining Services",
+      "returned": [
+        "Dining Services"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-077",
+      "expected": "Parking & Transportation",
+      "returned": [
+        "Parking & Transportation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-078",
+      "expected": "Parking & Transportation",
+      "returned": [
+        "Parking & Transportation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-079",
+      "expected": "Mav Express",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-080",
+      "expected": "Mav Express",
+      "returned": [
+        "Mav Express"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 12
+    },
+    {
+      "case_id": "AI-081",
+      "expected": "Student Organizations",
+      "returned": [
+        "Student Organizations"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-082",
+      "expected": "Student Organizations",
+      "returned": [
+        "Student Accounts"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 10
+    },
+    {
+      "case_id": "AI-083",
+      "expected": "New Student Orientation",
+      "returned": [
+        "New Student Orientation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-084",
+      "expected": "New Student Orientation",
+      "returned": [
+        "New Student Orientation"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-085",
+      "expected": "Student Governance",
+      "returned": [
+        "Student Governance"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 9
+    },
+    {
+      "case_id": "AI-086",
+      "expected": "Student Governance",
+      "returned": [],
+      "top1": false,
+      "top3": false,
+      "mode": "clarification",
+      "latency_ms": 5
+    },
+    {
+      "case_id": "AI-087",
+      "expected": "Multicultural Affairs",
+      "returned": [
+        "Multicultural Affairs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-088",
+      "expected": "Multicultural Affairs",
+      "returned": [
+        "Multicultural Affairs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-089",
+      "expected": "Parent & Family Programs",
+      "returned": [
+        "Parent & Family Programs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-090",
+      "expected": "Parent & Family Programs",
+      "returned": [
+        "Parent & Family Programs"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-091",
+      "expected": "Career Development Center",
+      "returned": [
+        "Career Development Center"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-092",
+      "expected": "Career Development Center",
+      "returned": [
+        "Career Development Center"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-093",
+      "expected": "Student Employment",
+      "returned": [
+        "Student Employment"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-094",
+      "expected": "Student Employment",
+      "returned": [
+        "Student Employment"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-095",
+      "expected": "Dean of Students",
+      "returned": [],
+      "top1": false,
+      "top3": false,
+      "mode": "clarification",
+      "latency_ms": 6
+    },
+    {
+      "case_id": "AI-096",
+      "expected": "Dean of Students",
+      "returned": [
+        "University Advising"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-097",
+      "expected": "Student Conduct",
+      "returned": [
+        "Student Conduct"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-098",
+      "expected": "Student Conduct",
+      "returned": [
+        "Tutoring & Academic Success"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 7
+    },
+    {
+      "case_id": "AI-099",
+      "expected": "University Police Resources",
+      "returned": [
+        "Campus Recreation"
+      ],
+      "top1": false,
+      "top3": false,
+      "mode": "grounded",
+      "latency_ms": 8
+    },
+    {
+      "case_id": "AI-100",
+      "expected": "University Police Resources",
+      "returned": [
+        "University Police Resources"
+      ],
+      "top1": true,
+      "top3": true,
+      "mode": "grounded",
+      "latency_ms": 8
+    }
+  ]
+}

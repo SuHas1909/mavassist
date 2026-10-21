@@ -154,3 +154,53 @@ def test_rate_limit_and_headers(client,monkeypatch):
     for i in range(10): assert client.post('/api/auth/login',json={'email':'none@example.com','password':'wrong'}).status_code==401
     assert client.post('/api/auth/login',json={'email':'none@example.com','password':'wrong'}).status_code==429
     response=client.get('/health');assert response.status_code==200 and response.headers['x-content-type-options']=='nosniff'
+
+def test_seeded_directory_has_curated_details(client):
+    items=client.get('/api/services').json()['items']
+    assert len(items)==50 and not any(s['location']=='Check the official resource page' for s in items)
+    assert sum(s['verified'] for s in items)>=45 and all(s['source_url'].startswith('https://') for s in items)
+    assert all(2<=len(s['next_steps'])<=3 for s in items)
+    # Relevance ordering: a name/tag match outranks a description-only mention.
+    assert client.get('/api/services?q=tuition').json()['items'][0]['name']=='Student Accounts'
+
+def test_chat_recommendation_contract_fr04(client,student):
+    r=client.post('/api/chat',json={'text':'I need a travel signature on my I-20 before going home'},headers=student).json()
+    recs=r['recommendations'];assert r['mode']=='grounded' and r['confidence'] in ('high','medium')
+    assert recs[0]['name']=='International Student & Scholar Services' and recs[0]['role']=='recommended'
+    assert 1<=len(recs)<=3 and all(x['role']=='alternative' for x in recs[1:])
+    assert all(x['reason'] for x in recs) and all(k in recs[0] for k in ['location','hours','contact','updated_at','next_steps'])
+    assert 2<=len(r['steps'])<=3 and r['sources']
+
+def test_out_of_scope_questions_ask_for_clarification(client,student):
+    known={s['name'] for s in client.get('/api/services').json()['items']}
+    for q in ['tell me a joke','what is the weather tomorrow','asdf qwerty']:
+        r=client.post('/api/chat',json={'text':q},headers=student).json()
+        assert r['mode']=='clarification' and r['recommendations']==[] and set(r['options'])<=known
+
+def test_analytics_totals_and_daily_series(client,student,admin):
+    client.get('/api/services?q=parking');client.post('/api/chat',json={'text':'parking permit'},headers=student)
+    data=client.get('/api/admin/analytics',headers=admin).json()
+    assert data['totals']['searches']>=1 and data['totals']['chats']>=1
+    assert data['daily'] and {'date','searches','views','chats'}<=set(data['daily'][0])
+
+def test_ai_routing_accuracy_gate(client):
+    """PB-12 regression gate on the labeled sets (offline keyword mode): top-1 >=80%, top-3 >=95%, no unknown offices."""
+    from pathlib import Path
+    root=Path(__file__).parents[2]/'docs'
+    with SessionLocal() as db:
+        known={s.name for s in db.scalars(select(Service))}
+        for name in ['ai-evaluation-100.json','ai-evaluation-holdout-50.json']:
+            cases=json.loads((root/name).read_text(encoding='utf-8'))['cases'];top1=top3=0
+            for c in cases:
+                names=[s.name for s,_ in ai.answer_question(db,c['question'])['services']]
+                assert set(names)<=known
+                top1+=names[:1]==[c['expected_service']];top3+=c['expected_service'] in names[:3]
+            assert top1/len(cases)>=.8 and top3/len(cases)>=.95,(name,top1,top3)
+
+def test_circuit_breaker_skips_provider_after_outage(client,student,monkeypatch):
+    calls=[]
+    def down(*args): calls.append(1);raise httpx.ConnectError('provider down')
+    monkeypatch.setattr(ai,'API_KEY','k');monkeypatch.setattr(ai,'MODEL','m');monkeypatch.setattr(ai,'generate',down)
+    for _ in range(3): assert client.post('/api/chat',json={'text':'tuition payment plan'},headers=student).json()['mode']=='fallback'
+    assert len(calls)==1  # later questions skip the provider during the cool-down
+    ai.AI_DOWN_UNTIL=0.0
