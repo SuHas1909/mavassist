@@ -9,7 +9,9 @@ from app.knowledge import import_passages, seed_knowledge
 def test_refund_regression_context_citations_and_no_it_office(client,student):
     r=client.post('/api/chat',headers=student,json={'text':'I have paid extra tuition fee to accounts how to get refund!'}).json()
     assert r['mode']=='grounded'
-    assert [s['name'] for s in r['recommendations']]==['Student Accounts']
+    names=[s['name'] for s in r['recommendations']]
+    assert names[0]=='Student Accounts' and 'OIT Help Desk' not in names and len(names)<=3
+    assert r['recommendations'][0]['role']=='recommended' and r['recommendations'][0]['reason']
     text=' '.join(p['text'] for p in r['answer']+r['steps']).lower()
     assert 'credit balance' in text and 'refund' in text
     assert r['answer'] and r['steps'] and r['sources']

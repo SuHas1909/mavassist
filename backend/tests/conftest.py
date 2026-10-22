@@ -21,6 +21,7 @@ def client():
         with engine.begin() as c: c.execute(text('CREATE EXTENSION IF NOT EXISTS vector'))
     Base.metadata.drop_all(engine);Base.metadata.create_all(engine)
     with SessionLocal() as db: seed(db)
+    from app import ai;ai.AI_DOWN_UNTIL=0.0
     with TestClient(app) as c: yield c
 
 @pytest.fixture()

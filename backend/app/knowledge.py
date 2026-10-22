@@ -51,7 +51,7 @@ def seed_knowledge(db):
     for s in db.scalars(select(Service)):
         key=f'directory-{s.id}'
         if db.scalar(select(KnowledgeChunk.id).where(KnowledgeChunk.key==key)): continue
-        c=KnowledgeChunk(key=key,service_id=s.id,title=s.name+' — directory overview',content=s.description,steps=s.next_steps,keywords=s.tags,source_url=s.source_url,reviewed_at=None)
+        c=KnowledgeChunk(key=key,service_id=s.id,title=s.name+' — directory overview',content=s.description,steps=s.next_steps,keywords=s.tags,source_url=s.source_url,reviewed_at=s.updated_at.date().isoformat() if s.verified and s.updated_at else None)
         embed_chunk(c);db.add(c)
     db.commit()
     # Preserve imported/edited reviewed content; built-in passages are inserted only once.
@@ -71,4 +71,7 @@ def sync_directory(db,service):
     c=db.scalar(select(KnowledgeChunk).where(KnowledgeChunk.key==f'directory-{service.id}'))
     if not c: c=KnowledgeChunk(key=f'directory-{service.id}',service_id=service.id);db.add(c)
     c.title=service.name+' — directory overview';c.content=service.description;c.steps=service.next_steps
-    c.keywords=service.tags;c.source_url=service.source_url;c.reviewed_at=None;embed_chunk(c)
+    c.keywords=service.tags;c.source_url=service.source_url
+    # A directory card counts as reviewed only when an administrator marked its official source verified.
+    c.reviewed_at=service.updated_at.date().isoformat() if service.verified and service.updated_at else None
+    embed_chunk(c)

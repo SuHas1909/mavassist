@@ -14,7 +14,7 @@ def main():
     parser.add_argument('--file',help='Reviewed JSON passages for import-knowledge')
     args=parser.parse_args()
     with SessionLocal() as db:
-        if args.command=='seed': print('Draft services added:',seed(db))
+        if args.command=='seed': print('Services added:',seed(db))
         elif args.command=='import-knowledge':
             if not args.file: parser.error('Specify --file with a reviewed JSON passage file')
             from .knowledge import import_passages

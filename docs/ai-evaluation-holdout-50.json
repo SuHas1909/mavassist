@@ -1,0 +1,312 @@
+{
+ "status": "Held-out draft (2026-10-20): written after v2 tuning, not used for tuning. 50 routing questions + 5 out-of-scope questions that should trigger clarification. Requires team review.",
+ "cases": [
+  {
+   "id": "HO-001",
+   "question": "there's a hold on my account because of an unpaid balance",
+   "expected_service": "Student Accounts",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-002",
+   "question": "when is tuition due and can I pay in parts",
+   "expected_service": "Student Accounts",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-003",
+   "question": "my pell grant hasn't been disbursed",
+   "expected_service": "Financial Aid & Scholarships",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-004",
+   "question": "I want to apply for federal work study",
+   "expected_service": "Financial Aid & Scholarships",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-005",
+   "question": "there was a fire at my place and I lost my stuff",
+   "expected_service": "Emergency Financial Assistance",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-006",
+   "question": "Hazlewood exemption for my semester",
+   "expected_service": "Veteran Education Benefits",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-007",
+   "question": "I have an advising hold and can't register",
+   "expected_service": "University Advising",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-008",
+   "question": "I'm struggling in my physics class and need tutoring",
+   "expected_service": "Tutoring & Academic Success",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-009",
+   "question": "help me with citations and structure of my paper",
+   "expected_service": "Writing Center",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-010",
+   "question": "how do I access journal databases from home",
+   "expected_service": "UTA Libraries",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-011",
+   "question": "what's the last day to drop a class",
+   "expected_service": "Registrar",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-012",
+   "question": "my new school is asking for my transcript",
+   "expected_service": "Transcript Requests",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-013",
+   "question": "do I get a diploma mailed after I graduate",
+   "expected_service": "Graduation Information",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-014",
+   "question": "what are the formatting requirements for my master's thesis",
+   "expected_service": "Graduate School",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-015",
+   "question": "stuck on my trigonometry problems",
+   "expected_service": "Math Support",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-016",
+   "question": "I need a prescription refilled at the campus pharmacy",
+   "expected_service": "Health Services",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-017",
+   "question": "feeling sick, can I get an appointment with a nurse",
+   "expected_service": "Health Services",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-018",
+   "question": "I'm having panic attacks before exams",
+   "expected_service": "Counseling & Psychological Services",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-019",
+   "question": "i feel very sad and alone, need someone to talk",
+   "expected_service": "Counseling & Psychological Services",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-020",
+   "question": "I have a learning disability, what services exist",
+   "expected_service": "Student Access & Resource Center",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-021",
+   "question": "food insecurity resources on campus",
+   "expected_service": "Maverick Pantry",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-022",
+   "question": "what time does the MAC open",
+   "expected_service": "Campus Recreation",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-023",
+   "question": "AHP waiver deadline for international students",
+   "expected_service": "Health Insurance Information",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-024",
+   "question": "I'm being stalked by an ex",
+   "expected_service": "Relationship Violence & Sexual Assault Prevention",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-025",
+   "question": "my SEVIS record and I-20 expiring soon",
+   "expected_service": "International Student & Scholar Services",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-026",
+   "question": "can I take reduced course load as F-1",
+   "expected_service": "International Student & Scholar Services",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-027",
+   "question": "STEM OPT extension questions",
+   "expected_service": "International Employment Guidance",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-028",
+   "question": "faculty led trip overseas summer",
+   "expected_service": "Study Abroad",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-029",
+   "question": "TOEFL score low, english courses to improve",
+   "expected_service": "English Language Resources",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-030",
+   "question": "my account is locked after MFA problem",
+   "expected_service": "OIT Help Desk",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-031",
+   "question": "can't get on the internet in my dorm room",
+   "expected_service": "OIT Help Desk",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-032",
+   "question": "quiz froze in Canvas during the test",
+   "expected_service": "Canvas Support",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-033",
+   "question": "free Photoshop for students?",
+   "expected_service": "Student Software",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-034",
+   "question": "I need to scan documents on campus",
+   "expected_service": "Computer Labs",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-035",
+   "question": "how do roommate assignments work",
+   "expected_service": "University Housing",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-036",
+   "question": "dining dollars and meal plan options",
+   "expected_service": "Dining Services",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-037",
+   "question": "I got a parking ticket",
+   "expected_service": "Parking & Transportation",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-038",
+   "question": "when does the MavMover run",
+   "expected_service": "Parking & Transportation",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-039",
+   "question": "my ID card stopped working at the door",
+   "expected_service": "Mav Express",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-040",
+   "question": "how do I join a sorority or fraternity",
+   "expected_service": "Student Organizations",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-041",
+   "question": "I was admitted as a freshman, what's orientation",
+   "expected_service": "New Student Orientation",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-042",
+   "question": "heritage month celebrations",
+   "expected_service": "Multicultural Affairs",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-043",
+   "question": "my mom wants the parent newsletter",
+   "expected_service": "Parent & Family Programs",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-044",
+   "question": "help writing a cover letter",
+   "expected_service": "Career Development Center",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-045",
+   "question": "when is the next career fair",
+   "expected_service": "Career Development Center",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-046",
+   "question": "student worker positions hiring now",
+   "expected_service": "Student Employment",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-047",
+   "question": "I was treated unfairly by staff and want to file a complaint",
+   "expected_service": "Dean of Students",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-048",
+   "question": "I've been accused of plagiarism",
+   "expected_service": "Student Conduct",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-049",
+   "question": "I feel unsafe walking to the parking lot at night",
+   "expected_service": "University Police Resources",
+   "human_reviewed": false
+  },
+  {
+   "id": "HO-050",
+   "question": "my laptop was stolen in the library",
+   "expected_service": "University Police Resources",
+   "human_reviewed": false
+  }
+ ],
+ "out_of_scope": [
+  "what's the weather tomorrow",
+  "tell me a joke",
+  "who won the football game",
+  "asdf qwerty",
+  "recommend a good pizza place in Dallas"
+ ]
+}

@@ -5,20 +5,20 @@
 | ID | Implementation | Automated check / remaining acceptance |
 |---|---|---|
 | FR-01 | Student registration/login, JWT 60 minutes, bcrypt 12, CLI-only administrator provisioning, server role gate | pytest auth and every-admin-route inventory; browser student/admin login |
-| FR-02 | Active directory and full detail fields, category, source/freshness and current notices | pytest directory/detail; 50 **draft** seed office/service records; manually curate real location/hours/contact before release |
-| FR-03 | Bound literal keyword matching on name/description/tags; multiple OR category filters; offset/limit | pytest tag, keyword, multi-category, escaped wildcard and pagination checks |
-| FR-04 | Knowledge passages, BM25 + optional MiniLM/pgvector hybrid retrieval, contextual generated explanations/steps with validated source citations, transient follow-up context, clarification | Mocked provider/privacy/fallback checks and offline routing run; real MiniLM/PostgreSQL/provider accuracy acceptance pending |
+| FR-02 | Active directory and full detail fields, category, source/freshness and current notices | pytest directory/detail/curated-data checks; 50 records with location/hours/contact from public uta.edu pages (48 verified, 2 flagged) — see DATA_SOURCES.md |
+| FR-03 | Bound literal keyword matching on name/description/tags with relevance ordering (name > tag > description); multiple OR category filters; offset/limit | pytest tag, keyword, multi-category, escaped wildcard and pagination checks |
+| FR-04 | Service-level BM25 ranking + optional MiniLM hybrid; one recommended office with reason, location/hours/contact, last-updated date, ≤2 alternatives, 2–3 cited steps; clarification with suggested offices below the confidence threshold; LLM answers validated against retrieved IDs | pytest FR-04 contract, out-of-scope clarification and accuracy gate; offline routing 97% top-1 / 100% top-3 (v2 set), 90% / 100% (held-out); hosted-model accuracy pending an API key |
 | FR-05 | Admin create/update/archive/restore; excluded from directory/search/chat and saved/history display | pytest lifecycle; browser admin lifecycle |
 | FR-06 | Category CRUD with reference guards; service notices with timezone-aware dates and validity checks | pytest CRUD/date/visibility; browser category/notice paths |
 | FR-07 | Per-user idempotent bookmark add/remove and private list | pytest isolation, idempotence; browser save/retrieve |
 | FR-08 | At-most-ten distinct per-user recent views, newest first; revisits move to front | pytest 12-service cap/revisit/isolation; browser history |
-| FR-09 | Date-range analytics for searched terms, viewed services, chatbot categories | pytest and browser admin analytics; production data will accumulate after use |
+| FR-09 | Date-range analytics for searched terms, viewed services, chatbot categories, plus totals and a daily activity series | pytest and browser admin analytics; production data will accumulate after use |
 | FR-10 | One helpful/not-helpful rating per answer UUID, aggregate helpfulness | pytest duplicate/not-found and aggregation; browser rating |
-| NFR-01 | k6 script with 50 VUs and p95 1s non-AI / 5s AI thresholds | Not measured on intended full hosted stack. Set a private staging test environment; load scripts are not passing results. |
+| NFR-01 | k6 script with 50 VUs and p95 1s non-AI / 5s AI thresholds | Local run Oct 20: non-AI p95 391 ms, chat p95 756 ms, 0% errors (k6-load-results.json). Repeat on hosted staging. |
 | NFR-02 | bcrypt 12, 60-min JWT, issuer/audience checks, input validation, no public admin role, explicit CORS, security headers | All admin methods denied to student in tests; HTTPS supplied by cloud hosts, loopback development uses HTTP. OWASP/audit/host configuration still required. |
 | NFR-03 | No raw question/history/account/IP in chat table; redacted transient history; name/email/numeric redaction; store:false; anonymous usage; startup/hourly 90-day prune | Payload and retention tests. **Clarification required:** RAG sends redacted question + public context despite original literal “only question text.” Arbitrary sensitive text redaction is not guaranteed; hosting logs/backups and idle-time scheduled prune need review. |
 | NFR-04 | Responsive, semantic forms, focus/keyboard/modal behavior, axe browser checks | See actual browser results; SUS >=70 and service-finding median <=60s with >=10 real students require the included human study protocol. |
-| NFR-05 | Keyword fallback after hosted failures, unknown-ID rejection, >=70% coverage CI gate | Local forced-outage check and coverage measured; cold-start/50-user/real outage latency remains to measure. |
+| NFR-05 | Keyword fallback after hosted failures, 60 s circuit breaker, unknown-ID rejection, >=70% coverage CI gate | Coverage 93%; forced-outage k6 run at 50 users: 100% fallback, p95 643 ms (k6-fallback-results.json); cold-start on hosted staging remains to measure. |
 
 ## AI/product design changes requiring acknowledgment
 

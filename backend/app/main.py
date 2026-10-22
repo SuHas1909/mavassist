@@ -13,7 +13,7 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from sqlalchemy import Text, delete, func, or_, select, text
+from sqlalchemy import Text, case, delete, func, or_, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from .db import Bookmark, Category, ChatLog, Notice, Recent, Service, SessionLocal, UsageEvent, User, engine, now
@@ -129,15 +129,17 @@ def me(user: USER): return profile(user)
 def categories(db: DB): return [{'id':c.id,'name':c.name} for c in db.scalars(select(Category).order_by(Category.name))]
 @app.get('/api/services')
 def services(db: DB,q: str=Query('',max_length=200),category_ids: list[int]=Query(default=[]),limit: int=Query(100,ge=1,le=100),offset: int=Query(0,ge=0)):
-    query=select(Service).where(Service.active.is_(True))
+    query=select(Service).where(Service.active.is_(True));order=[Service.name]
     if q:
         # Literal substring matching; escape LIKE metacharacters and bind all parameters.
         term='%'+q.replace('\\','\\\\').replace('%','\\%').replace('_','\\_')+'%'
         query=query.where(or_(Service.name.ilike(term,escape='\\'),Service.description.ilike(term,escape='\\'),Service.tags.cast(Text).ilike(term,escape='\\')))
+        # Relevance order: name matches, then tag matches, then description-only matches.
+        order=[case((Service.name.ilike(term,escape='\\'),0),(Service.tags.cast(Text).ilike(term,escape='\\'),1),else_=2),Service.name]
         db.add(UsageEvent(kind='search',term=ai.redact(q)[:200]));save(db)
     if category_ids: query=query.where(Service.category_id.in_(category_ids))
     total=db.scalar(select(func.count()).select_from(query.subquery()))
-    return {'items':[service_json(s,db) for s in db.scalars(query.order_by(Service.name).offset(offset).limit(limit))],'total':total}
+    return {'items':[service_json(s,db) for s in db.scalars(query.order_by(*order).offset(offset).limit(limit))],'total':total}
 
 @app.get('/api/services/{sid}')
 def detail(sid: int,db: DB,user: USER):
@@ -174,12 +176,12 @@ def chat(body: Question,db: DB,user: USER):
     clean=ai.redact(body.text,user.name)
     history=[{'question':ai.redact(t.question,user.name),'answer':ai.redact(t.answer,user.name)} for t in body.history]
     result=ai.answer_question(db,clean,history)
-    chosen=result.pop('services');mode=result['mode']
+    chosen=[s for s,_ in result['services']];reasons=[r for _,r in result.pop('services')];mode=result['mode']
     answer_id=str(uuid.uuid4())
     db.add(ChatLog(id=answer_id,service_id=chosen[0].id if chosen else None,mode=mode))
     if chosen: db.add(UsageEvent(kind='chat',category_id=chosen[0].category_id))
     save(db)
-    return result|{'answer_id':answer_id,'recommendations':[service_json(s,db)|{'reason':'Responsible resource for the cited guidance.'} for s in chosen]}
+    return result|{'answer_id':answer_id,'recommendations':[service_json(s,db)|{'reason':reason,'role':'recommended' if i==0 else 'alternative'} for i,(s,reason) in enumerate(zip(chosen,reasons))]}
 @app.post('/api/chat/{answer_id}/feedback')
 def feedback(answer_id: str,body: Feedback,db: DB,user: USER):
     entry=db.get(ChatLog,answer_id)
@@ -254,4 +256,9 @@ def analytics(db: DB,user: ADMIN,start: datetime | None=None,end: datetime | Non
             if r.kind==kind and getattr(r,key) is not None: totals[getattr(r,key)]+=1
         return [{'label':label(k),'count':v} for k,v in sorted(totals.items(),key=lambda v:(-v[1],str(v[0])))[:10]]
     ratings=list(db.scalars(select(ChatLog.helpful).where(ChatLog.created_at>=start,ChatLog.created_at<=end,ChatLog.helpful.is_not(None))))
-    return {'start':start,'end':end,'searches':count('search','term',lambda x:x),'views':count('view','service_id',lambda x:db.get(Service,x).name),'chat_categories':count('chat','category_id',lambda x:db.get(Category,x).name),'feedback':{'total':len(ratings),'helpful':sum(ratings),'helpful_percent':round(100*sum(ratings)/len(ratings),1) if ratings else None}}
+    days=defaultdict(lambda:{'searches':0,'views':0,'chats':0})
+    for r in rows:
+        key={'search':'searches','view':'views','chat':'chats'}.get(r.kind)
+        if key: days[r.created_at.date().isoformat()][key]+=1
+    totals={k:sum(1 for r in rows if r.kind==kind) for k,kind in [('searches','search'),('views','view'),('chats','chat')]}
+    return {'start':start,'end':end,'totals':totals,'daily':[{'date':d}|v for d,v in sorted(days.items())],'searches':count('search','term',lambda x:x),'views':count('view','service_id',lambda x:db.get(Service,x).name),'chat_categories':count('chat','category_id',lambda x:db.get(Category,x).name),'feedback':{'total':len(ratings),'helpful':sum(ratings),'helpful_percent':round(100*sum(ratings)/len(ratings),1) if ratings else None}}

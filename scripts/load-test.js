@@ -6,7 +6,7 @@ const aiLatency=new Trend('chat_latency');
 const fallbackLatency=new Trend('fallback_latency');
 const thresholds={non_ai_latency:['p(95)<1000'],chat_latency:['p(95)<5000'],checks:['rate==1'],http_req_failed:['rate<0.01']};
 if(__ENV.EXPECT_FALLBACK==='true')thresholds.fallback_latency=['p(95)<3000'];
-export const options={vus:50,duration:'60s',thresholds};
+export const options={vus:__ENV.VUS?Number(__ENV.VUS):50,duration:__ENV.DURATION||"60s",thresholds};
 export default function(){
   const base=__ENV.API_URL||'http://localhost:8000';
   const headers={Authorization:`Bearer ${__ENV.MAVASSIST_TOKEN}`,'Content-Type':'application/json'};
