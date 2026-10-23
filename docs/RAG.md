@@ -4,6 +4,7 @@ The chat now answers questions from **source passages**, not just directory card
 
 ## How it works
 
+0. **Guardrails first** (`app/guard.py`): self-harm, violence, emergencies, dishonest/illegal requests, explicit content, dating requests, small talk and clear off-topic questions are answered by deterministic, tested templates before any retrieval or model call.
 1. Redact known account-name parts, email addresses and long numeric identifiers in the current question and history.
 2. Resolve a follow-up against the preceding question; a new topic is retrieved separately.
 3. Retrieve relevant knowledge passages from active services. Local mode uses BM25 with word normalization and relevance filtering. Full semantic mode combines MiniLM/pgvector retrieval and BM25 by reciprocal rank fusion.
@@ -14,19 +15,25 @@ The chat now answers questions from **source passages**, not just directory card
 
 Citation validation proves that references are from the retrieved set; it is not an automatic proof that every model-written claim follows from them. Review factual accuracy with independent questions before release.
 
-## Enable conversational generation without a large local model
+## Enable conversational generation (OpenRouter)
 
-In **backend/.env**, keep the lightweight retrieval mode and privately configure:
+In **backend/.env** (git-ignored), add:
 
 ```dotenv
 AI_MODE=keyword
-OPENAI_API_KEY=your-private-project-key
-OPENAI_MODEL=your-enabled-model-supporting-Responses-structured-outputs
+OPENROUTER_API_KEY=your-private-openrouter-key
+OPENROUTER_MODEL=openai/gpt-4o-mini
+LLM_TIMEOUT=12
 ```
 
-Restart the API. The `keyword` setting now selects **BM25 retrieval**, not a canned directory-only response. If the key/model work, the response mode is `rag` and the UI badge says **AI with sources**. The same source corpus and citation checks apply in both retrieval modes. No key is bundled, requested in chat, or placed in frontend code.
+Restart the API. Requests go to `https://openrouter.ai/api/v1/chat/completions` in JSON mode. Two model calls are used:
 
-For semantic retrieval, install requirements-ai.txt, use PostgreSQL/pgvector, set `AI_MODE=rag`, run `python -m app.manage reindex`, and restart. This loads MiniLM and uses both dense and lexical ranking. See DEPLOYMENT.md for the full infrastructure setup. Real provider generation and full PostgreSQL/MiniLM runtime still need deployment verification.
+- **Answer generation** — the model receives the question, redacted history and retrieved passages, and must return cited paragraphs/steps. It can also return `in_scope: false` when the retrieved office does not genuinely answer the question, which becomes a **Not found** reply instead of a wrong office.
+- **Triage** (only when retrieval is not confident) — the model reads the whole active directory (names and one-line descriptions) and decides `campus` (with a service id), `unclear`, `off_topic`, `greeting` or `unsafe`. A chosen office is then answered with that office's own passages.
+
+Every model output is validated (known source IDs, no URLs, length limits). Network or provider errors open a 60-second circuit breaker and fall back to cited source summaries. Any OpenAI-compatible endpoint works through `LLM_BASE_URL`, `LLM_API_KEY` and `LLM_MODEL`; `OPENAI_API_KEY`/`OPENAI_MODEL` still work for OpenAI directly.
+
+For semantic retrieval, install requirements-ai.txt, use PostgreSQL/pgvector, set `AI_MODE=rag`, run `python -m app.manage reindex`, and restart. This loads MiniLM and uses both dense and lexical ranking. See DEPLOYMENT.md for the full infrastructure setup.
 
 ## Upgrade an existing installation
 

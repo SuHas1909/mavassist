@@ -22,6 +22,8 @@ services:
       JWT_SECRET: ${JWT_SECRET:?Run python scripts/configure.py first}
       CORS_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
       AI_MODE: ${AI_MODE:-rag}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openai/gpt-4o-mini}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       OPENAI_MODEL: ${OPENAI_MODEL:-}
       RATE_LIMIT: "true"

@@ -61,6 +61,6 @@ class ConversationTurn(Input):
     question: str = Field(min_length=1,max_length=1000)
     answer: str = Field(max_length=4000)
 class Question(Input):
-    text: str = Field(min_length=3, max_length=1000)
+    text: str = Field(min_length=2, max_length=1000)
     history: list[ConversationTurn] = Field(default_factory=list,max_length=3)
 class Feedback(Input): helpful: bool

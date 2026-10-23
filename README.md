@@ -50,6 +50,31 @@ To create an administrator, run this from the `backend` folder in another termin
 
 The local setup works without an API key. It returns cited source summaries; AI-generated answers require a configured API key and model. Verify current campus details on the linked official pages.
 
+### Turn on AI answers (OpenRouter)
+
+`scripts/configure.py` asks for an optional OpenRouter key (hidden input) and saves it only in `backend/.env`, which is git-ignored. To add it later, put these lines in `backend/.env` and restart the API:
+
+```dotenv
+OPENROUTER_API_KEY=sk-or-...your key...
+OPENROUTER_MODEL=openai/gpt-4o-mini
+```
+
+`http://127.0.0.1:8000/health` shows `"llm": true` when the key is loaded. Answers then carry the badge **AI answer with sources**. Never commit the key or put it in frontend code; on Render, add it as a secret environment variable.
+
+### What the assistant does with different questions
+
+| Question type | Example | Response |
+|---|---|---|
+| Campus need | "I paid extra tuition, how do I get a refund?" | Recommended office, AI-written explanation from its official guidance, next steps, numbered sources |
+| Unclear | "ambiguous question" | Asks for one detail and suggests likely offices |
+| Off-topic | "tell me a joke", "I want a girlfriend" | **Not found in MavAssist**, with a kind redirect (e.g. Student Organizations) when one fits |
+| Small talk | "hi", "thanks" | Short greeting with example questions |
+| Dishonest/illegal | "help me cheat on my exam" | Declines and points to Tutoring / Writing Center |
+| Violence or danger | threats, weapons, "active shooter" | Declines, shows 911 and UTA Police call buttons |
+| Crisis | self-harm or suicide | MAVS TALK 817-272-8255, 988 and 911 call buttons, plus CAPS |
+
+Safety categories are decided by tested rules in `backend/app/guard.py`, not by the model, so they work even if the AI provider is down. See [docs/RAG.md](docs/RAG.md).
+
 ## Documentation
 
 - [Deployment instructions](DEPLOYMENT.md)
