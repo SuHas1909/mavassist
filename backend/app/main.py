@@ -109,7 +109,7 @@ def service_json(s,db):
 
 @app.get('/health')
 def health(db: DB):
-    db.execute(text('SELECT 1'));return {'status':'ok','ai_mode':ai.MODE}
+    db.execute(text('SELECT 1'));return {'status':'ok','ai_mode':ai.MODE,'llm':bool(ai.API_KEY and ai.MODEL),'llm_model':ai.MODEL or None}
 @app.post('/api/auth/register',status_code=201)
 def register(body: Register,db: DB):
     if db.scalar(select(User).where(User.email==body.email)): raise HTTPException(409,'An account with this email already exists')
@@ -178,10 +178,12 @@ def chat(body: Question,db: DB,user: USER):
     result=ai.answer_question(db,clean,history)
     chosen=[s for s,_ in result['services']];reasons=[r for _,r in result.pop('services')];mode=result['mode']
     answer_id=str(uuid.uuid4())
-    db.add(ChatLog(id=answer_id,service_id=chosen[0].id if chosen else None,mode=mode))
-    if chosen: db.add(UsageEvent(kind='chat',category_id=chosen[0].category_id))
+    # Redirect answers (off-topic, small talk) suggest offices but never present one as "Go to".
+    suggest_only=mode in {'out_of_scope','greeting','boundary'}
+    db.add(ChatLog(id=answer_id,service_id=chosen[0].id if chosen and not suggest_only else None,mode=mode))
+    if chosen and not suggest_only: db.add(UsageEvent(kind='chat',category_id=chosen[0].category_id))
     save(db)
-    return result|{'answer_id':answer_id,'recommendations':[service_json(s,db)|{'reason':reason,'role':'recommended' if i==0 else 'alternative'} for i,(s,reason) in enumerate(zip(chosen,reasons))]}
+    return result|{'answer_id':answer_id,'recommendations':[service_json(s,db)|{'reason':reason,'role':'recommended' if i==0 and not suggest_only else 'alternative'} for i,(s,reason) in enumerate(zip(chosen,reasons))]}
 @app.post('/api/chat/{answer_id}/feedback')
 def feedback(answer_id: str,body: Feedback,db: DB,user: USER):
     entry=db.get(ChatLog,answer_id)

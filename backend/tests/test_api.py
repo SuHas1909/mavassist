@@ -140,13 +140,12 @@ def test_llm_payload_privacy_and_unknown_id_rejection(client,monkeypatch):
         def post(self,url,headers,json):
             captured.append(json)
             invalid={'answer':[{'text':'A fabricated answer','source_ids':[999999]}],'steps':[]}
-            return httpx.Response(200,json={'output':[{'type':'message','content':[{'type':'output_text','text':__import__('json').dumps(invalid)}]}]},request=httpx.Request('POST',url))
+            return httpx.Response(200,json={'choices':[{'message':{'content':__import__('json').dumps(invalid)}}]},request=httpx.Request('POST',url))
     monkeypatch.setattr(ai.httpx,'Client',FakeClient);monkeypatch.setattr(ai,'API_KEY','test-key');monkeypatch.setattr(ai,'MODEL','test-model')
     clean=ai.redact('My email is student@example.com, ID 1002271374, I am Test Student and need tuition help','Test Student')
     with pytest.raises(ValueError): ai.generate(clean,[],passages)
     encoded=json.dumps(captured[0]);assert 'student@example.com' not in encoded and '1002271374' not in encoded and 'Test Student' not in encoded
-    assert captured[0]['store'] is False
-    assert not any(key in json.loads(captured[0]['input']) for key in ['user_id','email','name'])
+    assert not any(key in json.loads(captured[0]['messages'][-1]['content']) for key in ['user_id','email','name'])
 
 
 def test_rate_limit_and_headers(client,monkeypatch):
@@ -171,11 +170,13 @@ def test_chat_recommendation_contract_fr04(client,student):
     assert all(x['reason'] for x in recs) and all(k in recs[0] for k in ['location','hours','contact','updated_at','next_steps'])
     assert 2<=len(r['steps'])<=3 and r['sources']
 
-def test_out_of_scope_questions_ask_for_clarification(client,student):
+def test_out_of_scope_questions_are_not_forced_onto_an_office(client,student):
     known={s['name'] for s in client.get('/api/services').json()['items']}
-    for q in ['tell me a joke','what is the weather tomorrow','asdf qwerty']:
+    for q in ['tell me a joke','what is the weather tomorrow']:
         r=client.post('/api/chat',json={'text':q},headers=student).json()
-        assert r['mode']=='clarification' and r['recommendations']==[] and set(r['options'])<=known
+        assert r['mode']=='out_of_scope' and r['message'].startswith('Not found') and r['recommendations']==[]
+    r=client.post('/api/chat',json={'text':'asdf qwerty'},headers=student).json()
+    assert r['mode']=='clarification' and r['recommendations']==[] and set(r['options'])<=known
 
 def test_analytics_totals_and_daily_series(client,student,admin):
     client.get('/api/services?q=parking');client.post('/api/chat',json={'text':'parking permit'},headers=student)

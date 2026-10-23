@@ -49,14 +49,14 @@ def test_valid_generated_answer_and_prompt_carries_context(client,student,monkey
         def __enter__(self): return self
         def __exit__(self,*args): pass
         def post(self,url,headers,json):
-            captured.append(json);context=__import__('json').loads(json['input']);sid=context['sources'][0]['source_id']
+            captured.append(json);context=__import__('json').loads(json['messages'][-1]['content']);sid=context['sources'][0]['source_id']
             result={'answer':[{'text':'Check whether your account has a credit balance; Student Accounts handles refund questions.','source_ids':[sid]}],'steps':[{'text':'Review the cited official guidance.','source_ids':[sid]}]}
-            return httpx.Response(200,json={'output':[{'type':'message','content':[{'type':'output_text','text':__import__('json').dumps(result)}]}]},request=httpx.Request('POST',url))
+            return httpx.Response(200,json={'choices':[{'message':{'content':__import__('json').dumps(result)}}]},request=httpx.Request('POST',url))
     monkeypatch.setattr(ai.httpx,'Client',FakeClient);monkeypatch.setattr(ai,'API_KEY','test');monkeypatch.setattr(ai,'MODEL','test-model')
     r=client.post('/api/chat',headers=student,json={'text':'How do I get it back?','history':[{'question':'I paid extra tuition and need a refund','answer':'Test Student 1002271374 student@example.com'}]}).json()
     assert r['mode']=='rag' and r['answer'][0]['text'].startswith('Check whether')
-    payload=json.loads(captured[0]['input']);assert payload['sources'] and payload['conversation_history']
-    assert all(x not in captured[0]['input'] for x in ['1002271374','student@example.com','Test Student'])
+    raw=captured[0]['messages'][-1]['content'];payload=json.loads(raw);assert payload['sources'] and payload['conversation_history']
+    assert all(x not in raw for x in ['1002271374','student@example.com','Test Student'])
     assert 'credit balance' in ' '.join(s['content'] for s in payload['sources']).lower()
 
 @pytest.mark.parametrize('result',[
@@ -71,7 +71,7 @@ def test_malformed_generation_rejected(client,monkeypatch,result):
         def __init__(self,**kw): pass
         def __enter__(self): return self
         def __exit__(self,*args): pass
-        def post(self,url,**kw): return httpx.Response(200,json={'output':[{'type':'message','content':[{'type':'output_text','text':json.dumps(result)}]}]},request=httpx.Request('POST',url))
+        def post(self,url,**kw): return httpx.Response(200,json={'choices':[{'message':{'content':json.dumps(result)}}]},request=httpx.Request('POST',url))
     monkeypatch.setattr(ai.httpx,'Client',FakeClient);monkeypatch.setattr(ai,'API_KEY','test');monkeypatch.setattr(ai,'MODEL','test')
     with pytest.raises(ValueError): ai.generate('tuition refund',[],passages)
 

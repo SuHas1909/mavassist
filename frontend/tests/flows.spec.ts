@@ -65,14 +65,17 @@ test('primary student pages: no serious or critical WCAG issues; responsive navi
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
 });
-test('assistant asks for clarification instead of guessing on out-of-scope questions',async({page})=>{
+test('assistant says not found instead of guessing on out-of-scope questions',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Create an account'}).click();
   await page.getByLabel('Full name').fill('Clarify Student');await page.getByLabel('Email address').fill(`clarify-${Date.now()}@example.com`);
   await page.getByLabel('Password',{exact:true}).fill('Clarify-pass123!');await page.getByRole('button',{name:'Create student account'}).click();
   await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name:'Ask MavAssist'}).click();
   await page.getByLabel('Your campus question').fill('tell me a joke');await page.getByRole('button',{name:'Send question'}).click();
-  await expect(page.getByText('Needs a detail')).toBeVisible();
+  await expect(page.getByText('Not found in MavAssist')).toBeVisible();
   await expect(page.getByRole('region',{name:'Recommended office'})).toHaveCount(0);
+  await page.getByLabel('Your campus question').fill('hi i want a girlfriend in uta');await page.getByRole('button',{name:'Send question'}).click();
+  await expect(page.locator('.conversation>article').last().getByText('Not found in MavAssist')).toBeVisible();
+  await expect(page.locator('.conversation>article').last().getByRole('region',{name:'Recommended office'})).toHaveCount(0);
 });
 test('admin: resource lifecycle, category and notice CRUD, analytics',async({page})=>{
   test.skip(!process.env.E2E_ADMIN_EMAIL||!process.env.E2E_ADMIN_PASSWORD,'Provision a test administrator and set E2E_ADMIN_EMAIL/PASSWORD');

@@ -409,4 +409,64 @@ td small{color:var(--slate);font-size:13px}
   .page-head h1{padding-left:16px}
   .row-actions{text-align:left}
 }
+/* ── Assistant motion & answer states (v2) ─────────
+   One orchestrated sequence per answer: the question slides in, the card rises, the orange route
+   line draws down the "Go to" slip, then paragraphs and steps follow in order. All of it is
+   switched off by the reduced-motion rule below. */
+:root{--ease-out:cubic-bezier(.2,.8,.2,1)}
+.question-bubble{animation:bubble-in .35s var(--ease-out) both}
+@keyframes bubble-in{from{opacity:0;transform:translateX(18px) scale(.97)}}
+.answer{animation:answer-in .45s var(--ease-out) .08s both}
+@keyframes answer-in{from{opacity:0;transform:translateY(12px)}}
+.mode{animation:fade .4s .25s both}
+@keyframes fade{from{opacity:0}}
+.slip{position:relative;border-left-color:var(--sky)}
+.slip::before{content:"";position:absolute;left:-8px;top:-2px;bottom:-2px;width:8px;background:var(--orange);border-radius:var(--radius) 0 0 var(--radius);transform-origin:top;animation:route-draw .6s .3s cubic-bezier(.6,0,.2,1) both}
+@keyframes route-draw{from{transform:scaleY(0)}}
+.slip-facts>div{animation:fade-up .35s var(--ease-out) both}
+.slip-facts>div:nth-child(1){animation-delay:.45s}.slip-facts>div:nth-child(2){animation-delay:.52s}.slip-facts>div:nth-child(3){animation-delay:.59s}.slip-facts>div:nth-child(4){animation-delay:.66s}
+.reveal{animation:fade-up .4s var(--ease-out) both;animation-delay:calc(.35s + var(--i,0) * 70ms)}
+@keyframes fade-up{from{opacity:0;transform:translateY(6px)}}
+.route-steps li.reveal::after{transform-origin:top;animation:route-draw .5s cubic-bezier(.6,0,.2,1) both;animation-delay:calc(.45s + var(--i,0) * 70ms)}
+.chat-empty .example,.answer .examples .example{animation:fade-up .35s var(--ease-out) both;animation-delay:calc(var(--i,0) * 45ms)}
+.example{transition:border-color .15s,box-shadow .15s,transform .15s}
+.example:hover{transform:translateY(-1px)}
+.example:active{transform:translateY(0) scale(.98)}
+.alternatives li{transition:border-color .15s,background .15s}
+.alternatives li:hover{border-color:var(--blue);background:#FAFCFE}
+
+/* Thinking indicator: three dots and a status line that advances while the answer is built. */
+.thinking .dots{display:inline-flex;gap:5px;width:auto;height:auto;background:none;border-radius:0;animation:none}
+.thinking .dots i{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:dot 1s infinite ease-in-out}
+.thinking .dots i:nth-child(2){animation-delay:.15s}.thinking .dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,80%,100%{transform:translateY(0);opacity:.35}40%{transform:translateY(-5px);opacity:1}}
+.thinking-text{width:auto;height:auto;border-radius:0;background:none;animation:fade-up .3s var(--ease-out) both}
+
+/* Composer: auto-growing field and a send button that answers the press. */
+.composer textarea{transition:border-color .15s,box-shadow .2s;overflow-y:hidden}
+.composer textarea:focus{box-shadow:0 0 0 4px rgba(0,100,177,.12),0 2px 8px rgba(0,30,60,.06)}
+.composer .btn svg{transition:transform .2s var(--ease-out)}
+.composer .btn:hover:not(:disabled) svg{transform:translateX(2px) rotate(-8deg)}
+.composer .btn:active:not(:disabled){transform:scale(.98)}
+.feedback .icon-btn{transition:background .15s,color .15s,transform .15s}
+.feedback .icon-btn:active:not(:disabled){transform:scale(.9)}
+
+/* Redirect answers (not found / small talk) and safety answers. */
+.mode-out_of_scope{background:var(--mist);color:var(--slate)}
+.mode-greeting{background:var(--ok-bg);color:var(--ok)}
+.mode-boundary{background:var(--warn-bg);color:var(--warn)}
+.mode-safety,.mode-crisis{background:var(--err-bg);color:var(--err)}
+.answer-safety,.answer-crisis{border-top:4px solid var(--err)}
+.urgent{background:var(--err-bg);border-radius:var(--radius);padding:16px 18px;margin-bottom:20px;animation:fade-up .4s var(--ease-out) .2s both}
+.urgent-message{font-weight:600;color:var(--ink);margin-bottom:12px;max-width:72ch}
+.urgent-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn-urgent{background:var(--err);color:#fff}
+.btn-urgent:hover{background:#86200F}
+.btn-urgent{animation:ring 1.6s .8s 2 ease-out}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(161,42,27,.45)}100%{box-shadow:0 0 0 12px rgba(161,42,27,0)}}
+.urgent-aside{border-left:4px solid var(--err)}
+.urgent-aside h2 svg{color:var(--err)}
+.urgent-aside a{font-weight:600;white-space:nowrap}
+@media (max-width:640px){.urgent-actions .btn{flex:1 1 100%}}
+
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

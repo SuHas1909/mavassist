@@ -16,6 +16,10 @@ services:
         sync: false
       - key: AI_MODE
         value: rag
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: openai/gpt-4o-mini
       - key: OPENAI_API_KEY
         sync: false
       - key: OPENAI_MODEL
