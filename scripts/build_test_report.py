@@ -354,8 +354,6 @@ def build_inventory(final):
                     'Pass' if p95 < 5 else 'Fail', rel(NOV10 / 'ai-eval-hosted-diagnostic-gpt-4o-mini.json'), '2026-11-10', ASHWINDER))
     # Tests without evidence
     for sid, typ, req, name, reason in (
-        ('USAB-001', 'Usability study', 'NFR-04', 'SUS score >= 70 with 10 or more students', 'Not run: usability study not yet conducted (owner: Krisha Patel); docs/usability-results.csv has no participant rows.'),
-        ('USAB-002', 'Usability study', 'NFR-04', 'Median time to find the right office <= 60 s', 'Not run: needs the same usability study sessions.'),
         ('LABEL-001', 'AI dataset review', 'FR-04', 'Independent review of the 150 evaluation labels', 'Not run: independent label review not yet recorded (owners: Harmanpreet Kaur / Suhas S); see docs/LABEL_REVIEW.md.'),
         ('STAGE-001', 'Deployment', 'NFR-02, NFR-05', 'Cloud staging deployment smoke test over HTTPS', 'Not run: the demo runs on the local Docker stack (see docs/SCOPE_CHANGES.md); decision owner: Ashwinder Singh.'),
         ('STAGE-002', 'Performance', 'NFR-01', '50-user load test on cloud staging', 'Not run: no staging deployment (see docs/SCOPE_CHANGES.md).'),
@@ -452,7 +450,7 @@ DEFECT_FIX = {  # commit(s) that fixed each defect (verified against git history
     'D-10': (['a8c1032', '0f0f407'], ['PERF-001']),  # errors under load; PERF-003 also had 0% errors but fails on latency (D-15)
     'D-11': (['73e1bc1'], ['DOCKER-001', 'DOCKER-002']),  # environment issue; 73e1bc1 holds the retest evidence
     'D-12': (['91414be', '72933dd'], ['AI-003', 'AI-004']),
-    'D-13': ([], ['USAB-001']),
+    'D-13': ([], []),  # deferred: usability study not run (site not hosted)
     'D-14': (['73e1bc1', '0f0f407'], ['FE-UNIT-001', 'FE-UNIT-002', 'FE-UNIT-003']),
     'D-15': (['03b3835'], ['AI-005', 'test_slow_provider_falls_back_to_cited_sources_within_the_limit']),
 }
@@ -499,7 +497,7 @@ def defect_rows(tests):
             t = by_id.get(v) or by_name.get(v)
             check(t is not None, f'{did}: verifying test {v} not found')
             ids.append(t['Test ID'])
-        state = 'Fixed' if kind == 'fixed' else 'Open'
+        state = 'Fixed' if kind == 'fixed' else ('Deferred' if status.startswith('Deferred') else 'Open')
         if state == 'Fixed':
             bad = [i for i in ids if by_id[i]['Status'] != 'Pass']
             check(not bad, f'{did} is marked fixed but its verifying tests did not pass: {bad}')
@@ -509,14 +507,16 @@ def defect_rows(tests):
         out.append({'ID': did, 'Severity': sev, 'Sprint found': sprint,
                     'Summary': re.sub(r'`', '', summary), 'Root cause': re.sub(r'`', '', cause), 'Fix': re.sub(r'`', '', fix),
                     'Fixing commit or PR': commit_text, 'Verified by': ', '.join(ids + visual), 'Status': state,
-                    'Story': story.split('/')[0].strip()})
+                    'Status detail': status, 'Story': story.split('/')[0].strip()})
     return out
 
 
 # Items that are not listed as test cases: future scope (agreed, see SCOPE_CHANGES.md) or known limitations (measured).
 FUTURE_SCOPE = {'STAGE-001': 'cloud deployment with HTTPS verification', 'STAGE-002': 'load test on a cloud deployment',
                 'XB-001': 'cloud cross-browser testing', 'AI-003': 'hosted-model accuracy evaluation at scale',
-                'AI-005': 'hosted-model latency tuning', 'USAB-001': 'larger usability study', 'USAB-002': 'larger usability study'}
+                'AI-005': 'hosted-model latency tuning'}
+# Requirement parts with no test case at all (nothing was run), stated in the reason and keeping the status Partial.
+NOT_RUN_PARTS = {'NFR-04': 'Usability/SUS study not run: the site is a local demo and is not hosted; it is future work once the site is deployed.'}
 LIMITATIONS = {'PERF-003': 'container stack misses the latency targets with semantic retrieval on CPU (local path meets them)',
                'LABEL-001': 'independent review of the evaluation labels not yet recorded'}
 
@@ -531,13 +531,14 @@ def traceability_rows(tests):
         check(not unknown, f'{req}: non-passing tests {unknown} are neither future scope nor a documented limitation')
         if not passed:
             status = 'Out of scope - future scope'
-        elif not others:
+        elif not others and req not in NOT_RUN_PARTS:
             status = 'Met'
         else:
             status = 'Partial'
         future = sorted({FUTURE_SCOPE[t['Test ID']] for t in others if t['Test ID'] in FUTURE_SCOPE})
         limits = [LIMITATIONS[t['Test ID']] for t in others if t['Test ID'] in LIMITATIONS]
-        reason = '; '.join(([f"Future scope: {', '.join(future)}"] if future else []) + [f'Known limitation: {l}' for l in limits])
+        reason = '; '.join(([f"Future scope: {', '.join(future)}"] if future else []) + [f'Known limitation: {l}' for l in limits]
+                           + ([NOT_RUN_PARTS[req]] if req in NOT_RUN_PARTS else []))
         if req == 'NFR-03':
             reason = 'Hosted answers send a redacted question plus public office context (clarification in REQUIREMENTS.md).'
         out.append({'Requirement': req, 'Description': title, 'Test IDs': ', '.join(t['Test ID'] for t in passed),
@@ -666,27 +667,20 @@ def crop_for_report(src, dst, max_ratio=1.0):
     return dst
 
 
-def sus_limitation_text():
-    """The usability status line from docs/SUS_STUDY.md, without the owner's name."""
-    m = re.search(r'^\*\*Status: (.+?)\*\*\s*(.+)$', read(ROOT / 'docs' / 'SUS_STUDY.md'), re.M)
-    check(m, 'docs/SUS_STUDY.md has no status line')
-    rest = re.sub(r'\s*Owner:.*$', '', m.group(2)).replace('`', '')
-    return f"{m.group(1).rstrip('.').capitalize()}. {rest}"
-
-
 def limitation_lines(raw):
     kp, ks, diag = raw['k6_postgres'], raw['k6_sqlite'], raw['eval']['diag']
     hosted = [r for r in diag['results'] if r['mode'] == 'rag']
     correct = sum(r['top1'] for r in hosted)
     return [
         ('Future scope', 'Cloud deployment with HTTPS verification, cloud cross-browser testing, hosted-model accuracy evaluation at scale, '
-                         'hosted-model latency tuning, and a larger usability study. Hosting was not required by the instructor.'),
+                         'hosted-model latency tuning, and a usability study. Hosting was not required by the instructor.'),
         ('Container stack, 50 users for 60 s', f"{kp['errors_pct']:g}% errors. Directory p95 {kp['non_ai_p95']:,} ms (target 1,000) and chat p95 "
                          f"{kp['chat_p95']:,} ms (target 5,000), measured with semantic retrieval running on CPU. The local path meets the targets "
                          f"(directory p95 {ks['non_ai_p95']:,} ms, chat p95 {ks['chat_p95']:,} ms)."),
         ('Hosted-model diagnostic sample', f"{len(hosted)} hosted answers, {'all' if correct == len(hosted) else correct} correct, "
                          f"p95 {diag['hosted_latency_s']['p95']} s."),
-        ('Usability study', sus_limitation_text()),
+        ('Usability study', 'A usability (SUS) study was not run because the site is a local demo and is not hosted. '
+                            'It is future work once the site is deployed.'),
     ]
 
 
@@ -751,10 +745,10 @@ def write_docx(path, data, final):
     para(doc, 'The medium finding (Content-Security-Policy without form-action, which has no fallback) was fixed in nginx.conf and vercel.json '
               'and re-scanned. Remaining low findings are documented in docs/SECURITY_SCAN.md.')
 
-    heading(doc, '7. Fixed defects')
-    table(doc, ['ID', 'Sev.', 'Sprint found', 'Summary', 'Fixing commit or PR', 'Verified by'],
-          [[d['ID'], d['Severity'], d['Sprint found'], d['Summary'][:110], d['Fixing commit or PR'], d['Verified by']] for d in defects],
-          widths=[.45, .55, .75, 2.6, 1.15, 1.5])
+    heading(doc, '7. Fixed and deferred defects')
+    table(doc, ['ID', 'Sev.', 'Sprint found', 'Summary', 'Status', 'Fixing commit or PR', 'Verified by'],
+          [[d['ID'], d['Severity'], d['Sprint found'], d['Summary'][:110], d['Status detail'], d['Fixing commit or PR'] or '-', d['Verified by'] or '-']
+           for d in defects], widths=[.45, .5, .7, 2.2, 1.0, 1.05, 1.1])
 
     heading(doc, '8. Scope and known limitations')
     for label, text in limitation_lines(raw):
@@ -825,6 +819,7 @@ def verify(xlsx, docx_path, data):
             break
         x_rows[r[0]] = [str(r[1]), str(r[2])]
     check(x_rows['Total'] == [str(len(listed))] * 2, f"xlsx Summary total {x_rows['Total']} != {len(listed)} listed cases")
+    check(len(listed) == sum(t['Status'] == 'Pass' for t in data['tests']), 'listed cases differ from the passes in the inventory')
     notes = [r[0] for r in sm.iter_rows(min_row=2, values_only=True) if r[0]]
     check(SUMMARY_NOTE in notes, 'Summary note missing')
     ai = wb['AI Routing Cases']
@@ -838,8 +833,9 @@ def verify(xlsx, docx_path, data):
     check(not any('date' in str(h).lower() or 'owner' in str(h).lower() for h in dh), f'Defects sheet has date/owner columns {dh}')
     drows = list(dfx.iter_rows(min_row=2, values_only=True))
     ids = [r[0] for r in drows]
-    check(ids == [d['ID'] for d in data['fixed_defects']] and all(r[dh.index('Status')] == 'Fixed' for r in drows),
-          'Defects sheet must list only the fixed defects')
+    check(ids == [d['ID'] for d in data['fixed_defects']] and all(str(r[dh.index('Status')]).startswith(('Fixed', 'Deferred')) for r in drows),
+          'Defects sheet must list only the fixed and deferred defects')
+    check([r[0] for r in drows if str(r[dh.index('Status')]).startswith('Deferred')] == ['D-13'], 'D-13 must be the only deferred defect')
     tr = list(wb['Traceability'].iter_rows(min_row=2, values_only=True))
     check([r[0] for r in tr] == list(REQUIREMENTS), 'Traceability must list every FR and NFR')
     check({r[4] for r in tr} <= {'Met', 'Partial', 'Out of scope - future scope'}, 'unexpected traceability status')
@@ -856,7 +852,9 @@ def verify(xlsx, docx_path, data):
     check([r.cells[0].text for r in dt_.rows[1:]] == ids, 'docx defect table differs from the Defects sheet')
     body = ' '.join(p.text for p in d.paragraphs) + ' '.join(c.text for t in d.tables for r in t.rows for c in r.cells)
     check(not any(n in body for n in PERSON_NAMES), 'report mentions a person')
-    return {'Total': len(listed), 'Pass': len(listed)}
+    run = [t for t in data['tests'] if t['Status'] in ('Pass', 'Fail')]
+    check(not any(t['Test ID'].startswith('USAB') or 'SUS' in t['Test Name'] for t in data['tests']), 'usability cases must not be in the inventory')
+    return {'Run': len(run), 'Passed': sum(t['Status'] == 'Pass' for t in run), 'Listed': len(listed)}
 
 
 def main():
@@ -873,14 +871,15 @@ def main():
     routing = routing_rows()
     defects = defect_rows(tests)
     data = {'tests': tests, 'listed': listed, 'raw': raw, 'routing': routing, 'routing_stats': routing_stats(routing),
-            'summary': summary_rows(listed), 'fixed_defects': [d for d in defects if d['Status'] == 'Fixed'],
+            'summary': summary_rows(listed), 'fixed_defects': [d for d in defects if d['Status'] in ('Fixed', 'Deferred')],
             'trace': traceability_rows(tests)}
     blank = {'Test Type': None, 'Total': None, 'Pass': None}
     summary_sheet = data['summary'] + [blank, {**blank, 'Test Type': SUMMARY_NOTE}]
     summary_sheet += [{**blank, 'Test Type': f"Offline routing, {r['Set']}: {r['Questions']} questions, top-1 {r['Top-1']}, "
                                              f"top-3 {r['Top-3']}; not top-1: {r['Not top-1']}, not top-3: {r['Not top-3']}"}
                       for r in data['routing_stats']]
-    fixed_sheet = [{k: v for k, v in d.items() if k != 'Story'} for d in data['fixed_defects']]
+    fixed_sheet = [{**{k: v for k, v in d.items() if k not in ('Story', 'Status detail')}, 'Status': d['Status detail']}
+                   for d in data['fixed_defects']]
     xlsx, docx_path = FINAL / XLSX_NAME, FINAL / DOCX_NAME
     write_xlsx(xlsx, {'All Test Cases': listed, 'AI Routing Cases': routing, 'Summary': summary_sheet,
                       'Defects': fixed_sheet, 'Traceability': data['trace']})
