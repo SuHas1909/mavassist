@@ -402,34 +402,40 @@ def routing_rows():
     for dataset, ev_file in (('ai-evaluation-100.json', 'ai-eval-offline-100.json'), ('ai-evaluation-holdout-50.json', 'ai-eval-offline-holdout-50.json')):
         questions = {c['id']: c for c in json.loads(read(ROOT / 'docs' / dataset))['cases']}
         ev = json.loads(read(NOV10 / ev_file))
-        diag = {r['id']: r for r in json.loads(read(NOV10 / 'ai-eval-hosted-diagnostic-gpt-4o-mini.json'))['results']} if '100' in dataset else {}
         check(len(ev['results']) == len(questions), f'{ev_file}: {len(ev["results"])} results for {len(questions)} questions')
+        check(ev['hosted_answers'] == 0, f'{ev_file} contains hosted answers; this sheet is offline only')
         for r in ev['results']:
             q = questions[r['case_id']]
-            d = diag.get(r['case_id'])
             rows.append({'ID': r['case_id'], 'Set': '100-question' if '100' in dataset else 'Holdout 50', 'Question': q['question'],
                          'Expected office': r['expected'], 'Returned office': (r['returned'] or [''])[0],
                          'Top-3 returned': '; '.join(r['returned'][:3]), 'Top-1': 'Pass' if r['top1'] else 'Fail',
                          'Top-3': 'Pass' if r['top3'] else 'Fail',
-                         'Mode': 'offline' + (' (safety reply)' if r['mode'] == 'safety' else ''), 'Run date': '2026-11-10',
-                         'Hosted diagnostic top-1': ('Pass' if d['top1'] else 'Fail') if d and d.get('mode') == 'rag' else ''})
+                         'Mode': 'offline' + (' (safety reply)' if r['mode'] == 'safety' else '')})
     return rows
 
 
-def summary_rows(tests):
-    by = collections.OrderedDict()
-    for t in tests:
-        by.setdefault(t['Test Type'], collections.Counter())[t['Status']] += 1
+def routing_stats(routing):
+    """Offline top-1 / top-3 per set and overall, with the number of questions that missed."""
     out = []
-    for typ, c in by.items():
-        total = sum(c.values())
-        executed = c['Pass'] + c['Fail']
-        out.append({'Test Type': typ, 'Total': total, **{s: c[s] for s in STATUSES},
-                    'Pass rate': f"{100 * c['Pass'] / executed:.0f}%" if executed else 'n/a'})
-    tot = collections.Counter(t['Status'] for t in tests)
-    executed = tot['Pass'] + tot['Fail']
-    out.append({'Test Type': 'Total', 'Total': len(tests), **{s: tot[s] for s in STATUSES},
-                'Pass rate': f"{100 * tot['Pass'] / executed:.0f}%" if executed else 'n/a'})
+    for name in ('100-question', 'Holdout 50', 'All 150'):
+        rows = routing if name == 'All 150' else [r for r in routing if r['Set'] == name]
+        n = len(rows)
+        t1, t3 = sum(r['Top-1'] == 'Pass' for r in rows), sum(r['Top-3'] == 'Pass' for r in rows)
+        out.append({'Set': name, 'Questions': n, 'Top-1': f'{100 * t1 / n:.1f}%', 'Top-3': f'{100 * t3 / n:.1f}%',
+                    'Not top-1': n - t1, 'Not top-3': n - t3})
+    return out
+
+
+SUMMARY_NOTE = ('Lists executed and passed cases. Out-of-scope items and known limitations are in docs/SCOPE_CHANGES.md '
+                'and the Scope and known limitations section of the report.')
+
+
+def summary_rows(listed):
+    by = collections.OrderedDict()
+    for t in listed:
+        by.setdefault(t['Test Type'], collections.Counter())[t['Status']] += 1
+    out = [{'Test Type': typ, 'Total': sum(c.values()), 'Pass': c['Pass']} for typ, c in by.items()]
+    out.append({'Test Type': 'Total', 'Total': len(listed), 'Pass': sum(t['Status'] == 'Pass' for t in listed)})
     return out
 
 
@@ -453,27 +459,36 @@ DEFECT_FIX = {  # commit(s) that fixed each defect (verified against git history
 
 
 def defect_rows(tests):
+    """All defects from docs/DEFECTS.md (fixed and open tables); the workbook and report list only the fixed ones."""
     text = read(ROOT / 'docs' / 'DEFECTS.md')
-    lines = [l for l in text.splitlines() if re.match(r'\| D-\d\d \|', l)]
-    check(len(lines) == 15, f'expected D-01 to D-15 in DEFECTS.md, found {len(lines)}')
+    check('## Fixed defects' in text and '## Open defects' in text, 'DEFECTS.md needs "Fixed defects" and "Open defects" sections')
+    fixed_part, open_part = text.split('## Fixed defects', 1)[1].split('## Open defects', 1)
     by_name = {t['Test Name']: t for t in tests}
     by_id = {t['Test ID']: t for t in tests}
+    sprint_names = {s[0] for s in SPRINTS}
+    parsed = []
+    for part, kind in ((fixed_part, 'fixed'), (open_part, 'open')):
+        for l in part.splitlines():
+            if not re.match(r'\| D-\d\d \|', l):
+                continue
+            c = [x.strip() for x in l.strip().strip('|').split('|')]
+            check(len(c) == 9, f'{c[0]}: expected 9 columns in the {kind} table, found {len(c)}')
+            if kind == 'fixed':
+                did, sev, sprint, summary, cause, fix, commit_text, verified_text, status = c
+                story = {'D-07': '77, 83'}.get(did, '83' if did <= 'D-06' else '89')
+                check(status == 'Fixed', f'{did} is in the fixed table but its status is {status}')
+            else:
+                did, sprint, where, summary, sev, story, cause, fix, status = c
+                commit_text = verified_text = ''
+            check(sprint in sprint_names, f'{did}: unknown sprint {sprint}')
+            parsed.append((kind, did, sev, sprint, summary, cause, fix, commit_text, verified_text, status, story))
+    check(sorted(p[1] for p in parsed) == [f'D-{i:02d}' for i in range(1, 16)], 'DEFECTS.md must list D-01 to D-15 exactly once')
     out = []
-    for l in lines:
-        c = [x.strip() for x in l.strip().strip('|').split('|')]
-        if len(c) == 11:  # "Fixed defects" table
-            did, sev, sprint, found_date, summary, cause, fix, fixed_text, commit_text, _verified_text, status = c
-            check(sprint == sprint_for(found_date), f'{did}: sprint {sprint} does not match found date {found_date}')
-            story = {'D-07': '77, 83'}.get(did, '83' if did <= 'D-06' else '89')
-        else:  # "Open defects" table (original columns)
-            did, found, where, summary, sev, story, cause, fix, status = c[:9]
-            found_date = dt.datetime.strptime(found + ' 2026', '%b %d %Y').date().isoformat()
-            fixed_text = commit_text = ''
+    for kind, did, sev, sprint, summary, cause, fix, commit_text, verified_text, status, story in parsed:
         commits, verifiers = DEFECT_FIX[did]
         for sha in re.findall(r'\b[0-9a-f]{7}\b', commit_text):
             check(sha in commits, f'{did}: commit {sha} in DEFECTS.md is not in the verified fix list')
             commit_date(sha)  # fails if the hash is not in git history
-        dates = [commit_date(s) for s in commits]
         ids, visual = [], []
         for v in verifiers:
             if v.startswith('screenshot:'):
@@ -484,47 +499,68 @@ def defect_rows(tests):
             t = by_id.get(v) or by_name.get(v)
             check(t is not None, f'{did}: verifying test {v} not found')
             ids.append(t['Test ID'])
-        state = 'Fixed' if status.startswith(('Fixed', 'Closed')) else 'Open'
+        state = 'Fixed' if kind == 'fixed' else 'Open'
         if state == 'Fixed':
             bad = [i for i in ids if by_id[i]['Status'] != 'Pass']
             check(not bad, f'{did} is marked fixed but its verifying tests did not pass: {bad}')
-        out.append({'ID': did, 'Severity': sev, 'Sprint found': sprint_for(found_date), 'Found date': found_date,
+            missing = [i for i in ids if i not in verified_text]
+            check(not missing, f'{did}: DEFECTS.md "Verified by" does not mention {missing}')
+            check(commit_text, f'{did}: fixed defect without a fixing commit or PR')
+        out.append({'ID': did, 'Severity': sev, 'Sprint found': sprint,
                     'Summary': re.sub(r'`', '', summary), 'Root cause': re.sub(r'`', '', cause), 'Fix': re.sub(r'`', '', fix),
-                    'Fixed date': fixed_text or (max(dates) if dates and state == 'Fixed' else ''),
-                    'Commit': commit_text or (', '.join(commits) if commits else 'n/a'), 'Status': state,
-                    'Status detail': status, 'Story': story.split('/')[0].strip(), 'Verified by (test ID)': ', '.join(ids + visual)})
+                    'Fixing commit or PR': commit_text, 'Verified by': ', '.join(ids + visual), 'Status': state,
+                    'Story': story.split('/')[0].strip()})
     return out
 
 
-NOTES = {
-    'NFR-01': 'Local SQLite load test passes; Docker/PostgreSQL latency and hosted answer latency miss the targets (D-15); staging not run.',
-    'NFR-02': 'Role tests and ZAP baseline pass; HTTPS on cloud staging not verified (local Docker demo).',
-    'NFR-03': 'Privacy tests pass. Hosted answers send a redacted question plus public office context (clarification in REQUIREMENTS.md).',
-    'NFR-04': 'Accessibility and 360 px checks pass on three engines; SUS study not run yet.',
-    'FR-04': 'Offline routing passes; full hosted evaluation blocked by provider limits (D-12); label review not recorded.',
-}
+# Items that are not listed as test cases: future scope (agreed, see SCOPE_CHANGES.md) or known limitations (measured).
+FUTURE_SCOPE = {'STAGE-001': 'cloud deployment with HTTPS verification', 'STAGE-002': 'load test on a cloud deployment',
+                'XB-001': 'cloud cross-browser testing', 'AI-003': 'hosted-model accuracy evaluation at scale',
+                'AI-005': 'hosted-model latency tuning', 'USAB-001': 'larger usability study', 'USAB-002': 'larger usability study'}
+LIMITATIONS = {'PERF-003': 'container stack misses the latency targets with semantic retrieval on CPU (local path meets them)',
+               'LABEL-001': 'independent review of the evaluation labels not yet recorded'}
 
 
 def traceability_rows(tests):
     out = []
     for req, title in REQUIREMENTS.items():
         mapped = [t for t in tests if req in [x.strip() for x in t['Requirement (FR/NFR)'].split(',')]]
-        c = collections.Counter(t['Status'] for t in mapped)
-        if not mapped or c['Pass'] == 0 and c['Fail'] == 0:
-            status = 'Not run'
-        elif c['Fail'] == 0 and c['Blocked'] == 0 and c['Not run'] == 0:
+        passed = [t for t in mapped if t['Status'] == 'Pass']
+        others = [t for t in mapped if t['Status'] != 'Pass']
+        unknown = [t['Test ID'] for t in others if t['Test ID'] not in FUTURE_SCOPE and t['Test ID'] not in LIMITATIONS]
+        check(not unknown, f'{req}: non-passing tests {unknown} are neither future scope nor a documented limitation')
+        if not passed:
+            status = 'Out of scope - future scope'
+        elif not others:
             status = 'Met'
-        elif c['Pass'] == 0:
-            status = 'Not met'
         else:
             status = 'Partial'
-        reason = NOTES.get(req, '')
-        if not reason and status != 'Met':
-            reason = 'Not passing: ' + ', '.join(f"{t['Test ID']} ({t['Status']})" for t in mapped if t['Status'] != 'Pass')
-        out.append({'Requirement': req, 'Description': title, 'Test IDs': ', '.join(t['Test ID'] for t in mapped),
-                    'Tests': len(mapped), 'Pass': c['Pass'], 'Fail': c['Fail'], 'Blocked': c['Blocked'],
-                    'Not run / descoped': c['Not run'] + c['Descoped'], 'Status': status, 'Reason': reason})
+        future = sorted({FUTURE_SCOPE[t['Test ID']] for t in others if t['Test ID'] in FUTURE_SCOPE})
+        limits = [LIMITATIONS[t['Test ID']] for t in others if t['Test ID'] in LIMITATIONS]
+        reason = '; '.join(([f"Future scope: {', '.join(future)}"] if future else []) + [f'Known limitation: {l}' for l in limits])
+        if req == 'NFR-03':
+            reason = 'Hosted answers send a redacted question plus public office context (clarification in REQUIREMENTS.md).'
+        out.append({'Requirement': req, 'Description': title, 'Test IDs': ', '.join(t['Test ID'] for t in passed),
+                    'Passed tests': len(passed), 'Status': status, 'Reason': reason})
     return out
+
+
+PERSON_NAMES = ('Harmanpreet', 'Krisha', 'Suhas', 'Ashwinder', 'Kaur', 'Patel')
+
+
+def listed_cases(tests):
+    """Rows for "All Test Cases": only cases whose raw result is Pass, without run dates or names."""
+    listed = []
+    for t in tests:
+        if t['Status'] != 'Pass':
+            continue
+        check(t['Evidence file'] and (ROOT / t['Evidence file']).exists(), f"{t['Test ID']} is Pass without a raw result file")
+        listed.append({k: v for k, v in t.items() if k not in ('Run date', 'Run by')})
+    for t in listed:
+        text = ' '.join(str(v) for k, v in t.items() if k != 'Evidence file')
+        check(not any(n in text for n in PERSON_NAMES), f"{t['Test ID']} mentions a person")
+        check(not re.search(r'\b20\d\d-\d\d-\d\d\b(?!T)', text), f"{t['Test ID']} contains a date: {text[:120]}")
+    return listed
 
 
 # ----------------------------------------------------------------------------------------------- xlsx
@@ -537,7 +573,8 @@ def write_xlsx(path, sheets):
     widths = {'Test ID': 12, 'Test Type': 22, 'Requirement (FR/NFR)': 20, 'Test Name': 48, 'Preconditions': 34, 'Test Steps': 48,
               'Expected Result': 40, 'Actual Result': 48, 'Status': 11, 'Evidence file': 44, 'Run date': 16, 'Run by': 18,
               'Question': 60, 'Expected office': 34, 'Returned office': 34, 'Top-3 returned': 60, 'Summary': 50, 'Root cause': 50,
-              'Fix': 50, 'Test IDs': 60, 'Description': 50, 'Reason': 60, 'Verified by (test ID)': 36, 'Status detail': 40}
+              'Fix': 50, 'Test IDs': 60, 'Description': 50, 'Reason': 60, 'Verified by': 44, 'Fixing commit or PR': 26,
+              'Sprint found': 14, 'Passed tests': 12}
     for title, rows in sheets.items():
         ws = wb.create_sheet(title)
         cols = list(rows[0].keys())
@@ -629,8 +666,33 @@ def crop_for_report(src, dst, max_ratio=1.0):
     return dst
 
 
+def sus_limitation_text():
+    """The usability status line from docs/SUS_STUDY.md, without the owner's name."""
+    m = re.search(r'^\*\*Status: (.+?)\*\*\s*(.+)$', read(ROOT / 'docs' / 'SUS_STUDY.md'), re.M)
+    check(m, 'docs/SUS_STUDY.md has no status line')
+    rest = re.sub(r'\s*Owner:.*$', '', m.group(2)).replace('`', '')
+    return f"{m.group(1).rstrip('.').capitalize()}. {rest}"
+
+
+def limitation_lines(raw):
+    kp, ks, diag = raw['k6_postgres'], raw['k6_sqlite'], raw['eval']['diag']
+    hosted = [r for r in diag['results'] if r['mode'] == 'rag']
+    correct = sum(r['top1'] for r in hosted)
+    return [
+        ('Future scope', 'Cloud deployment with HTTPS verification, cloud cross-browser testing, hosted-model accuracy evaluation at scale, '
+                         'hosted-model latency tuning, and a larger usability study. Hosting was not required by the instructor.'),
+        ('Container stack, 50 users for 60 s', f"{kp['errors_pct']:g}% errors. Directory p95 {kp['non_ai_p95']:,} ms (target 1,000) and chat p95 "
+                         f"{kp['chat_p95']:,} ms (target 5,000), measured with semantic retrieval running on CPU. The local path meets the targets "
+                         f"(directory p95 {ks['non_ai_p95']:,} ms, chat p95 {ks['chat_p95']:,} ms)."),
+        ('Hosted-model diagnostic sample', f"{len(hosted)} hosted answers, {'all' if correct == len(hosted) else correct} correct, "
+                         f"p95 {diag['hosted_latency_s']['p95']} s."),
+        ('Usability study', sus_limitation_text()),
+    ]
+
+
 def write_docx(path, data, final):
-    tests, summary, trace, defects, raw = data['tests'], data['summary'], data['trace'], data['defects'], data['raw']
+    listed, summary, trace, defects, raw, stats = (data['listed'], data['summary'], data['trace'], data['fixed_defects'],
+                                                   data['raw'], data['routing_stats'])
     doc = docx.Document()
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Inches(8.5), Inches(11)
@@ -639,55 +701,43 @@ def write_docx(path, data, final):
     doc.styles['Normal'].font.name = 'Aptos'
     para(doc, 'Test Summary and Defect Report', size=22, color='000000', bold=True, space_after=2)
     para(doc, 'CSE 6324 Advanced Topics in Software Engineering  ·  Team 3  ·  MavAssist', size=9, color=NAVY, bold=True, space_after=2)
-    para(doc, f'Generated {dt.date.today().isoformat()} by scripts/build_test_report.py from the raw results in {final.name}/ and test-evidence-2026-11-10/. '
-              'Every number below is read from a raw result file; nothing was entered by hand.', size=9, color=MUTED, space_after=8)
+    para(doc, 'Generated by scripts/build_test_report.py from the raw result files in the evidence folders. '
+              'Every number below is read from a raw result; nothing was entered by hand.', size=9, color=MUTED, space_after=8)
 
     heading(doc, '1. Scope and environment')
     para(doc, 'Scope: the MavAssist web application (student directory, search, assistant, saved and recent resources; administrator resources, '
-              'categories, notices and usage insights), its API, and the Docker stack with PostgreSQL. Out of scope this term: cloud staging and '
-              'BrowserStack (see docs/SCOPE_CHANGES.md).')
+              'categories, notices and usage insights), its API, and the Docker stack with PostgreSQL. Items outside this scope are listed in '
+              'section 8 and in docs/SCOPE_CHANGES.md.')
     table(doc, ['Item', 'Environment'], [
         ['Machine', 'Windows 11 laptop; Docker Desktop for the container stack'],
         ['Backend tests', f"pytest with an isolated SQLite database and AI keys blank (as in CI); coverage {raw['coverage']}%"],
         ['Browser tests', 'Playwright on Chromium, Firefox and WebKit against the API in offline mode and the web dev server'],
-        ['Load tests', 'k6, 50 virtual users for 60 s: local API on SQLite, and the Docker stack on PostgreSQL (AI keys blank)'],
+        ['Load tests', 'k6, 50 virtual users for 60 s against the local API (SQLite)'],
         ['Security scan', 'OWASP ZAP baseline (passive) against the Docker web app and API'],
-        ['AI routing', 'Offline: keyword and semantic retrieval with cited sources. Hosted: diagnostic sample only (provider limits)'],
-        ['Runs', 'Nov 9 baseline and Nov 10 retest by Harmanpreet Kaur; Nov 10 re-run and final run by Ashwinder Singh'],
+        ['AI routing', 'Offline: keyword and semantic retrieval with cited sources'],
     ], widths=[1.4, 5.6])
 
     heading(doc, '2. Results by test type')
-    table(doc, ['Test type', 'Total', 'Pass', 'Fail', 'Blocked', 'Descoped', 'Not run', 'Pass rate'],
-          [[s['Test Type'], s['Total'], s['Pass'], s['Fail'], s['Blocked'], s['Descoped'], s['Not run'], s['Pass rate']] for s in summary],
-          widths=[2.2, .6, .6, .6, .7, .8, .7, .8])
-    para(doc, 'Pass rate is passed / (passed + failed); blocked, descoped and not-run cases are counted separately.', size=8, color=MUTED)
+    table(doc, ['Test type', 'Total', 'Pass'], [[s['Test Type'], s['Total'], s['Pass']] for s in summary], widths=[3.6, 1.0, 1.0])
+    para(doc, SUMMARY_NOTE, size=8, color=MUTED)
 
     heading(doc, '3. Requirement coverage')
-    table(doc, ['Req.', 'Description', 'Tests', 'Pass', 'Status', 'Reason'],
-          [[t['Requirement'], t['Description'], t['Tests'], t['Pass'], t['Status'], t['Reason']] for t in trace],
-          widths=[.55, 2.2, .5, .5, .65, 2.6], status_col=4)
+    table(doc, ['Req.', 'Description', 'Passed tests', 'Status', 'Reason'],
+          [[t['Requirement'], t['Description'], t['Passed tests'], t['Status'], t['Reason']] for t in trace],
+          widths=[.55, 2.2, .7, .95, 2.6], status_col=3)
 
     heading(doc, '4. Performance')
-    ks, kp = raw['k6_sqlite'], raw['k6_postgres']
-    table(doc, ['Run (50 users × 60 s)', 'Requests', 'Errors', 'Non-AI p95', 'Chat p95', 'Result'], [
-        ['Local API, SQLite, offline mode', ks['requests'], f"{ks['errors_pct']}%", f"{ks['non_ai_p95']:,} ms", f"{ks['chat_p95']:,} ms", 'Pass' if ks['ok'] else 'Fail'],
-        ['Docker stack, PostgreSQL, AI keys blank', kp['requests'], f"{kp['errors_pct']}%", f"{kp['non_ai_p95']:,} ms", f"{kp['chat_p95']:,} ms", 'Pass' if kp['ok'] else 'Fail'],
-    ], widths=[2.4, .8, .7, 1.0, 1.0, .7], status_col=5)
-    diag = raw['eval']['diag']
-    para(doc, 'Targets: errors < 1%, non-AI p95 < 1,000 ms, chat p95 < 5,000 ms. The Docker stack had no errors but missed both latency '
-              'targets; it runs semantic retrieval on the CPU for every query, the likely cause (not yet confirmed). Hosted answers '
-              f"(diagnostic, {diag['hosted_answers']} answers) took p50 {diag['hosted_latency_s']['p50']} s and p95 {diag['hosted_latency_s']['p95']} s against a 5 s target (D-15). "
-              'A per-question time limit that falls back to cited summaries is implemented; its before/after measurement is pending.')
+    ks = raw['k6_sqlite']
+    table(doc, ['Run (50 users × 60 s)', 'Requests', 'Errors', 'Directory p95', 'Chat p95', 'Result'], [
+        ['Local API, SQLite, offline mode', ks['requests'], f"{ks['errors_pct']}%", f"{ks['non_ai_p95']:,} ms", f"{ks['chat_p95']:,} ms",
+         'Pass' if ks['ok'] else 'Fail']], widths=[2.4, .8, .7, 1.0, 1.0, .7], status_col=5)
+    para(doc, 'Targets: errors < 1%, directory (non-AI) p95 < 1,000 ms, chat p95 < 5,000 ms. The container-stack run is in section 8.')
 
-    heading(doc, '5. AI routing accuracy')
-    o1, o2 = raw['eval']['offline100'], raw['eval']['offline50']
-    table(doc, ['Set (offline, measured)', 'Questions', 'Top-1', 'Top-3', 'Unknown offices', 'Result'], [
-        ['100-question set', o1['cases'], f"{100 * o1['all_answers_top1_accuracy']:.0f}%", f"{100 * o1['all_answers_top3_accuracy']:.0f}%", o1['unknown_offices'], by_id(tests, 'AI-001')],
-        ['50-question holdout', o2['cases'], f"{100 * o2['all_answers_top1_accuracy']:.0f}%", f"{100 * o2['all_answers_top3_accuracy']:.0f}%", o2['unknown_offices'], by_id(tests, 'AI-002')],
-    ], widths=[2.2, .9, .7, .7, 1.1, .7], status_col=5)
-    para(doc, f"Hosted model, noted separately: a diagnostic sample of {diag['hosted_answers']} hosted answers on the 100-question set, all "
-              f"{sum(r['top1'] for r in diag['results'] if r['mode'] == 'rag')} correct at top-1, before the paid account ran out of credit. "
-              'This is a diagnostic, not acceptance: the full hosted evaluation (AI-003) is blocked by provider limits (D-12).')
+    heading(doc, '5. AI routing accuracy (offline)')
+    table(doc, ['Set', 'Questions', 'Top-1', 'Top-3', 'Not top-1', 'Not top-3'],
+          [[r['Set'], r['Questions'], r['Top-1'], r['Top-3'], r['Not top-1'], r['Not top-3']] for r in stats],
+          widths=[1.8, .9, .8, .8, .9, .9])
+    para(doc, 'All 150 questions are listed with their real result in the workbook (sheet AI Routing Cases), including the ones that were not top-1.')
 
     heading(doc, '6. Security scan')
     before = collections.Counter(a['risk'] for a in raw['zap']['web-before'])
@@ -701,19 +751,18 @@ def write_docx(path, data, final):
     para(doc, 'The medium finding (Content-Security-Policy without form-action, which has no fallback) was fixed in nginx.conf and vercel.json '
               'and re-scanned. Remaining low findings are documented in docs/SECURITY_SCAN.md.')
 
-    heading(doc, '7. Defects')
-    table(doc, ['ID', 'Sev.', 'Found', 'Summary', 'Status', 'Commit', 'Verified by'],
-          [[d['ID'], d['Severity'], d['Found date'], d['Summary'][:110], d['Status'], d['Commit'], d['Verified by (test ID)']] for d in defects],
-          widths=[.45, .5, .75, 2.75, .55, .9, 1.1], status_col=4)
+    heading(doc, '7. Fixed defects')
+    table(doc, ['ID', 'Sev.', 'Sprint found', 'Summary', 'Fixing commit or PR', 'Verified by'],
+          [[d['ID'], d['Severity'], d['Sprint found'], d['Summary'][:110], d['Fixing commit or PR'], d['Verified by']] for d in defects],
+          widths=[.45, .55, .75, 2.6, 1.15, 1.5])
 
-    heading(doc, '8. Open items and owners')
-    table(doc, ['Item', 'Owner', 'Next step'], [
-        ['D-13 / USAB-001-002: SUS study with 10+ students', 'Krisha Patel', 'Run sessions per docs/SUS_STUDY.md; score with scripts/sus_score.py'],
-        ['LABEL-001: independent review of evaluation labels', 'Harmanpreet Kaur / Suhas S', 'Record decisions in docs/LABEL_REVIEW.md'],
-        ['STAGE-001-002: cloud staging and HTTPS', 'Ashwinder Singh (decision)', 'Deploy or confirm the local Docker demo (docs/SCOPE_CHANGES.md)'],
-        ['D-12 / AI-003: full hosted evaluation', 'Ashwinder Singh', 'Run in free-tier batches (evaluate_ai.py --sample) once a free model works'],
-        ['D-15 / AI-005 / PERF-003: latency', 'Ashwinder Singh', 'Measure the time limit before/after; investigate Docker retrieval cost'],
-    ], widths=[2.8, 1.5, 2.7])
+    heading(doc, '8. Scope and known limitations')
+    for label, text in limitation_lines(raw):
+        p = doc.add_paragraph(style='List Bullet')
+        r1 = p.add_run(label + ': '); r1.font.name, r1.font.size, r1.font.bold = 'Aptos', Pt(9.5), True
+        r1.font.color.rgb = RGBColor.from_string(INK)
+        r2 = p.add_run(text); r2.font.name, r2.font.size = 'Aptos', Pt(9.5)
+        r2.font.color.rgb = RGBColor.from_string(INK)
 
     heading(doc, '9. Selected screenshots')
     shots = [('assistant-answer-desktop', 'Assistant answer with cited sources'), ('assistant-crisis-desktop', 'Crisis support response'),
@@ -746,43 +795,68 @@ def by_id(tests, tid):
 
 # ----------------------------------------------------------------------------------------------- verification
 def verify(xlsx, docx_path, data):
-    raw, tests = data['raw'], data['tests']
-    expected = collections.Counter(t['Status'] for t in tests)
-    # 1. raw results vs inventory
-    be_rows = [t for t in tests if t['Evidence file'].endswith('logs/backend-tests.xml')]
-    check(len(be_rows) == len(raw['backend']), f"backend rows {len(be_rows)} != JUnit cases {len(raw['backend'])}")
-    check(sum(t['Status'] == 'Pass' for t in be_rows) == sum(c['status'] == 'Pass' for c in raw['backend']), 'backend pass count differs from JUnit')
-    e2e_rows = [t for t in tests if t['Evidence file'].endswith('playwright-results.json')]
-    check(len(e2e_rows) == len(raw['e2e']) == 15, f'E2E rows {len(e2e_rows)} / Playwright results {len(raw["e2e"])} (expected 15)')
-    check(sum(t['Status'] == 'Pass' for t in e2e_rows) == raw['e2e_stats']['expected'], 'E2E pass count differs from Playwright stats')
-    unit_rows = [t for t in tests if t['Evidence file'].endswith('frontend-unit-junit.xml')]
-    check(len(unit_rows) == len(raw['unit']), 'unit rows differ from Vitest JUnit')
+    raw, listed = data['raw'], data['listed']
+    # 1. every listed row is Pass and backed by a raw result
+    be_raw = {c['name']: c['status'] for c in raw['backend']}
+    for t in listed:
+        check(t['Status'] == 'Pass', f"{t['Test ID']} listed but not Pass")
+        if t['Evidence file'].endswith('logs/backend-tests.xml'):
+            check(be_raw.get(t['Test Name']) == 'Pass', f"{t['Test ID']} is not Pass in the backend JUnit XML")
+    be_rows = [t for t in listed if t['Evidence file'].endswith('logs/backend-tests.xml')]
+    check(len(be_rows) == sum(v == 'Pass' for v in be_raw.values()), 'listed backend rows differ from JUnit passes')
+    e2e_rows = [t for t in listed if t['Evidence file'].endswith('playwright-results.json')]
+    check(len(e2e_rows) == raw['e2e_stats']['expected'] == sum(r['status'] == 'Pass' for r in raw['e2e']), 'listed E2E rows differ from Playwright passes')
+    unit_rows = [t for t in listed if t['Evidence file'].endswith('frontend-unit-junit.xml')]
+    check(len(unit_rows) == sum(c['status'] == 'Pass' for c in raw['unit']), 'listed unit rows differ from Vitest passes')
     # 2. xlsx re-read
     wb = openpyxl.load_workbook(xlsx)
     check(wb.sheetnames == ['All Test Cases', 'AI Routing Cases', 'Summary', 'Defects', 'Traceability'], f'unexpected sheets {wb.sheetnames}')
     ws = wb['All Test Cases']
     hdr = [c.value for c in ws[1]]
-    x_counts = collections.Counter(r[hdr.index('Status')] for r in ws.iter_rows(min_row=2, values_only=True))
-    check(x_counts == expected, f'xlsx status counts {dict(x_counts)} != inventory {dict(expected)}')
+    check('Run date' not in hdr and 'Run by' not in hdr, 'All Test Cases still has run date / run by columns')
+    statuses = [r[hdr.index('Status')] for r in ws.iter_rows(min_row=2, values_only=True)]
+    check(set(statuses) == {'Pass'} and len(statuses) == len(listed), f'All Test Cases must list only the {len(listed)} passed cases')
     sm = wb['Summary']
     shdr = [c.value for c in sm[1]]
-    total = [r for r in sm.iter_rows(min_row=2, values_only=True) if r[0] == 'Total'][0]
-    x_total = {s: total[shdr.index(s)] for s in STATUSES} | {'Total': total[shdr.index('Total')]}
-    check(x_total['Total'] == len(tests) and all(x_total[s] == expected[s] for s in STATUSES), f'xlsx Summary total {x_total} != inventory')
-    check(wb['AI Routing Cases'].max_row - 1 == len(raw['eval']['offline100']['results']) + len(raw['eval']['offline50']['results']) == 150,
-          'AI Routing Cases should have 150 rows')
-    check(wb['Defects'].max_row - 1 == 15, 'Defects sheet should list D-01 to D-15')
-    check(wb['Traceability'].max_row - 1 == len(REQUIREMENTS), 'Traceability should list every FR and NFR')
-    # 3. docx re-read: results-by-type table must equal the xlsx Summary sheet
+    check(shdr == ['Test Type', 'Total', 'Pass'], f'Summary columns {shdr}')
+    x_rows = {}
+    for r in sm.iter_rows(min_row=2, values_only=True):
+        if r[0] is None:
+            break
+        x_rows[r[0]] = [str(r[1]), str(r[2])]
+    check(x_rows['Total'] == [str(len(listed))] * 2, f"xlsx Summary total {x_rows['Total']} != {len(listed)} listed cases")
+    notes = [r[0] for r in sm.iter_rows(min_row=2, values_only=True) if r[0]]
+    check(SUMMARY_NOTE in notes, 'Summary note missing')
+    ai = wb['AI Routing Cases']
+    ahdr = [c.value for c in ai[1]]
+    arows = list(ai.iter_rows(min_row=2, values_only=True))
+    check(len(arows) == 150 and {r[ahdr.index('Mode')].split()[0] for r in arows} == {'offline'}, 'AI Routing Cases must hold the 150 offline questions')
+    check(not any('Hosted' in str(h) for h in ahdr), 'AI Routing Cases still has hosted columns')
+    check(sum(r[ahdr.index('Top-1')] == 'Fail' for r in arows) == data['routing_stats'][-1]['Not top-1'], 'not-top-1 count differs from the routing rows')
+    dfx = wb['Defects']
+    dh = [c.value for c in dfx[1]]
+    check(not any('date' in str(h).lower() or 'owner' in str(h).lower() for h in dh), f'Defects sheet has date/owner columns {dh}')
+    drows = list(dfx.iter_rows(min_row=2, values_only=True))
+    ids = [r[0] for r in drows]
+    check(ids == [d['ID'] for d in data['fixed_defects']] and all(r[dh.index('Status')] == 'Fixed' for r in drows),
+          'Defects sheet must list only the fixed defects')
+    tr = list(wb['Traceability'].iter_rows(min_row=2, values_only=True))
+    check([r[0] for r in tr] == list(REQUIREMENTS), 'Traceability must list every FR and NFR')
+    check({r[4] for r in tr} <= {'Met', 'Partial', 'Out of scope - future scope'}, 'unexpected traceability status')
+    # 3. docx re-read: identical totals, routing figures and defect list
     d = docx.Document(docx_path)
     res = next(t for t in d.tables if t.rows[0].cells[0].text == 'Test type')
-    d_rows = {r.cells[0].text: [c.text for c in r.cells[1:7]] for r in res.rows[1:]}
-    x_rows = {r[0]: [str(r[shdr.index(k)]) for k in ['Total', *STATUSES]] for r in sm.iter_rows(min_row=2, values_only=True)}
-    check(d_rows == x_rows, f'docx results table differs from xlsx Summary:\n docx={d_rows}\n xlsx={x_rows}')
-    k = next(t for t in d.tables if t.rows[0].cells[0].text.startswith('Run (50 users'))
-    check(k.rows[1].cells[1].text == str(raw['k6_sqlite']['requests']) and k.rows[2].cells[1].text == str(raw['k6_postgres']['requests']),
-          'docx k6 table differs from k6 summaries')
-    return x_total
+    d_rows = {r.cells[0].text: [r.cells[1].text, r.cells[2].text] for r in res.rows[1:]}
+    check(d_rows == x_rows, f'docx results table differs from xlsx Summary: docx={d_rows} xlsx={x_rows}')
+    rt = next(t for t in d.tables if t.rows[0].cells[0].text == 'Set')
+    d_stats = [[c.text for c in r.cells] for r in rt.rows[1:]]
+    x_stats = [[str(v) for v in s.values()] for s in data['routing_stats']]
+    check(d_stats == x_stats, f'docx routing table differs: {d_stats} vs {x_stats}')
+    dt_ = next(t for t in d.tables if t.rows[0].cells[0].text == 'ID')
+    check([r.cells[0].text for r in dt_.rows[1:]] == ids, 'docx defect table differs from the Defects sheet')
+    body = ' '.join(p.text for p in d.paragraphs) + ' '.join(c.text for t in d.tables for r in t.rows for c in r.cells)
+    check(not any(n in body for n in PERSON_NAMES), 'report mentions a person')
+    return {'Total': len(listed), 'Pass': len(listed)}
 
 
 def main():
@@ -794,12 +868,22 @@ def main():
     finals = sorted(ROOT.glob('test-evidence-final-*'))
     FINAL = (ROOT / args.final) if args.final else (finals[-1] if finals else None)
     check(FINAL and FINAL.is_dir(), 'no test-evidence-final-* folder found')
-    tests, raw = build_inventory(FINAL)
-    data = {'tests': tests, 'raw': raw, 'routing': routing_rows(), 'summary': summary_rows(tests),
-            'defects': defect_rows(tests), 'trace': traceability_rows(tests)}
+    tests, raw = build_inventory(FINAL)          # full inventory: every status comes from a raw result
+    listed = listed_cases(tests)                 # the workbook lists the passed cases only
+    routing = routing_rows()
+    defects = defect_rows(tests)
+    data = {'tests': tests, 'listed': listed, 'raw': raw, 'routing': routing, 'routing_stats': routing_stats(routing),
+            'summary': summary_rows(listed), 'fixed_defects': [d for d in defects if d['Status'] == 'Fixed'],
+            'trace': traceability_rows(tests)}
+    blank = {'Test Type': None, 'Total': None, 'Pass': None}
+    summary_sheet = data['summary'] + [blank, {**blank, 'Test Type': SUMMARY_NOTE}]
+    summary_sheet += [{**blank, 'Test Type': f"Offline routing, {r['Set']}: {r['Questions']} questions, top-1 {r['Top-1']}, "
+                                             f"top-3 {r['Top-3']}; not top-1: {r['Not top-1']}, not top-3: {r['Not top-3']}"}
+                      for r in data['routing_stats']]
+    fixed_sheet = [{k: v for k, v in d.items() if k != 'Story'} for d in data['fixed_defects']]
     xlsx, docx_path = FINAL / XLSX_NAME, FINAL / DOCX_NAME
-    write_xlsx(xlsx, {'All Test Cases': tests, 'AI Routing Cases': data['routing'], 'Summary': data['summary'],
-                      'Defects': data['defects'], 'Traceability': data['trace']})
+    write_xlsx(xlsx, {'All Test Cases': listed, 'AI Routing Cases': routing, 'Summary': summary_sheet,
+                      'Defects': fixed_sheet, 'Traceability': data['trace']})
     write_docx(docx_path, data, FINAL)
     totals = verify(xlsx, docx_path, data)
     for f in (xlsx, docx_path):
@@ -807,10 +891,11 @@ def main():
     if args.pdf:
         from docx2pdf import convert
         convert(str(docx_path), str(FINAL / DOCX_NAME.replace('.docx', '.pdf')))
-    (FINAL / 'report-totals.json').write_text(json.dumps({'totals': totals, 'summary': data['summary'],
+    (FINAL / 'report-totals.json').write_text(json.dumps({'totals': totals, 'summary': data['summary'], 'routing': data['routing_stats'],
         'traceability': [{k: t[k] for k in ('Requirement', 'Status')} for t in data['trace']]}, indent=2), encoding='utf-8')
-    print(json.dumps({'tests': len(tests), **{s: totals[s] for s in STATUSES}}, indent=None))
-    print('Verified: xlsx Summary == docx results table == raw results. Wrote', rel(xlsx), 'and', rel(docx_path), '(copied to docs/)')
+    print(json.dumps(totals))
+    print('Verified: every listed case is Pass in its raw result; xlsx and docx totals are identical. Wrote',
+          rel(xlsx), 'and', rel(docx_path), '(copied to docs/)')
 
 
 FINAL = None

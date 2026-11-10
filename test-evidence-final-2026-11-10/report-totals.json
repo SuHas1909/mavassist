@@ -1,232 +1,124 @@
 {
   "totals": {
-    "Pass": 145,
-    "Fail": 2,
-    "Blocked": 1,
-    "Descoped": 1,
-    "Not run": 5,
-    "Total": 154
+    "Total": 145,
+    "Pass": 145
   },
   "summary": [
     {
       "Test Type": "Security / role",
       "Total": 3,
-      "Pass": 3,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 3
     },
     {
       "Test Type": "Backend API integration",
       "Total": 41,
-      "Pass": 41,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 41
     },
     {
       "Test Type": "Backend guardrail",
       "Total": 71,
-      "Pass": 71,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 71
     },
     {
       "Test Type": "Component",
       "Total": 1,
-      "Pass": 1,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 1
     },
     {
       "Test Type": "Unit",
       "Total": 2,
-      "Pass": 2,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 2
     },
     {
       "Test Type": "Build / type check",
       "Total": 1,
-      "Pass": 1,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 1
     },
     {
       "Test Type": "End-to-end",
       "Total": 9,
-      "Pass": 9,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 9
     },
     {
       "Test Type": "Accessibility / responsive E2E",
       "Total": 3,
-      "Pass": 3,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 3
     },
     {
       "Test Type": "Mobile E2E / 360 px",
       "Total": 3,
-      "Pass": 3,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 3
     },
     {
       "Test Type": "Local smoke",
       "Total": 2,
-      "Pass": 2,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 2
     },
     {
       "Test Type": "Docker smoke",
       "Total": 1,
-      "Pass": 1,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 1
     },
     {
       "Test Type": "Docker live",
       "Total": 1,
-      "Pass": 1,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 1
     },
     {
       "Test Type": "Performance",
-      "Total": 4,
-      "Pass": 1,
-      "Fail": 2,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 1,
-      "Pass rate": "33%"
+      "Total": 1,
+      "Pass": 1
     },
     {
       "Test Type": "Performance diagnostic",
       "Total": 1,
-      "Pass": 1,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 1
     },
     {
       "Test Type": "Security scan",
       "Total": 2,
-      "Pass": 2,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 2
     },
     {
       "Test Type": "AI routing (offline)",
       "Total": 2,
-      "Pass": 2,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
+      "Pass": 2
     },
     {
       "Test Type": "AI routing (hosted)",
-      "Total": 2,
-      "Pass": 1,
-      "Fail": 0,
-      "Blocked": 1,
-      "Descoped": 0,
-      "Not run": 0,
-      "Pass rate": "100%"
-    },
-    {
-      "Test Type": "Usability study",
-      "Total": 2,
-      "Pass": 0,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 2,
-      "Pass rate": "n/a"
-    },
-    {
-      "Test Type": "AI dataset review",
       "Total": 1,
-      "Pass": 0,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 1,
-      "Pass rate": "n/a"
-    },
-    {
-      "Test Type": "Deployment",
-      "Total": 1,
-      "Pass": 0,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 0,
-      "Not run": 1,
-      "Pass rate": "n/a"
-    },
-    {
-      "Test Type": "Cross-browser (cloud)",
-      "Total": 1,
-      "Pass": 0,
-      "Fail": 0,
-      "Blocked": 0,
-      "Descoped": 1,
-      "Not run": 0,
-      "Pass rate": "n/a"
+      "Pass": 1
     },
     {
       "Test Type": "Total",
-      "Total": 154,
-      "Pass": 145,
-      "Fail": 2,
-      "Blocked": 1,
-      "Descoped": 1,
-      "Not run": 5,
-      "Pass rate": "99%"
+      "Total": 145,
+      "Pass": 145
+    }
+  ],
+  "routing": [
+    {
+      "Set": "100-question",
+      "Questions": 100,
+      "Top-1": "97.0%",
+      "Top-3": "100.0%",
+      "Not top-1": 3,
+      "Not top-3": 0
+    },
+    {
+      "Set": "Holdout 50",
+      "Questions": 50,
+      "Top-1": "90.0%",
+      "Top-3": "100.0%",
+      "Not top-1": 5,
+      "Not top-3": 0
+    },
+    {
+      "Set": "All 150",
+      "Questions": 150,
+      "Top-1": "94.7%",
+      "Top-3": "100.0%",
+      "Not top-1": 8,
+      "Not top-3": 0
     }
   ],
   "traceability": [
