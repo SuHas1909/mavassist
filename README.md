@@ -93,22 +93,24 @@ Safety categories are decided by tested rules in `backend/app/guard.py`, not by 
 
 | What | Where |
 |---|---|
-| Test case workbook (154 cases, AI routing cases, summary, defects, traceability) | [docs/MavAssist_Test_Cases.xlsx](docs/MavAssist_Test_Cases.xlsx) |
+| Test case workbook (147 cases run, 145 passed; AI routing cases, summary, defects, traceability) | [docs/MavAssist_Test_Cases.xlsx](docs/MavAssist_Test_Cases.xlsx) |
 | Test summary and defect report | [docs/MavAssist_Test_Summary_and_Defect_Report.docx](docs/MavAssist_Test_Summary_and_Defect_Report.docx) |
 | Final run, Nov 10: raw results (JUnit XML, browser results, logs), ZAP reports, screenshots | [test-evidence-final-2026-11-10/](test-evidence-final-2026-11-10/) |
 | Nov 10 re-run: load tests (SQLite and Docker PostgreSQL), Docker smoke, AI evaluations | [test-evidence-2026-11-10/](test-evidence-2026-11-10/) |
 | Nov 9 baseline and retest | [test-evidence-2026-11-09/](test-evidence-2026-11-09/) |
-| Usability study and label review (not run yet) | [docs/SUS_STUDY.md](docs/SUS_STUDY.md), [docs/LABEL_REVIEW.md](docs/LABEL_REVIEW.md) |
+| Label review (not run yet) | [docs/LABEL_REVIEW.md](docs/LABEL_REVIEW.md) |
 
 The workbook and report are generated from the raw results by `scripts/build_test_report.py`, which stops if any
 total differs between the two files or from the raw results.
 
 ### Requirement status (final run, Nov 10)
 
+147 cases run, 145 passed. Out-of-scope items and known limitations are in section 8 (Scope and known limitations) of the [test summary report](docs/MavAssist_Test_Summary_and_Defect_Report.docx).
+
 | Status | Requirements |
 |---|---|
 | Met | FR-01, FR-02, FR-03, FR-05, FR-06, FR-07, FR-08, FR-09, FR-10, NFR-03 |
-| Partial | FR-04 (offline routing passes: 97% / 90% top-1; full hosted evaluation blocked by provider limits; labels not reviewed), NFR-01 (local SQLite load passes; Docker PostgreSQL and hosted answer latency miss the targets), NFR-02 (role tests and security scan pass; HTTPS staging not run), NFR-04 (accessibility and 360 px pass on three browser engines; SUS study not run), NFR-05 (fallback and coverage pass; staging not run) |
+| Partial | FR-04 (offline routing passes: 97% / 90% top-1; full hosted evaluation blocked by provider limits; labels not reviewed), NFR-01 (local SQLite load passes; Docker PostgreSQL and hosted answer latency miss the targets), NFR-02 (role tests and security scan pass; HTTPS staging not run), NFR-04 (accessibility and 360 px pass on three browser engines; usability study not run because the site is a local demo and is not hosted), NFR-05 (fallback and coverage pass; staging not run) |
 
 ### Running the tests
 
