@@ -93,7 +93,7 @@ Safety categories are decided by tested rules in `backend/app/guard.py`, not by 
 
 | What | Where |
 |---|---|
-| Test case workbook (147 cases run, 145 passed; AI routing cases, summary, defects, traceability) | [docs/MavAssist_Test_Cases.xlsx](docs/MavAssist_Test_Cases.xlsx) |
+| Test case workbook (145 passed cases listed; AI routing cases, summary, defects, traceability) | [docs/MavAssist_Test_Cases.xlsx](docs/MavAssist_Test_Cases.xlsx) |
 | Test summary and defect report | [docs/MavAssist_Test_Summary_and_Defect_Report.docx](docs/MavAssist_Test_Summary_and_Defect_Report.docx) |
 | Final run, Nov 10: raw results (JUnit XML, browser results, logs), ZAP reports, screenshots | [test-evidence-final-2026-11-10/](test-evidence-final-2026-11-10/) |
 | Nov 10 re-run: load tests (SQLite and Docker PostgreSQL), Docker smoke, AI evaluations | [test-evidence-2026-11-10/](test-evidence-2026-11-10/) |
@@ -105,7 +105,7 @@ total differs between the two files or from the raw results.
 
 ### Requirement status (final run, Nov 10)
 
-147 cases run, 145 passed. Out-of-scope items and known limitations are in section 8 (Scope and known limitations) of the [test summary report](docs/MavAssist_Test_Summary_and_Defect_Report.docx).
+152 cases defined: 145 run and passed, 2 run and failed (PERF-003, AI-005), 5 not executed (blocked: AI-003; descoped: XB-001; not run: LABEL-001, STAGE-001, STAGE-002). IDs and reasons are in section 8 (Scope and known limitations) of the [test summary report](docs/MavAssist_Test_Summary_and_Defect_Report.docx).
 
 | Status | Requirements |
 |---|---|
