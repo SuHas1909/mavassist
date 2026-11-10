@@ -55,16 +55,9 @@ Run `npm audit` in frontend and `python -m pip_audit -r backend/requirements.txt
 
 Hosted RAG outages are simulated in unit tests with a forced timeout; real network stalls, embedding cold starts and 50-user contention require deployed testing. Source-level timeout settings are not a latency measurement.
 
-## Human usability protocol
+## Usability study
 
-Recruit at least **10 consenting students**. Use only fictional needs and no sensitive identifiers. Record participant IDs, not names, and collect:
-
-1. Ask the student to find the correct resource for tuition payment, tutoring, international visa questions and technology access. Define expected service labels first. Time each task; distinguish successful and incorrect routes. The proposal success target is median correct-service discovery <=60 seconds.
-2. Ask the standard ten SUS statements on a 1–5 agreement scale; score odd items as answer-1 and even items as 5-answer, sum and multiply by 2.5. Report sample size and the actual mean/median; target SUS >=70.
-3. Record keyboard/screen-reader/mobile usability observations and specific changes.
-4. Record real helpful/not-helpful answers, including negative ones, without manufacturing ratings.
-
-Use `docs/usability-results.csv` as the blank recording sheet. No participant results are shipped.
+Not run. The site is a local demo and is not hosted, so usability (SUS) sessions with students could not be held. This is future work once the site is deployed (see section 8 of docs/MavAssist_Test_Summary_and_Defect_Report.docx and defect D-13).
 
 ## GitHub review gate
 
