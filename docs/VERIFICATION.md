@@ -1,3 +1,62 @@
+# Verification - 2026-11-10 re-run (after final fixes)
+
+Evidence: test-evidence-2026-11-10/. This run supersedes the pending rows of the November 9 section below.
+
+| Check | Result | Status |
+|---|---|---|
+| Backend tests (pytest) | 101 passed, 0 failed; 94% coverage | Pass |
+| Production build | tsc -b && vite build | Pass |
+| Frontend unit tests (Vitest) | 3 passed | Pass |
+| End-to-end + axe (Playwright, Chromium) | 5 passed, 0 failed | Pass |
+| k6, 50 users x 60 s (local Uvicorn, SQLite, keyword mode) | errors 0%; non-AI p95 192 ms; chat p95 639 ms | Pass |
+| k6, 50 users x 60 s (Docker stack, PostgreSQL; rate limit off and AI keys blank via a temporary override, `AI_MODE=rag` image default) | errors 0% (0 / 648); non-AI p95 1,893 ms (target < 1,000); chat p95 12,026 ms (target < 5,000); 324 iterations | Fail (latency) |
+| Hosted AI, 100-question set | Not a hosted result: only 14 / 100 answers were hosted (`rag`); after AI-014 OpenRouter returned HTTP 402 and 85 answers came from the offline fallback (1 safety reply). Mixed-mode scores: top-1 98%, top-3 100%, unknown offices 0 | Fail (blocked: HTTP 402) |
+| Hosted AI, 50-question holdout | Not a hosted result: 0 / 50 hosted; 49 fallback, 1 safety reply (OpenRouter HTTP 402). Fallback scores: top-1 90%, top-3 100%, unknown offices 0 | Fail (blocked: HTTP 402) |
+| Docker smoke (db, api, web) | all containers healthy; web and /health return 200 | Pass |
+
+Notes on this run:
+
+* **Hosted AI (D-12) is blocked by the provider account, not by code.** The evaluation server ran with a 1 s circuit breaker (evaluation only). Both provider calls made after AI-014 returned HTTP 402 (Payment Required); the OpenRouter account shows 0 purchased credits. An earlier run the same day had the same pattern (one 402 after AI-012; 12 / 100 hosted). Hosted accuracy stays unverified until credits are added and `scripts/evaluate_ai.py --require-rag` passes.
+* **Docker / PostgreSQL load:** no errors, so the pool change holds on PostgreSQL, but both latency targets were missed. The Docker image runs `AI_MODE=rag` (semantic embedding per query on CPU) while the local run uses keyword mode, which is the likely cause; not yet confirmed by a separate run. Logs: `logs/k6-50vu-docker-postgres.log`.
+* An earlier local SQLite k6 run the same day (before this one) also passed: errors 0%, non-AI p95 854 ms, chat p95 1,608 ms.
+
+Additional AI evaluation records (2026-11-10):
+
+| Run | Answers | Top-1 | Top-3 | Unknown offices | Evidence |
+|---|---|---|---|---|---|
+| **Offline**, 100-question set (AI keys blank, rate limit off on the test server only) | 99 cited-source + 1 safety; 0 hosted | 97% | 100% | 0 | `test-evidence-2026-11-10/ai-eval-offline-100.json` |
+| **Offline**, 50-question holdout (same setup) | 49 cited-source + 1 safety; 0 hosted | 90% | 100% | 0 | `test-evidence-2026-11-10/ai-eval-offline-holdout-50.json` |
+| **Hosted diagnostic, before OpenRouter credit ran out** (gpt-4o-mini, timing script, 100-question set) | 63 hosted, then 37 fallback after a provider error | 100% of hosted (63 / 63) | 100% of hosted | not stored | `test-evidence-2026-11-10/ai-eval-hosted-diagnostic-gpt-4o-mini.json` |
+
+The offline rows measure keyword + semantic retrieval only, not the hosted model. Hosted latency in the diagnostic: p50 6.3 s, p95 15.8 s, max 18.3 s (NFR-01 target 5 s; D-15). Free-model probes (3 requests): Gemma 4 31B `:free` returned HTTP 429; Nemotron 3.5 Super `:free` replied in 8.5 s and 9.4 s but our parser rejected the JSON; no free-model sample was run.
+
+---
+
+# Verification — November 9, 2026 run (Sprint 4)
+
+Full evidence: `test-evidence-2026-11-09/` (test report, 94-case workbook, logs, screenshots). Run by Harmanpreet Kaur on a local build: Chromium, isolated SQLite, keyword/offline AI mode. Defects are tracked in `DEFECTS.md`.
+
+| Check | Result | Status |
+|---|---|---|
+| Backend tests (pytest) | 79 / 79 passed; 92% statement coverage | Pass |
+| Frontend unit/component (Vitest) | 3 / 3 passed | Pass |
+| Production build (`tsc -b && vite build`) | Passed | Pass |
+| End-to-end + axe (Playwright, Chromium) | 2 passed, 2 failed on colour contrast measured during animations (D-09) | Fixed in code, re-run pending |
+| 360 px mobile flow | 1 / 1 passed; no horizontal overflow | Pass |
+| Local smoke (frontend, `/health`) | HTTP 200 / 200 | Pass |
+| k6, 50 users × 60 s | p95 directory 221 ms, chat 469 ms; 1.68% errors from DB pool exhaustion (D-10) | Fixed in code, re-run pending |
+| k6, 10 users × 30 s | 600 / 600 succeeded | Pass |
+| Docker smoke and live tests | Docker daemon not running on the test machine (D-11) | Blocked |
+
+## Still to record before the final report
+
+* Re-run Playwright and the 50-user k6 test after the D-09 and D-10 fixes and replace the two failing rows above.
+* Hosted model accuracy (D-12): `scripts/evaluate_ai.py --require-rag` with `OPENROUTER_API_KEY` set; commit the JSON results.
+* SUS study (D-13): participant rows in `usability-results.csv`, SUS score and median time-to-office.
+* Docker smoke (D-11) on a machine with Docker running; staging deployment if the team keeps it in scope.
+
+---
+
 # Verification — October 20, 2026 (Sprint 2 progress build)
 
 Machine-readable records live next to this file: `test-run-summary.json`, `backend-tests.xml`, `backend-coverage.json`, `playwright-results.json`, `k6-load-results.json`, `k6-fallback-results.json`, `ai-evaluation-*.json`, and the dependency audits. All runs were made on the local build (SQLite, keyword/offline AI mode, single Uvicorn process) on October 20, 2026. They do not certify a cloud deployment.
@@ -37,3 +96,4 @@ Screenshots in `screenshots/` were captured from the running application (deskto
 * **Evaluation independence.** Both question sets were written by the development side. The team (PB-12 owners) should review labels and add questions written by students before final acceptance.
 * **Cloud stack.** k6 ran against one local Uvicorn process with SQLite; repeat on the Render/Neon staging stack. PostgreSQL CI, Docker images, Firefox/WebKit/BrowserStack runs, OWASP ZAP and the SUS study (≥ 10 students) were not executed here.
 * **Data freshness.** Office details reflect the public pages on October 20, 2026; some pages publish seasonal hours (Spring 2026 values are labelled as such).
+

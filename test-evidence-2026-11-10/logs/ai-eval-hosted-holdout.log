@@ -1,0 +1,9 @@
+﻿{
+  "dataset_status": "Held-out draft (2026-10-20): written after v2 tuning, not used for tuning. 50 routing questions + 5 out-of-scope questions that should trigger clarification. Requires team review.",
+  "cases": 50,
+  "top1_accuracy": 0.9,
+  "top3_accuracy": 1.0,
+  "unknown_offices": 0,
+  "all_hosted_rag": false,
+  "errors": 0
+}

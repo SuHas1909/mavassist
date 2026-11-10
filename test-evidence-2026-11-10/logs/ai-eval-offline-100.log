@@ -1,0 +1,20 @@
+﻿{
+  "label": "offline (AI keys blank, keyword + cited sources)",
+  "dataset_status": "Draft v2 (2026-10-20): natural-language routing set; 2 questions per directory service, 30 non-native phrasings. Labels require team review (PB-12 owners Harmanpreet Kaur / Suhas Surendra Kumar) before use as acceptance evidence.",
+  "cases_planned": 100,
+  "cases": 100,
+  "sampled": false,
+  "stopped_early": false,
+  "stop_reason": null,
+  "hosted_answers": 0,
+  "fallback_answers": 0,
+  "grounded_answers": 99,
+  "safety_answers": 1,
+  "errors": 0,
+  "top1_accuracy": null,
+  "top3_accuracy": null,
+  "all_answers_top1_accuracy": 0.97,
+  "all_answers_top3_accuracy": 1.0,
+  "unknown_offices": 0,
+  "all_hosted_rag": false
+}

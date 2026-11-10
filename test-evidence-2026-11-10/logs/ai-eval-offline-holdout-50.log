@@ -1,0 +1,20 @@
+﻿{
+  "label": "offline holdout (AI keys blank, keyword + cited sources)",
+  "dataset_status": "Held-out draft (2026-10-20): written after v2 tuning, not used for tuning. 50 routing questions + 5 out-of-scope questions that should trigger clarification. Requires team review.",
+  "cases_planned": 50,
+  "cases": 50,
+  "sampled": false,
+  "stopped_early": false,
+  "stop_reason": null,
+  "hosted_answers": 0,
+  "fallback_answers": 0,
+  "grounded_answers": 49,
+  "safety_answers": 1,
+  "errors": 0,
+  "top1_accuracy": null,
+  "top3_accuracy": null,
+  "all_answers_top1_accuracy": 0.9,
+  "all_answers_top3_accuracy": 1.0,
+  "unknown_offices": 0,
+  "all_hosted_rag": false
+}

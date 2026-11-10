@@ -12,9 +12,10 @@ def _rx(*parts): return re.compile('|'.join(parts),re.I)
 CRISIS=_rx(r'\b(kill|hurt|harm|cut|end|ending|killing|hurting|cutting)\s+my ?self\b',r'\b(end|ending|take|taking) my (own )?life\b',r'\bsuicid',r'\bself[- ]?harm',r'\bend (it all|my life)\b',
   r'\b(want|wanna|going) to die\b',r'\bdon\'?t want to (live|be alive|exist)\b',r'\bno reason to live\b',r'\bbetter off dead\b',r'\boverdose\b')
 # 2. Intent to hurt others / weapons / attacks -> refuse and route to police + support.
-_TARGET=r'(?!(?:the |my |this |that |an? )?(?:exam|test|quiz|midterm|final|class|interview|presentation|assignment|game|time|it|vibe|mood)\b)(him|her|them|someone|somebody|everyone|everybody|people|students|you|my \w+|the \w+|an? \w+|uta|campus)'
+_NOT_PEOPLE=r'exam|test|quiz|midterm|final|finals|class|interview|presentation|assignment|game|time|it|vibe|mood|head|knee|ankle|arm|leg|hand|foot|feet|back|toe|elbow|wall|gym|road|books|snooze|button|deadline|target|goal|jackpot|ticket|parking|charge|fee|fees|fine|hold|grade|grades|traffic|ball|record|bed|sack|pool|track|weights|lights|switch|bug|bugs|issue|problem|system|cold|flu|fear|urge|odds|clock|limit|wifi|bill|decision|appeal|policy|lottery|note|notes|spot'
+_TARGET=r'(?!(?:the |my |this |that |an? |your )?(?:'+_NOT_PEOPLE+r')\b)(him|her|them|someone|somebody|everyone|everybody|people|students|you|my \w+|the \w+|an? \w+|(?:this|that) (?:guy|girl|dude|man|woman|kid|person|student|professor|teacher)|uta|campus)'
 VIOLENCE=_rx(
-  r'\b(i|i\'m|im|i am|we|gonna|going to|want to|wanna|plan(ning)? to|how (do|can|to|would) (i|you|we)|help me)\b[^.?!]{0,40}\b(kill|murder|shoot|stab|attack|bomb|poison|strangle|beat up)\s+'+_TARGET,
+  r'\b(i|i\'m|im|i am|we|gonna|going to|want to|wanna|plan(ning)? to|how (do|can|to|would) (i|you|we)|help me)\b[^.?!]{0,40}\b(kill|murder|shoot|stab|attack|bomb|poison|strangle|beat up|beat|hit|punch|slap|kick|choke|fight|smack|jump|rob)\s+'+_TARGET,
   r'\b(want to|wanna|going to|gonna|plan(ning)? to|how (to|do i|can i)|i will|i\'ll)\s+(physically |seriously )?hurt\s+(him|her|them|someone|somebody|people|everyone|students|my (roommate|professor|teacher|ex|friend|classmate|boss|partner|girlfriend|boyfriend|wife|husband|mom|dad|brother|sister|advisor|ta))\b',
   r'\b(make|build|get|buy|bring|hide|sneak)\b[^.?!]{0,25}\b(bomb|explosive|gun|firearm|weapon|pipe bomb)s?\b[^.?!]{0,30}\b(campus|class|school|dorm|uta|building|hurt|kill)',
   r'\b(how (to|do i|can i) (make|build))\b[^.?!]{0,10}\b(a )?(bomb|explosive|pipe bomb|molotov)',
@@ -22,6 +23,12 @@ VIOLENCE=_rx(
 # 3. Someone in danger right now -> emergency numbers first.
 DANGER=_rx(r'\bactive shooter\b',r'\b(someone|somebody|a (man|guy|person)|he|she|they)\b[^.?!]{0,25}\b(has|with|pulled) a (gun|knife|weapon)\b',
   r'\b(i\'m|im|i am) in danger\b',r'\b(being|getting) (followed|attacked|chased)\b',r'\bthreaten(ed|ing)? to (kill|hurt|shoot)\b',r'\bemergency\b[^.?!]{0,20}\b(now|right now|help)\b')
+# 3b. The student was harmed (sexual or physical). Never "not found": support + reporting options.
+_VPERSON=r'(someone|somebody|some (guy|man|woman|girl|person|student)|a (guy|man|woman|girl|person|student|stranger|professor|teacher|ta|staff|coworker|classmate|roommate)|he|she|they|my [\w-]+|(a |the |this |that )?\w+ (guy|man|professor|teacher|student|roommate|boss|ex))'
+VICTIM_SEXUAL=_rx(r'\b(molest|mol+est|molst|rape|raped|raping|groped?|groping|sexually (assaulted|harass\w*|abused|touched)|sexual (assault|harassment|abuse)|touched me|touching me|inappropriately touched|forced (me|himself|herself)|non ?consensual|without my consent|spiked my drink|drugged me|flash\w* me|exposed (him|her)self)')
+VICTIM_PHYSICAL=_rx(r'\b'+_VPERSON+r'\b[^.?!]{0,30}\b(hit|punched|slapped|kicked|choked|strangled|beat|attacked|assaulted|pushed|shoved|hurt|abused|stalk\w*|threaten\w*|harass\w*)\s+me\b',
+  r'\b(i was|i got|i\'ve been|i have been|i\'m being|im being|i am being)\s+(physically |verbally )?(hit|punched|slapped|attacked|assaulted|beaten|beat up|abused|stalked|robbed|mugged|jumped|harassed|threatened|bullied)\b',
+  r'\b(stalker|stalking me|domestic violence|abusive (partner|boyfriend|girlfriend|relationship))\b')
 # Abuse aimed at the assistant -> calm boundary (real questions that merely contain a swear word still go through).
 _SWEAR=r'(fuck\w*|f\*+k|fck|fuk|shit\w*|bitch\w*|bastard|asshole|dumbass|idiot|stupid|moron|retard\w*|cunt|dick(head)?|motherf\w*|wtf|stfu|bullshit|trash|garbage|useless|crap|damn|hell|suck|sucks)'
 ABUSE=_rx(r'\b(fuck|f\*+k|fck|fuk|screw|stfu|shut up|go to hell|piss off)\s*(you|u|off|this|mav ?assist|bot)\b',
@@ -66,6 +73,8 @@ def classify(text):
     if CRISIS.search(t): return 'crisis'
     if VIOLENCE.search(t): return 'violence'
     if DANGER.search(t): return 'danger'
+    if VICTIM_SEXUAL.search(t): return 'victim_sexual'
+    if VICTIM_PHYSICAL.search(t) and not re.search(r'\bverbal',t,re.I): return 'victim_physical'
     if ABUSE.search(t): return 'abuse'
     for name,(rx,_,_) in HARMFUL.items():
         if rx.search(t): return 'harmful:'+name
@@ -109,9 +118,11 @@ def respond(db,category,question=''):
         return r
     if category=='violence':
         police=svc('University Police Resources');caps=svc('Counseling & Psychological Services');ids,sources=cite(police);ids2,sources2=cite(caps)
-        r=_base('safety','I can’t help with hurting anyone or with weapons. If someone is in danger, contact emergency services now.',actions=[CALL_911,CALL_POLICE,CALL_MAVSTALK])
+        r=_base('safety','MavAssist is not a place for violence, and I can’t help with hurting anyone or with weapons. If anyone is in danger right now, call 911 or UTA Police at 817-272-3003.',actions=[CALL_911,CALL_POLICE,CALL_MAVSTALK])
         r['answer']=[p('If anyone is in immediate danger, call 911 or UTA Police at 817-272-3003. UTA Police respond 24 hours a day.',ids),
-          p('If you’re feeling angry or overwhelmed to the point of wanting to hurt someone, talking it through helps. MAVS TALK (817-272-8255) is available 24/7, and CAPS counseling is free and confidential.',ids2)]
+          p('If you’re angry or overwhelmed enough to want to hurt someone, step away from the situation first. Talking it through with a counselor really helps: MAVS TALK (817-272-8255) answers 24/7, and CAPS counseling is free and confidential.',ids2),
+          p('If someone hurt or threatened you first, you can report it to UTA Police and get confidential support instead of handling it alone.',ids)]
+        r['steps']=[p('Walk away and put distance between you and the other person.'),p('Call MAVS TALK at 817-272-8255 if you need to cool down and talk to someone now.',ids2),p('Report threats or assaults to UTA Police at 817-272-3003.',ids)]
         r['sources']=sources+[s for s in sources2 if s not in sources]
         r['services']=[(s,why) for s,why in [(police,'24/7 campus police for emergencies and safety concerns.'),(caps,'Confidential support when anger or stress feels unmanageable.')] if s]
         return r
@@ -124,6 +135,33 @@ def respond(db,category,question=''):
         r['sources']=sources
         r['services']=[(s,why) for s,why in [(police,'24/7 campus police and late-night safety escorts.'),(rvsp,'Confidential advocacy for stalking, threats and relationship violence.')] if s]
         return r
+    if category=='victim_sexual':
+        rvsp=svc('Relationship Violence & Sexual Assault Prevention');police=svc('University Police Resources');caps=svc('Counseling & Psychological Services')
+        i1,s1=cite(rvsp);i2,s2=cite(police);i3,s3=cite(caps)
+        r=_base('safety','I’m so sorry this happened to you. It is not your fault, and you don’t have to deal with it alone.',actions=[CALL_911,CALL_POLICE,CALL_MAVSTALK])
+        r['answer']=[p('If you are in danger right now or were just hurt, call 911 or UTA Police at 817-272-3003.',i2),
+          p('Relationship Violence & Sexual Assault Prevention (RVSP) gives confidential advocacy to survivors. An advocate can listen, explain medical and reporting options, and help with things like class or housing changes. You decide whether to report — talking to RVSP does not force a report.',i1),
+          p('If you want to talk through how you’re feeling, CAPS counseling is free and confidential, and MAVS TALK answers 24/7 at 817-272-8255.',i3)]
+        r['steps']=[p('Get to a safe place, and call 911 if you are hurt or in danger.',i2),p('Walk in to Ransom Hall 301 (Mon–Fri, 8–5) to talk confidentially with an RVSP advocate.',i1),p('If the assault was recent, try to keep clothing or messages; an advocate can explain why and help you decide next steps.',i1)]
+        r['sources']=s1+[x for x in s2+s3 if x not in s1]
+        r['services']=[(x,why) for x,why in [(rvsp,'Confidential advocacy for survivors; you choose whether to report.'),(police,'24/7 emergency help and criminal reporting.'),(caps,'Free, confidential counseling.')] if x]
+        return r
+    if category=='victim_physical':
+        police=svc('University Police Resources');rvsp=svc('Relationship Violence & Sexual Assault Prevention');caps=svc('Counseling & Psychological Services');dos=svc('Student Outreach & Support')
+        i1,s1=cite(police);i2,s2=cite(rvsp);i3,s3=cite(caps)
+        r=_base('safety','I’m sorry this happened. You deserve to feel safe on campus, and there are people whose job is to help you right now.',actions=[CALL_911,CALL_POLICE,CALL_MAVSTALK])
+        r['answer']=[p('If you are hurt or still in danger, call 911 or UTA Police at 817-272-3003. UTA Police take reports 24/7, and you can report later too.',i1),
+          p('If the person is a partner, ex or someone stalking you, RVSP offers confidential advocacy and safety planning.',i2),
+          p('Something like this can stay with you. CAPS counseling is free and confidential if you want to talk about it.',i3)]
+        r['steps']=[p('Get somewhere safe and call 911 if you need medical help.',i1),p('Write down what happened, when and where, and save any messages.'),p('Report it to UTA Police (817-272-3003) or talk first with an RVSP advocate in Ransom Hall 301.',i2)]
+        r['sources']=s1+[x for x in s2+s3 if x not in s1]
+        cards=[(police,'24/7 emergency help and crime reports.'),(rvsp,'Confidential support for stalking, threats and relationship violence.'),(dos,'CARE Team support if you’re struggling after what happened.')]
+        if re.search(r'\b(stalk\w*|ex|partner|boy ?friend|girl ?friend|husband|wife|dating|date)\b',question,re.I):
+            cards=[cards[1],cards[0],cards[2]];r['sources']=s2+[x for x in s1+s3 if x not in s2]
+        r['services']=[(x,why) for x,why in cards if x]
+        return r
+    if category=='harmful':
+        return _base('out_of_scope','I can’t help with that. If something at UTA is behind this request, tell me what you’re trying to solve and I’ll point you to an office that can help legitimately.',options=EXAMPLES[:3])
     if category.startswith('harmful:'):
         _,message,names=HARMFUL[category.split(':',1)[1]]
         r=_base('out_of_scope',message,confidence='high')

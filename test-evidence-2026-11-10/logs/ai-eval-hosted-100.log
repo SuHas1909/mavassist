@@ -1,0 +1,9 @@
+﻿{
+  "dataset_status": "Draft v2 (2026-10-20): natural-language routing set; 2 questions per directory service, 30 non-native phrasings. Labels require team review (PB-12 owners Harmanpreet Kaur / Suhas Surendra Kumar) before use as acceptance evidence.",
+  "cases": 100,
+  "top1_accuracy": 0.98,
+  "top3_accuracy": 1.0,
+  "unknown_offices": 0,
+  "all_hosted_rag": false,
+  "errors": 0
+}

@@ -26,10 +26,11 @@ OPENROUTER_MODEL=openai/gpt-4o-mini
 LLM_TIMEOUT=12
 ```
 
-Restart the API. Requests go to `https://openrouter.ai/api/v1/chat/completions` in JSON mode. Two model calls are used:
+Restart the API. Requests go to `https://openrouter.ai/api/v1/chat/completions` in JSON mode, **one call per question**:
 
-- **Answer generation** — the model receives the question, redacted history and retrieved passages, and must return cited paragraphs/steps. It can also return `in_scope: false` when the retrieved office does not genuinely answer the question, which becomes a **Not found** reply instead of a wrong office.
-- **Triage** (only when retrieval is not confident) — the model reads the whole active directory (names and one-line descriptions) and decides `campus` (with a service id), `unclear`, `off_topic`, `greeting` or `unsafe`. A chosen office is then answered with that office's own passages.
+- The model receives the redacted question and history, the top keyword/semantic matches as *hints*, and the **whole active knowledge base** (all 50 offices with location, hours, contact and every source passage — small enough for one prompt, about $0.002 per question with gpt-4o-mini).
+- It decides the intent by meaning and feeling, not keywords (`campus`, `unclear`, `off_topic`, `greeting`, `crisis`, `danger`, `violence`, `harmful`, `abuse`), picks the primary office and up to two alternatives for other parts of the student's situation, and writes a personalised opening, cited paragraphs and tailored steps. `urgency: high` adds 911/UTA Police buttons.
+- Safety intents never use model text: they map to the tested templates in `app/guard.py`. Harm reports (sexual or physical) detected by the rules are sent to the model with a safety note so the answer is personal, but they can never become "not found", always keep emergency buttons, and fall back to the template if the model fails.
 
 Every model output is validated (known source IDs, no URLs, length limits). Network or provider errors open a 60-second circuit breaker and fall back to cited source summaries. Any OpenAI-compatible endpoint works through `LLM_BASE_URL`, `LLM_API_KEY` and `LLM_MODEL`; `OPENAI_API_KEY`/`OPENAI_MODEL` still work for OpenAI directly.
 

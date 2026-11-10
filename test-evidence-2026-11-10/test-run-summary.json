@@ -1,0 +1,46 @@
+{
+    "backend":  {
+                    "ok":  true,
+                    "coverage":  94,
+                    "failed":  0,
+                    "passed":  101
+                },
+    "build":  {
+                  "ok":  true
+              },
+    "unit":  {
+                 "ok":  true,
+                 "passed":  3
+             },
+    "e2e":  {
+                "ok":  true,
+                "failed":  0,
+                "passed":  5
+            },
+    "load":  {
+                 "chat_p95":  639,
+                 "error_rate":  0,
+                 "non_ai_p95":  192,
+                 "ok":  true
+             },
+    "ai-evaluation-hosted-results":  {
+                                         "top3":  100.0,
+                                         "unknown":  0,
+                                         "ok":  false,
+                                         "errors":  0,
+                                         "all_rag":  false,
+                                         "top1":  98.0
+                                     },
+    "ai-evaluation-hosted-holdout-results":  {
+                                                 "top3":  100.0,
+                                                 "unknown":  0,
+                                                 "ok":  false,
+                                                 "errors":  0,
+                                                 "all_rag":  false,
+                                                 "top1":  90.0
+                                             },
+    "docker":  {
+                   "ok":  true
+               },
+    "sus_participants":  0
+}

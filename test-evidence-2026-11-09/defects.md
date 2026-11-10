@@ -32,8 +32,6 @@ The production frontend at 360 px and the 10-user performance diagnostic passed.
 
 ## Retest record
 
-Update this section after running the checks:
-
 | ID | Retest command / environment | Result | Evidence |
 |---|---|---|---|
 | DEF-001 | `cd frontend && E2E_ADMIN_EMAIL=... E2E_ADMIN_PASSWORD=... BASE_URL=http://127.0.0.1:5173 API_URL=http://127.0.0.1:8000 npx playwright test --project=chromium` | **PASS — 5/5** | `logs/defect-retest-e2e.log` |

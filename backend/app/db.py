@@ -12,11 +12,18 @@ if DATABASE_URL.startswith('postgres://'):
     DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql+psycopg://', 1)
 elif DATABASE_URL.startswith('postgresql://'):
     DATABASE_URL = DATABASE_URL.replace('postgresql://', 'postgresql+psycopg://', 1)
-engine = create_engine(DATABASE_URL, pool_pre_ping=True, **({'connect_args': {'check_same_thread': False}} if DATABASE_URL.startswith('sqlite') else {}))
-if DATABASE_URL.startswith('sqlite'):
+IS_SQLITE = DATABASE_URL.startswith('sqlite')
+# PostgreSQL: FastAPI runs sync endpoints on a 40-thread pool, so the pool covers that many concurrent
+# requests (20 + 20). SQLite keeps SQLAlchemy's default pool: it allows only one writer at a time, and
+# 40 open connections made concurrent analytics writes fail with "database is locked" at 50 virtual users.
+POOL = {} if IS_SQLITE else dict(pool_size=int(os.getenv('DB_POOL_SIZE', '20')), max_overflow=int(os.getenv('DB_MAX_OVERFLOW', '20')), pool_timeout=10)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True, **POOL, **({'connect_args': {'check_same_thread': False, 'timeout': 30}} if IS_SQLITE else {}))
+if IS_SQLITE:
     @event.listens_for(engine, 'connect')
     def sqlite_constraints(connection, _):
         connection.execute('PRAGMA foreign_keys=ON')
+        connection.execute('PRAGMA journal_mode=WAL')  # readers no longer wait behind the writer
+        connection.execute('PRAGMA busy_timeout=30000')
 SessionLocal = sessionmaker(engine, expire_on_commit=False)
 def now(): return datetime.now(timezone.utc)
 class Base(DeclarativeBase): pass

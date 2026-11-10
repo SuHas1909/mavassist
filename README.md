@@ -59,6 +59,8 @@ OPENROUTER_API_KEY=sk-or-...your key...
 OPENROUTER_MODEL=openai/gpt-4o-mini
 ```
 
+**Free tier:** OpenRouter's free models (ids ending `:free`) allow 50 requests per day and 20 per minute. Once the daily allowance is used up, or the provider refuses a request, MavAssist answers from cited sources (keyword and semantic retrieval) until the limit resets; nothing breaks, but answers are no longer AI-written.
+
 `http://127.0.0.1:8000/health` shows `"llm": true` when the key is loaded. Answers then carry the badge **AI answer with sources**. Never commit the key or put it in frontend code; on Render, add it as a secret environment variable.
 
 ### What the assistant does with different questions
