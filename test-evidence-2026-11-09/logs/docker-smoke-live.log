@@ -1,0 +1,3 @@
+unable to get image 'mavassist-api': Cannot connect to the Docker daemon at unix:///Users/harmanpreetkaur/.docker/run/docker.sock. Is the docker daemon running?
+
+EXIT_CODE=1

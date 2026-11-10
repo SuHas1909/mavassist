@@ -1,0 +1,8 @@
+
+Running 1 test using 1 worker
+
+  ✓  1 [chromium] › tests/mobile-360.spec.ts:3:1 › 360 px student flow stays within the viewport (895ms)
+
+  1 passed (1.4s)
+
+EXIT_CODE=0

@@ -1,0 +1,441 @@
+
+Running 4 tests using 1 worker
+
+  ✘  1 [chromium] › tests/flows.spec.ts:4:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating (1.5s)
+  ✘  2 [chromium] › tests/flows.spec.ts:54:1 › primary student pages: no serious or critical WCAG issues; responsive navigation (3.0s)
+  ✓  3 [chromium] › tests/flows.spec.ts:75:1 › assistant says not found instead of guessing on out-of-scope questions (695ms)
+  ✓  4 [chromium] › tests/flows.spec.ts:87:1 › admin: resource lifecycle, category and notice CRUD, analytics (1.3s)
+
+
+  1) [chromium] › tests/flows.spec.ts:4:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 298
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfcfd",
+    +               "contrastRatio": 4.15,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#6c7c8f",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<dialog aria-labelledby=\"resource-title\" class=\"drawer\" open=\"\">",
+    +                 "target": Array [
+    +                   "dialog",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span class=\"drawer-cat\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".drawer-cat",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#e7f3ee",
+    +               "contrastRatio": 3.71,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#49876c",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.71 (foreground color: #49876c, background color: #e7f3ee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<p class=\"verify verify-ok\">",
+    +                 "target": Array [
+    +                   ".verify",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.71 (foreground color: #49876c, background color: #e7f3ee, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"verify verify-ok\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".verify",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfcfd",
+    +               "contrastRatio": 4.15,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#6c7c8f",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<dialog aria-labelledby=\"resource-title\" class=\"drawer\" open=\"\">",
+    +                 "target": Array [
+    +                   "dialog",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt>Where</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".facts > div:nth-child(1) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfcfd",
+    +               "contrastRatio": 4.15,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#6c7c8f",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<dialog aria-labelledby=\"resource-title\" class=\"drawer\" open=\"\">",
+    +                 "target": Array [
+    +                   "dialog",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt>When</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".facts > div:nth-child(2) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfcfd",
+    +               "contrastRatio": 4.15,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#6c7c8f",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<dialog aria-labelledby=\"resource-title\" class=\"drawer\" open=\"\">",
+    +                 "target": Array [
+    +                   "dialog",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt>Contact</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(3) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfcfd",
+    +               "contrastRatio": 4.15,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#6c7c8f",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<dialog aria-labelledby=\"resource-title\" class=\"drawer\" open=\"\">",
+    +                 "target": Array [
+    +                   "dialog",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.15 (foreground color: #6c7c8f, background color: #fbfcfd, font size: 9.8pt (13px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +         "html": "<dt>Last updated</dt>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "div:nth-child(4) > dt",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#2f81c0",
+    +               "contrastRatio": 4.03,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#f9fbfe",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.03 (foreground color: #f9fbfe, background color: #2f81c0, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<a class=\"btn btn-primary\" href=\"https://www.uta.edu/business-affairs/student-accounts/\" target=\"_blank\" rel=\"noopener noreferrer\">",
+    +                 "target": Array [
+    +                   "a[target=\"_blank\"]",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.03 (foreground color: #f9fbfe, background color: #2f81c0, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<a class=\"btn btn-primary\" href=\"https://www.uta.edu/business-affairs/student-accounts/\" target=\"_blank\" rel=\"noopener noreferrer\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           "a[target=\"_blank\"]",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      20 |   await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/service-detail-desktop.png',fullPage:true});
+      21 |   const modalAxe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+    > 22 |   expect(modalAxe.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
+         |                                                                                        ^
+      23 |   await page.getByRole('button',{name:'Save resource',exact:true}).click();
+      24 |   await expect(page.getByRole('button',{name:'Remove bookmark',exact:true})).toBeVisible();
+      25 |   await page.getByRole('button',{name:'Close resource'}).click();
+        at /Users/harmanpreetkaur/mavassist/mavassist/frontend/tests/flows.spec.ts:22:88
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/flows-student-registration-d707b-mark-recent-chat-and-rating-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/flows-student-registration-d707b-mark-recent-chat-and-rating-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/flows-student-registration-d707b-mark-recent-chat-and-rating-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/flows-student-registration-d707b-mark-recent-chat-and-rating-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/flows.spec.ts:54:1 › primary student pages: no serious or critical WCAG issues; responsive navigation 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 64
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f4f7fa",
+    +               "contrastRatio": 2.5,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#8ba0b5",
+    +               "fontSize": "11.3pt (15px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.5 (foreground color: #8ba0b5, background color: #f4f7fa, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<button class=\"example\" style=\"--i: 4;\">I feel really stressed and anxious</button>",
+    +                 "target": Array [
+    +                   ".example:nth-child(5)",
+    +                 ],
+    +               },
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.5 (foreground color: #8ba0b5, background color: #f4f7fa, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<button class=\"example\" style=\"--i: 4;\">I feel really stressed and anxious</button>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".example:nth-child(5)",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      67 |     await page.waitForTimeout(200);
+      68 |     results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+    > 69 |     expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
+         |                                                                                         ^
+      70 |   }
+      71 |   await page.setViewportSize({width:360,height:800});
+      72 |   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+        at /Users/harmanpreetkaur/mavassist/mavassist/frontend/tests/flows.spec.ts:69:89
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/flows-primary-student-page-465c0-ssues-responsive-navigation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/flows-primary-student-page-465c0-ssues-responsive-navigation-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/flows-primary-student-page-465c0-ssues-responsive-navigation-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/flows-primary-student-page-465c0-ssues-responsive-navigation-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › tests/flows.spec.ts:4:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating 
+    [chromium] › tests/flows.spec.ts:54:1 › primary student pages: no serious or critical WCAG issues; responsive navigation 
+  2 passed (9.4s)
+
+EXIT_CODE=1
