@@ -1,0 +1,12 @@
+﻿
+ RUN  v5.0.4 C:/Users/singh/Downloads/mavassist-ready/mavassist-main/frontend
+
+ ✓ src/api.test.ts (2 tests) 22ms
+ ✓ src/App.test.tsx (1 test) 124ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  14:36:48
+   Duration  2.99s (environment 74%, import 16%, transform 6%, tests 3%, worker 1%)
+
+JUNIT report written to C:/Users/singh/Downloads/mavassist-ready/mavassist-main/test-evidence-final-2026-11-10/logs/frontend-unit-junit.xml

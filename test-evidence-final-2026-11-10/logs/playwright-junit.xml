@@ -1,0 +1,44 @@
+<testsuites id="" name="" tests="15" failures="0" skipped="0" errors="0" time="125.330603">
+<testsuite name="flows.spec.ts" timestamp="2026-11-10T20:20:01.164Z" hostname="chromium" tests="4" failures="0" skipped="0" time="14.8" errors="0">
+<testcase name="student: registration, search/filter, detail, notices, bookmark, recent, chat and rating" classname="flows.spec.ts" time="5.288">
+</testcase>
+<testcase name="primary student pages: no serious or critical WCAG issues; responsive navigation" classname="flows.spec.ts" time="5.136">
+</testcase>
+<testcase name="assistant says not found instead of guessing on out-of-scope questions" classname="flows.spec.ts" time="1.234">
+</testcase>
+<testcase name="admin: resource lifecycle, category and notice CRUD, analytics" classname="flows.spec.ts" time="3.142">
+</testcase>
+</testsuite>
+<testsuite name="mobile-360.spec.ts" timestamp="2026-11-10T20:20:01.164Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.57" errors="0">
+<testcase name="360 px student flow stays within the viewport" classname="mobile-360.spec.ts" time="1.57">
+</testcase>
+</testsuite>
+<testsuite name="flows.spec.ts" timestamp="2026-11-10T20:20:01.164Z" hostname="firefox" tests="4" failures="0" skipped="0" time="31.279" errors="0">
+<testcase name="student: registration, search/filter, detail, notices, bookmark, recent, chat and rating" classname="flows.spec.ts" time="8.046">
+</testcase>
+<testcase name="primary student pages: no serious or critical WCAG issues; responsive navigation" classname="flows.spec.ts" time="9.484">
+</testcase>
+<testcase name="assistant says not found instead of guessing on out-of-scope questions" classname="flows.spec.ts" time="3.895">
+</testcase>
+<testcase name="admin: resource lifecycle, category and notice CRUD, analytics" classname="flows.spec.ts" time="9.854">
+</testcase>
+</testsuite>
+<testsuite name="mobile-360.spec.ts" timestamp="2026-11-10T20:20:01.164Z" hostname="firefox" tests="1" failures="0" skipped="0" time="3.957" errors="0">
+<testcase name="360 px student flow stays within the viewport" classname="mobile-360.spec.ts" time="3.957">
+</testcase>
+</testsuite>
+<testsuite name="flows.spec.ts" timestamp="2026-11-10T20:20:01.164Z" hostname="webkit" tests="4" failures="0" skipped="0" time="58.242" errors="0">
+<testcase name="student: registration, search/filter, detail, notices, bookmark, recent, chat and rating" classname="flows.spec.ts" time="13.237">
+</testcase>
+<testcase name="primary student pages: no serious or critical WCAG issues; responsive navigation" classname="flows.spec.ts" time="28.389">
+</testcase>
+<testcase name="assistant says not found instead of guessing on out-of-scope questions" classname="flows.spec.ts" time="4.245">
+</testcase>
+<testcase name="admin: resource lifecycle, category and notice CRUD, analytics" classname="flows.spec.ts" time="12.371">
+</testcase>
+</testsuite>
+<testsuite name="mobile-360.spec.ts" timestamp="2026-11-10T20:20:01.164Z" hostname="webkit" tests="1" failures="0" skipped="0" time="9.874" errors="0">
+<testcase name="360 px student flow stays within the viewport" classname="mobile-360.spec.ts" time="9.874">
+</testcase>
+</testsuite>
+</testsuites>
