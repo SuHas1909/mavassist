@@ -1,0 +1,5 @@
+# Only for scripts/build_test_report.py (test deliverables); not needed to run MavAssist.
+openpyxl==3.1.5
+python-docx>=1.1
+pillow>=10
+docx2pdf>=0.1.8   # optional: --pdf, needs Microsoft Word

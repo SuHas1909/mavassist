@@ -1,0 +1,27 @@
+{
+  "phase": "normal",
+  "base": "http://127.0.0.1:5173",
+  "shots": [
+    "sign-in-desktop",
+    "register-desktop",
+    "directory-desktop",
+    "search-results-desktop",
+    "service-detail-desktop",
+    "saved-resources-desktop",
+    "recently-viewed-desktop",
+    "assistant-empty-desktop",
+    "assistant-answer-desktop",
+    "assistant-crisis-desktop",
+    "assistant-harm-report-desktop",
+    "assistant-violence-desktop",
+    "assistant-not-found-desktop",
+    "assistant-greeting-desktop",
+    "directory-360px",
+    "assistant-360px",
+    "admin-resources-desktop",
+    "admin-service-editor-desktop",
+    "admin-categories-desktop",
+    "admin-notices-desktop",
+    "admin-insights-desktop"
+  ]
+}

@@ -84,13 +84,66 @@ Safety categories are decided by tested rules in `backend/app/guard.py`, not by 
 - [User guide](docs/USER_GUIDE.md)
 - [Requirements](docs/REQUIREMENTS.md)
 - [Test results](docs/VERIFICATION.md)
+- [Defect log](docs/DEFECTS.md)
+- [Scope changes](docs/SCOPE_CHANGES.md)
+- [Security scan](docs/SECURITY_SCAN.md)
 - [Directory data sources](docs/DATA_SOURCES.md)
+
+## Test evidence
+
+| What | Where |
+|---|---|
+| Test case workbook (145 passed cases listed; AI routing cases, summary, defects, traceability) | [docs/MavAssist_Test_Cases.xlsx](docs/MavAssist_Test_Cases.xlsx) |
+| Test summary and defect report | [docs/MavAssist_Test_Summary_and_Defect_Report.docx](docs/MavAssist_Test_Summary_and_Defect_Report.docx) |
+| Final run, Nov 10: raw results (JUnit XML, browser results, logs), ZAP reports, screenshots | [test-evidence-final-2026-11-10/](test-evidence-final-2026-11-10/) |
+| Nov 10 re-run: load tests (SQLite and Docker PostgreSQL), Docker smoke, AI evaluations | [test-evidence-2026-11-10/](test-evidence-2026-11-10/) |
+| Nov 9 baseline and retest | [test-evidence-2026-11-09/](test-evidence-2026-11-09/) |
+| Label review (not run yet) | [docs/LABEL_REVIEW.md](docs/LABEL_REVIEW.md) |
+
+The workbook and report are generated from the raw results by `scripts/build_test_report.py`, which stops if any
+total differs between the two files or from the raw results.
+
+### Requirement status (final run, Nov 10)
+
+152 cases defined: 145 run and passed, 2 run and failed (PERF-003, AI-005), 5 not executed (blocked: AI-003; descoped: XB-001; not run: LABEL-001, STAGE-001, STAGE-002). IDs and reasons are in section 8 (Scope and known limitations) of the [test summary report](docs/MavAssist_Test_Summary_and_Defect_Report.docx).
+
+| Status | Requirements |
+|---|---|
+| Met | FR-01, FR-02, FR-03, FR-05, FR-06, FR-07, FR-08, FR-09, FR-10, NFR-03 |
+| Partial | FR-04 (offline routing passes: 97% / 90% top-1; full hosted evaluation blocked by provider limits; labels not reviewed), NFR-01 (local SQLite load passes; Docker PostgreSQL and hosted answer latency miss the targets), NFR-02 (role tests and security scan pass; HTTPS staging not run), NFR-04 (accessibility and 360 px pass on three browser engines; usability study not run because the site is a local demo and is not hosted), NFR-05 (fallback and coverage pass; staging not run) |
+
+### Running the tests
+
+```powershell
+# Backend (isolated test database). Run it as CI does, with no AI key in backend/.env, so no hosted calls are made.
+cd backend; python -m pytest tests --cov=app
+
+# Frontend build and unit tests
+cd frontend; npm run build; npm test
+
+# Browser tests on Chromium, Firefox and WebKit (API on :8000 and web on :5173 running; test administrator provisioned)
+cd frontend; $env:E2E_ADMIN_EMAIL='...'; $env:E2E_ADMIN_PASSWORD='...'; npx playwright test
+
+# Load test: 50 users for 60 s (needs a student token; disable the rate limit only on a private test server)
+k6 run -e MAVASSIST_TOKEN=<token> -e API_URL=http://127.0.0.1:8000 scripts/load-test.js
+
+# Routing evaluation (offline, or hosted with --require-rag; --sample N keeps a free-tier key within its daily cap)
+python scripts/evaluate_ai.py --api http://127.0.0.1:8000 --output results.json
+
+# Rebuild the test workbook and report from the raw results
+pip install -r scripts/requirements-report.txt; python scripts/build_test_report.py --pdf
+```
 
 ## Contributors
 
-- Ashwinder Singh
-- Krisha Patel
-- Suhas Surendra Kumar
-- Harmanpreet Kaur
+Commits are counted from the git history (merges included); Azure DevOps counts are the stories and tasks assigned on
+the board, not a measure of who wrote which code.
+
+| Name | Commits | Azure DevOps stories / tasks assigned |
+|---|---|---|
+| Ashwinder Singh | 14 | 8 / 24 |
+| Krisha Patel | 1 | 4 / 13 |
+| Suhas Surendra Kumar | 4 | 1 / 13 |
+| Harmanpreet Kaur | 3 | 1 / 12 |
 
 Independent student project; not an official UTA service.

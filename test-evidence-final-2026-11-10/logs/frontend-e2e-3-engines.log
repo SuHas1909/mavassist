@@ -1,0 +1,32 @@
+﻿
+Running 15 tests using 1 worker
+
+npx.cmd : (node:33216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:1 char:1907
++ ... junit.xml"; npx.cmd playwright test --reporter=list,json,junit *> "$F ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:33216) Wa... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [chromium] › tests\flows.spec.ts:13:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating (5.3s)
+  ok  2 [chromium] › tests\flows.spec.ts:65:1 › primary student pages: no serious or critical WCAG issues; responsive navigation (5.1s)
+  ok  3 [chromium] › tests\flows.spec.ts:86:1 › assistant says not found instead of guessing on out-of-scope questions (1.2s)
+  ok  4 [chromium] › tests\flows.spec.ts:98:1 › admin: resource lifecycle, category and notice CRUD, analytics (3.1s)
+  ok  5 [chromium] › tests\mobile-360.spec.ts:3:1 › 360 px student flow stays within the viewport (1.6s)
+(node:28916) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  6 [firefox] › tests\flows.spec.ts:13:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating (8.0s)
+  ok  7 [firefox] › tests\flows.spec.ts:65:1 › primary student pages: no serious or critical WCAG issues; responsive navigation (9.5s)
+  ok  8 [firefox] › tests\flows.spec.ts:86:1 › assistant says not found instead of guessing on out-of-scope questions (3.9s)
+  ok  9 [firefox] › tests\flows.spec.ts:98:1 › admin: resource lifecycle, category and notice CRUD, analytics (9.9s)
+  ok 10 [firefox] › tests\mobile-360.spec.ts:3:1 › 360 px student flow stays within the viewport (4.0s)
+(node:3408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 11 [webkit] › tests\flows.spec.ts:13:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating (13.2s)
+  ok 12 [webkit] › tests\flows.spec.ts:65:1 › primary student pages: no serious or critical WCAG issues; responsive navigation (28.4s)
+  ok 13 [webkit] › tests\flows.spec.ts:86:1 › assistant says not found instead of guessing on out-of-scope questions (4.2s)
+  ok 14 [webkit] › tests\flows.spec.ts:98:1 › admin: resource lifecycle, category and notice CRUD, analytics (12.4s)
+  ok 15 [webkit] › tests\mobile-360.spec.ts:3:1 › 360 px student flow stays within the viewport (9.9s)
+
+  15 passed (2.1m)

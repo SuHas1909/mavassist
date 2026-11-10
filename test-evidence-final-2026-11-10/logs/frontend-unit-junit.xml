@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="3" failures="0" errors="0" time="0.146096">
+    <testsuite name="src/App.test.tsx" timestamp="2026-11-10T20:36:51.631Z" hostname="Ashwinder" tests="1" failures="0" errors="0" skipped="0" time="0.123663">
+        <testcase classname="src/App.test.tsx" name="registration form uses labels and submits only student fields" time="0.1225494">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/api.test.ts" timestamp="2026-11-10T20:36:51.634Z" hostname="Ashwinder" tests="2" failures="0" errors="0" skipped="0" time="0.022433">
+        <testcase classname="src/api.test.ts" name="authenticated requests attach the session token and JSON body" time="0.0161592">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="expired sessions clear credentials and notify the app" time="0.0042219">
+        </testcase>
+    </testsuite>
+</testsuites>
