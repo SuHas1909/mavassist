@@ -1,10 +1,10 @@
 {
-  "run_date": "2026-11-09",
+  "run_date": "2026-11-10",
   "target": "http://127.0.0.1:5173/",
   "total_cases": 94,
-  "passed": 89,
-  "failed": 3,
-  "blocked": 2,
+  "passed": 94,
+  "failed": 0,
+  "blocked": 0,
   "by_type": {
     "Component": {
       "PASS": 1
@@ -44,5 +44,23 @@
       "PASS": 1
     }
   },
-  "overall": "NEEDS_ATTENTION"
+  "overall": "PASS",
+  "retest": {
+    "frontend_unit_component": "3 passed",
+    "backend": "79 passed; 92% coverage",
+    "chromium_e2e": "5 passed; zero serious/critical Axe findings",
+    "canonical_performance": "50 VUs for 60 s; 5,838 requests; 0% errors; directory p95 23.84 ms; chat p95 79.88 ms",
+    "docker": "2 checks blocked because Docker daemon is unavailable"
+  },
+  "docker_retest": {
+    "compose_services": [
+      "db healthy",
+      "api healthy",
+      "web running"
+    ],
+    "web_http": 200,
+    "api_health_http": 200,
+    "directory_http": 200,
+    "chromium_e2e": "5 passed"
+  }
 }

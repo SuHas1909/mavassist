@@ -1,6 +1,15 @@
 import {test,expect} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 const API=process.env.API_URL||'http://127.0.0.1:8000';
+async function waitForAnimations(page:Page){
+  await page.evaluate(async()=>{
+    const active=document.getAnimations().filter(animation=>
+      animation.playState!=='finished'&&animation.effect?.getComputedTiming().iterations!==Infinity
+    );
+    await Promise.all(active.map(animation=>animation.finished.catch(()=>undefined)));
+  });
+}
 test('student: registration, search/filter, detail, notices, bookmark, recent, chat and rating',async({page,request})=>{
   await page.goto('/');
   await expect(page.getByRole('heading',{name:'Welcome back.'})).toBeVisible();
@@ -17,6 +26,7 @@ test('student: registration, search/filter, detail, notices, bookmark, recent, c
   await expect(page.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Student Accounts',exact:true}).click();
   await expect(page.getByRole('dialog')).toBeVisible();
+  await waitForAnimations(page);
   await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/service-detail-desktop.png',fullPage:true});
   const modalAxe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
   expect(modalAxe.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
@@ -44,6 +54,7 @@ test('student: registration, search/filter, detail, notices, bookmark, recent, c
   await expect(page.locator('.conversation>article').last().locator('.answer-paragraph')).toContainText([/processing|refund/i]);
   await page.getByRole('button',{name:'Helpful answer',exact:true}).last().click();
   await expect(page.getByText('Thanks for your feedback.')).toBeVisible();
+  await waitForAnimations(page);
   const chatAxe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
   expect(chatAxe.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
   const token=await page.evaluate(()=>sessionStorage.getItem('mavassist-token'));
@@ -53,9 +64,9 @@ test('student: registration, search/filter, detail, notices, bookmark, recent, c
 });
 test('primary student pages: no serious or critical WCAG issues; responsive navigation',async({page})=>{
   await page.goto('/');
-  let   results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+  await waitForAnimations(page);
+  let results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
   expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/admin-insights-desktop.png',fullPage:true});
   await page.getByRole('button',{name:'Create an account'}).click();
   await page.getByLabel('Full name').fill('Accessibility Student');
   await page.getByLabel('Email address').fill(`access-${Date.now()}@example.com`);
@@ -64,7 +75,7 @@ test('primary student pages: no serious or critical WCAG issues; responsive navi
   await expect(page.getByRole('heading',{name:'Find your next step.'})).toBeVisible();
   for(const name of ['Explore resources','Saved resources','Recently viewed','Ask MavAssist']){
     await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name,exact:true}).click();
-    await page.waitForTimeout(200);
+    await waitForAnimations(page);
     results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
     expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
   }
@@ -96,4 +107,5 @@ test('admin: resource lifecycle, category and notice CRUD, analytics',async({pag
   let results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
   await page.getByRole('button',{name:'Usage insights',exact:true}).click();await expect(page.getByRole('heading',{name:'Usage insights'})).toBeVisible();
   results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/admin-insights-desktop.png',fullPage:true});
 });
