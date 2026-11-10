@@ -13,21 +13,21 @@ async function waitForAnimations(page:Page){
 test('student: registration, search/filter, detail, notices, bookmark, recent, chat and rating',async({page,request})=>{
   await page.goto('/');
   await expect(page.getByRole('heading',{name:'Welcome back.'})).toBeVisible();
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/sign-in-desktop.png',fullPage:true});
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/sign-in-desktop.png',fullPage:true,scale:'css'});
   await page.getByRole('button',{name:'Create an account',exact:true}).click();
   await page.getByLabel('Full name').fill('Browser Student');
   await page.getByLabel('Email address').fill(`browser-${Date.now()}@example.com`);
   await page.getByLabel('Password',{exact:true}).fill('Browser-pass123!');
   await page.getByRole('button',{name:'Create student account'}).click();
   await expect(page.getByRole('heading',{name:'Find your next step.'})).toBeVisible();
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/directory-desktop.png',fullPage:true});
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/directory-desktop.png',fullPage:true,scale:'css'});
   await page.getByLabel('Search campus services').fill('tuition');
   await page.getByRole('button',{name:'Search',exact:true}).click();
   await expect(page.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Student Accounts',exact:true}).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await waitForAnimations(page);
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/service-detail-desktop.png',fullPage:true});
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/service-detail-desktop.png',fullPage:true,scale:'css'});
   const modalAxe=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
   expect(modalAxe.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
   await page.getByRole('button',{name:'Save resource',exact:true}).click();
@@ -35,7 +35,7 @@ test('student: registration, search/filter, detail, notices, bookmark, recent, c
   await page.getByRole('button',{name:'Close resource'}).click();
   await page.getByRole('button',{name:'Saved resources',exact:true}).click();
   await expect(page.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/saved-resources-desktop.png',fullPage:true});
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/saved-resources-desktop.png',fullPage:true,scale:'css'});
   await page.getByRole('button',{name:'Recently viewed',exact:true}).click();
   await expect(page.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
   await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name:'Ask MavAssist'}).click();
@@ -43,7 +43,7 @@ test('student: registration, search/filter, detail, notices, bookmark, recent, c
   await page.getByRole('button',{name:'Send question'}).click();
   await expect(page.locator('.answer-paragraph').first()).toContainText('credit balance');
   await expect(page.getByRole('heading',{name:'Sources',exact:true})).toBeVisible();
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/assistant-desktop.png',fullPage:true});
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/assistant-desktop.png',fullPage:true,scale:'css'});
   // FR-04: recommended office with reason, details and last-updated date.
   const slip=page.getByRole('region',{name:'Recommended office'}).first();
   await expect(slip.getByRole('button',{name:'Student Accounts',exact:true})).toBeVisible();
@@ -81,7 +81,7 @@ test('primary student pages: no serious or critical WCAG issues; responsive navi
   }
   await page.setViewportSize({width:360,height:800});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/student-360px.png',fullPage:true});
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/student-360px.png',fullPage:true,scale:'css'});
 });
 test('assistant says not found instead of guessing on out-of-scope questions',async({page})=>{
   await page.goto('/');await page.getByRole('button',{name:'Create an account'}).click();
@@ -107,5 +107,5 @@ test('admin: resource lifecycle, category and notice CRUD, analytics',async({pag
   let results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
   await page.getByRole('button',{name:'Usage insights',exact:true}).click();await expect(page.getByRole('heading',{name:'Usage insights'})).toBeVisible();
   results=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();expect(results.violations.filter(v=>['serious','critical'].includes(v.impact||''))).toEqual([]);
-  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/admin-insights-desktop.png',fullPage:true});
+  await page.screenshot({path:'../test-evidence-2026-11-09/screenshots/admin-insights-desktop.png',fullPage:true,scale:'css'});
 });
