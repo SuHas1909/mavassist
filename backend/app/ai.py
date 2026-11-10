@@ -177,6 +177,19 @@ def expand_topic(result,chunks):
 
 def llm_ready(): return bool(API_KEY and MODEL) and time.monotonic()>=AI_DOWN_UNTIL
 
+# Fixed messages raised by our own validators; only these are logged verbatim (never model output).
+_REJECT_REASONS={'Hosted AI not configured','Malformed provider response','Empty model reply','Expected a JSON object','No active services',
+  'Unknown intent','Unknown primary service','Invalid answer length','Malformed citation','Unknown citation or invalid answer text'}
+def reject_reason(exc):
+    """Why a model reply was rejected: error type, position/length flags or the missing field name, never content."""
+    if isinstance(exc,json.JSONDecodeError):
+        doc=exc.doc or ''
+        return f"JSONDecodeError ({exc.msg}) at char {exc.pos} of {len(doc)}; starts with '{{': {doc.lstrip().startswith('{')}; has <think>: {'<think>' in doc}"
+    if isinstance(exc,KeyError):
+        key=exc.args[0] if exc.args else None
+        return f'KeyError: missing field {key}' if isinstance(key,str) and re.fullmatch(r'\w{1,40}',key) else 'KeyError'
+    return f'{type(exc).__name__}: {exc}' if str(exc) in _REJECT_REASONS else type(exc).__name__
+
 def chat_json(system,user,max_tokens=900):
     """One JSON-mode chat completion. Raises httpx.HTTPError on transport failure, ValueError on bad output."""
     if not API_KEY or not MODEL: raise ValueError('Hosted AI not configured')
@@ -188,8 +201,19 @@ def chat_json(system,user,max_tokens=900):
         response=client.post(BASE_URL+'/chat/completions',headers=headers,json=payload);response.raise_for_status()
     try: content=response.json()['choices'][0]['message']['content'] or ''
     except (KeyError,IndexError,TypeError): raise ValueError('Malformed provider response')
+    return parse_json_object(content)
+
+def parse_json_object(content):
+    """Parse the model's JSON reply. Some free models wrap it in think-tags, code fences or a trailing remark,
+    so on failure take the first complete JSON object; the caller's strict field validation is unchanged."""
+    content=re.sub(r'<think>.*?</think>','',content or '',flags=re.S)
     content=re.sub(r'^\s*```(?:json)?|```\s*$','',content.strip()).strip()
-    result=json.loads(content)
+    if not content: raise ValueError('Empty model reply')
+    try: result=json.loads(content)
+    except json.JSONDecodeError:
+        start=content.find('{')
+        if start<0: raise
+        result,_=json.JSONDecoder().raw_decode(content,start)
     if not isinstance(result,dict): raise ValueError('Expected a JSON object')
     return result
 
@@ -363,7 +387,8 @@ def answer_question(db,question,history=None):
             status=exc.response.status_code if isinstance(exc,httpx.HTTPStatusError) else type(exc).__name__
             log.warning('Hosted AI request failed (%s); answering from sources for %.0f s',status,BREAKER_SECONDS)
             AI_DOWN_UNTIL=time.monotonic()+BREAKER_SECONDS
-        except (ValueError,KeyError,TypeError): pass
+        except (ValueError,KeyError,TypeError) as exc:
+            log.warning('Hosted AI reply rejected (%s); answering from sources',reject_reason(exc))
     if victim: return guard.respond(db,category,question)
     # Offline / fallback path: keyword + semantic retrieval with cited source summaries.
     passages=retrieve(db,query)
