@@ -1,0 +1,30 @@
+﻿{
+    "backend":  {
+                    "ok":  false,
+                    "coverage":  0,
+                    "failed":  0,
+                    "passed":  0
+                },
+    "build":  {
+                  "ok":  true
+              },
+    "unit":  {
+                 "ok":  true,
+                 "passed":  3
+             },
+    "e2e":  {
+                "ok":  true,
+                "failed":  0,
+                "passed":  5
+            },
+    "load":  {
+                 "chat_p95":  5516,
+                 "error_rate":  4.31,
+                 "non_ai_p95":  4827,
+                 "ok":  false
+             },
+    "docker":  {
+                   "ok":  true
+               },
+    "sus_participants":  0
+}

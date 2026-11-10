@@ -1,0 +1,7 @@
+﻿NAME                   IMAGE                    COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+mavassist-main-api-1   mavassist-main-api       "sh -c 'python -m al…"   api       38 seconds ago   Up 30 seconds (healthy)   127.0.0.1:8000->8000/tcp
+mavassist-main-db-1    pgvector/pgvector:pg16   "docker-entrypoint.s…"   db        38 seconds ago   Up 36 seconds (healthy)   5432/tcp
+mavassist-main-web-1   mavassist-main-web       "/docker-entrypoint.…"   web       38 seconds ago   Up 1 second               127.0.0.1:8080->80/tcp
+
+API /health 200: True
+Web :8080 200: True

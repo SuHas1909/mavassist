@@ -454,6 +454,7 @@ td small{color:var(--slate);font-size:13px}
 /* Redirect answers (not found / small talk) and safety answers. */
 .mode-out_of_scope{background:var(--mist);color:var(--slate)}
 .mode-greeting{background:var(--ok-bg);color:var(--ok)}
+.answer-opening{font-size:17px;color:var(--ink);max-width:68ch;animation:fade-up .4s var(--ease-out) .15s both}
 .mode-boundary{background:var(--warn-bg);color:var(--warn)}
 .mode-safety,.mode-crisis{background:var(--err-bg);color:var(--err)}
 .answer-safety,.answer-crisis{border-top:4px solid var(--err)}

@@ -196,6 +196,8 @@ Anonymous chat/usage rows older than 90 days are pruned at startup and hourly wh
 | Chat says Source-based answer/fallback | Offline mode or provider error. Check AI_MODE, model access, project credit, key and timeout; verify retrieval embeddings. |
 | RAG returns clarification for every query | Reindex after enabling rag; inspect seed vocabulary and tune threshold on reviewed questions. |
 | API build/start runs out of memory | Increase memory or use offline mode for a labeled limited demo. Do not claim full AI deployment in keyword mode. |
+| API container exits with `password authentication failed for user "mavassist"` | The Postgres volume keeps the password from its first start. If `scripts/configure.py` generated a new root `.env`, restore the old `POSTGRES_PASSWORD`, or reset local data with `docker compose down -v` and start again. Keep one working folder so `.env` and the volume stay matched. |
+| HTTP 500 under load with `QueuePool limit … reached` | Raise `DB_POOL_SIZE` / `DB_MAX_OVERFLOW` (defaults 20/20 cover FastAPI's 40 worker threads). Keep the total below the database's connection limit. |
 | HTTP 429 | Rate limit is per process/IP. Wait a minute. For isolated load testing disable it only in a private staging instance; re-enable before release. |
 | Migration denied CREATE EXTENSION | Ask the database owner to enable vector; use a migration account with the necessary permissions. |
 | Password rejected | Minimum 10 characters and maximum 72 UTF-8 bytes; bcrypt limit is bytes, not characters. |

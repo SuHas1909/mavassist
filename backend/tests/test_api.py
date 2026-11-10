@@ -122,7 +122,7 @@ def test_chat_clarification_feedback_analytics_retention(client,student,admin):
 
 def test_ai_timeout_fallback_and_low_confidence(client,student,monkeypatch):
     monkeypatch.setattr(ai,'API_KEY','test-key');monkeypatch.setattr(ai,'MODEL','test-model')
-    monkeypatch.setattr(ai,'generate',lambda *args:(_ for _ in ()).throw(httpx.TimeoutException('forced outage')))
+    monkeypatch.setattr(ai,'route_and_answer',lambda *args:(_ for _ in ()).throw(httpx.TimeoutException('forced outage')))
     started=time.monotonic();r=client.post('/api/chat',json={'text':'tuition refund'},headers=student).json()
     assert time.monotonic()-started<3 and r['mode']=='fallback' and r['recommendations'][0]['name']=='Student Accounts'
     assert r['answer'] and r['sources']
@@ -131,7 +131,6 @@ def test_ai_timeout_fallback_and_low_confidence(client,student,monkeypatch):
 
 
 def test_llm_payload_privacy_and_unknown_id_rejection(client,monkeypatch):
-    with SessionLocal() as db: passages=ai.retrieve(db,'tuition refund')
     captured=[]
     class FakeClient:
         def __init__(self,**kw): pass
@@ -139,14 +138,14 @@ def test_llm_payload_privacy_and_unknown_id_rejection(client,monkeypatch):
         def __exit__(self,*args): pass
         def post(self,url,headers,json):
             captured.append(json)
-            invalid={'answer':[{'text':'A fabricated answer','source_ids':[999999]}],'steps':[]}
+            invalid={'intent':'campus','primary_service_id':1,'answer':[{'text':'A fabricated answer','source_ids':[999999]}],'steps':[]}
             return httpx.Response(200,json={'choices':[{'message':{'content':__import__('json').dumps(invalid)}}]},request=httpx.Request('POST',url))
     monkeypatch.setattr(ai.httpx,'Client',FakeClient);monkeypatch.setattr(ai,'API_KEY','test-key');monkeypatch.setattr(ai,'MODEL','test-model')
     clean=ai.redact('My email is student@example.com, ID 1002271374, I am Test Student and need tuition help','Test Student')
-    with pytest.raises(ValueError): ai.generate(clean,[],passages)
+    with SessionLocal() as db:
+        with pytest.raises(ValueError): ai.route_and_answer(db,clean,[],ai.rank_services(db,clean))
     encoded=json.dumps(captured[0]);assert 'student@example.com' not in encoded and '1002271374' not in encoded and 'Test Student' not in encoded
     assert not any(key in json.loads(captured[0]['messages'][-1]['content']) for key in ['user_id','email','name'])
-
 
 def test_rate_limit_and_headers(client,monkeypatch):
     monkeypatch.setenv('RATE_LIMIT','true');limiter.clear()
@@ -201,7 +200,7 @@ def test_ai_routing_accuracy_gate(client):
 def test_circuit_breaker_skips_provider_after_outage(client,student,monkeypatch):
     calls=[]
     def down(*args): calls.append(1);raise httpx.ConnectError('provider down')
-    monkeypatch.setattr(ai,'API_KEY','k');monkeypatch.setattr(ai,'MODEL','m');monkeypatch.setattr(ai,'generate',down)
+    monkeypatch.setattr(ai,'API_KEY','k');monkeypatch.setattr(ai,'MODEL','m');monkeypatch.setattr(ai,'route_and_answer',down)
     for _ in range(3): assert client.post('/api/chat',json={'text':'tuition payment plan'},headers=student).json()['mode']=='fallback'
     assert len(calls)==1  # later questions skip the provider during the cool-down
     ai.AI_DOWN_UNTIL=0.0

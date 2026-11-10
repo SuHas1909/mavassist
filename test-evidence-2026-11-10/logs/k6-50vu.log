@@ -1,0 +1,282 @@
+﻿
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: C:\Users\singh\Downloads\mavassist-ready\mavassist-main\scripts\load-test.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 50 max VUs, 1m30s max duration (incl. graceful stop):
+              * default: 50 looping VUs for 1m0s (gracefulStop: 30s)
+
+
+running (0m01.0s), 50/50 VUs, 0 complete and 0 interrupted iterations
+default   [   2% ] 50 VUs  0m01.0s/1m0s
+
+running (0m02.0s), 50/50 VUs, 5 complete and 0 interrupted iterations
+default   [   3% ] 50 VUs  0m02.0s/1m0s
+
+running (0m03.0s), 50/50 VUs, 20 complete and 0 interrupted iterations
+default   [   5% ] 50 VUs  0m03.0s/1m0s
+
+running (0m04.0s), 50/50 VUs, 36 complete and 0 interrupted iterations
+default   [   7% ] 50 VUs  0m04.0s/1m0s
+
+running (0m05.0s), 50/50 VUs, 53 complete and 0 interrupted iterations
+default   [   8% ] 50 VUs  0m05.0s/1m0s
+
+running (0m06.0s), 50/50 VUs, 67 complete and 0 interrupted iterations
+default   [  10% ] 50 VUs  0m06.0s/1m0s
+time="2026-11-10T12:34:08-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57376->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+time="2026-11-10T12:34:08-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57342->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+time="2026-11-10T12:34:08-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57350->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m07.0s), 50/50 VUs, 87 complete and 0 interrupted iterations
+default   [  12% ] 50 VUs  0m07.0s/1m0s
+
+running (0m08.0s), 50/50 VUs, 107 complete and 0 interrupted iterations
+default   [  13% ] 50 VUs  0m08.0s/1m0s
+
+running (0m09.0s), 50/50 VUs, 122 complete and 0 interrupted iterations
+default   [  15% ] 50 VUs  0m09.0s/1m0s
+
+running (0m10.0s), 50/50 VUs, 139 complete and 0 interrupted iterations
+default   [  17% ] 50 VUs  0m10.0s/1m0s
+
+running (0m11.0s), 50/50 VUs, 157 complete and 0 interrupted iterations
+default   [  18% ] 50 VUs  0m11.0s/1m0s
+time="2026-11-10T12:34:13-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57389->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m12.0s), 50/50 VUs, 180 complete and 0 interrupted iterations
+default   [  20% ] 50 VUs  0m12.0s/1m0s
+
+running (0m13.0s), 50/50 VUs, 198 complete and 0 interrupted iterations
+default   [  22% ] 50 VUs  0m13.0s/1m0s
+time="2026-11-10T12:34:15-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:61275->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+time="2026-11-10T12:34:15-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57384->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m14.0s), 50/50 VUs, 215 complete and 0 interrupted iterations
+default   [  23% ] 50 VUs  0m14.0s/1m0s
+time="2026-11-10T12:34:16-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57358->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+time="2026-11-10T12:34:16-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57347->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m15.0s), 50/50 VUs, 232 complete and 0 interrupted iterations
+default   [  25% ] 50 VUs  0m15.0s/1m0s
+time="2026-11-10T12:34:17-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57372->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m16.0s), 50/50 VUs, 246 complete and 0 interrupted iterations
+default   [  27% ] 50 VUs  0m16.0s/1m0s
+
+running (0m17.0s), 50/50 VUs, 265 complete and 0 interrupted iterations
+default   [  28% ] 50 VUs  0m17.0s/1m0s
+
+running (0m18.0s), 50/50 VUs, 283 complete and 0 interrupted iterations
+default   [  30% ] 50 VUs  0m18.0s/1m0s
+
+running (0m19.0s), 50/50 VUs, 302 complete and 0 interrupted iterations
+default   [  32% ] 50 VUs  0m19.0s/1m0s
+time="2026-11-10T12:34:21-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57391->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m20.0s), 50/50 VUs, 316 complete and 0 interrupted iterations
+default   [  33% ] 50 VUs  0m20.0s/1m0s
+
+running (0m21.0s), 50/50 VUs, 348 complete and 0 interrupted iterations
+default   [  35% ] 50 VUs  0m21.0s/1m0s
+time="2026-11-10T12:34:23-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": EOF"
+
+running (0m22.0s), 50/50 VUs, 359 complete and 0 interrupted iterations
+default   [  37% ] 50 VUs  0m22.0s/1m0s
+time="2026-11-10T12:34:24-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57382->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m23.0s), 50/50 VUs, 380 complete and 0 interrupted iterations
+default   [  38% ] 50 VUs  0m23.0s/1m0s
+time="2026-11-10T12:34:25-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57371->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m24.0s), 50/50 VUs, 395 complete and 0 interrupted iterations
+default   [  40% ] 50 VUs  0m24.0s/1m0s
+
+running (0m25.0s), 50/50 VUs, 407 complete and 0 interrupted iterations
+default   [  42% ] 50 VUs  0m25.0s/1m0s
+
+running (0m26.0s), 50/50 VUs, 439 complete and 0 interrupted iterations
+default   [  43% ] 50 VUs  0m26.0s/1m0s
+
+running (0m27.0s), 50/50 VUs, 455 complete and 0 interrupted iterations
+default   [  45% ] 50 VUs  0m27.0s/1m0s
+
+running (0m28.0s), 50/50 VUs, 483 complete and 0 interrupted iterations
+default   [  47% ] 50 VUs  0m28.0s/1m0s
+
+running (0m29.0s), 50/50 VUs, 514 complete and 0 interrupted iterations
+default   [  48% ] 50 VUs  0m29.0s/1m0s
+
+running (0m30.0s), 50/50 VUs, 534 complete and 0 interrupted iterations
+default   [  50% ] 50 VUs  0m30.0s/1m0s
+
+running (0m31.0s), 50/50 VUs, 560 complete and 0 interrupted iterations
+default   [  52% ] 50 VUs  0m31.0s/1m0s
+
+running (0m32.0s), 50/50 VUs, 578 complete and 0 interrupted iterations
+default   [  53% ] 50 VUs  0m32.0s/1m0s
+
+running (0m33.0s), 50/50 VUs, 602 complete and 0 interrupted iterations
+default   [  55% ] 50 VUs  0m33.0s/1m0s
+
+running (0m34.0s), 50/50 VUs, 612 complete and 0 interrupted iterations
+default   [  57% ] 50 VUs  0m34.0s/1m0s
+
+running (0m35.0s), 50/50 VUs, 641 complete and 0 interrupted iterations
+default   [  58% ] 50 VUs  0m35.0s/1m0s
+
+running (0m36.0s), 50/50 VUs, 656 complete and 0 interrupted iterations
+default   [  60% ] 50 VUs  0m36.0s/1m0s
+
+running (0m37.0s), 50/50 VUs, 667 complete and 0 interrupted iterations
+default   [  62% ] 50 VUs  0m37.0s/1m0s
+
+running (0m38.0s), 50/50 VUs, 689 complete and 0 interrupted iterations
+default   [  63% ] 50 VUs  0m38.0s/1m0s
+
+running (0m39.0s), 50/50 VUs, 703 complete and 0 interrupted iterations
+default   [  65% ] 50 VUs  0m39.0s/1m0s
+
+running (0m40.0s), 50/50 VUs, 719 complete and 0 interrupted iterations
+default   [  67% ] 50 VUs  0m40.0s/1m0s
+
+running (0m41.0s), 50/50 VUs, 726 complete and 0 interrupted iterations
+default   [  68% ] 50 VUs  0m41.0s/1m0s
+time="2026-11-10T12:34:42-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": EOF"
+time="2026-11-10T12:34:42-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:61311->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m42.0s), 50/50 VUs, 743 complete and 0 interrupted iterations
+default   [  70% ] 50 VUs  0m42.0s/1m0s
+time="2026-11-10T12:34:44-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57366->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m43.0s), 50/50 VUs, 760 complete and 0 interrupted iterations
+default   [  72% ] 50 VUs  0m43.0s/1m0s
+time="2026-11-10T12:34:45-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57369->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m44.0s), 50/50 VUs, 769 complete and 0 interrupted iterations
+default   [  73% ] 50 VUs  0m44.0s/1m0s
+
+running (0m45.0s), 50/50 VUs, 790 complete and 0 interrupted iterations
+default   [  75% ] 50 VUs  0m45.0s/1m0s
+
+running (0m46.0s), 50/50 VUs, 807 complete and 0 interrupted iterations
+default   [  77% ] 50 VUs  0m46.0s/1m0s
+
+running (0m47.0s), 50/50 VUs, 823 complete and 0 interrupted iterations
+default   [  78% ] 50 VUs  0m47.0s/1m0s
+
+running (0m48.0s), 50/50 VUs, 837 complete and 0 interrupted iterations
+default   [  80% ] 50 VUs  0m48.0s/1m0s
+time="2026-11-10T12:34:50-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57365->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m49.0s), 50/50 VUs, 852 complete and 0 interrupted iterations
+default   [  82% ] 50 VUs  0m49.0s/1m0s
+time="2026-11-10T12:34:51-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:61321->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m50.0s), 50/50 VUs, 871 complete and 0 interrupted iterations
+default   [  83% ] 50 VUs  0m50.0s/1m0s
+
+running (0m51.0s), 50/50 VUs, 888 complete and 0 interrupted iterations
+default   [  85% ] 50 VUs  0m51.0s/1m0s
+time="2026-11-10T12:34:52-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:61304->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m52.0s), 50/50 VUs, 908 complete and 0 interrupted iterations
+default   [  87% ] 50 VUs  0m52.0s/1m0s
+
+running (0m53.0s), 50/50 VUs, 922 complete and 0 interrupted iterations
+default   [  88% ] 50 VUs  0m53.0s/1m0s
+time="2026-11-10T12:34:54-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:61276->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m54.0s), 50/50 VUs, 944 complete and 0 interrupted iterations
+default   [  90% ] 50 VUs  0m54.0s/1m0s
+
+running (0m55.0s), 50/50 VUs, 958 complete and 0 interrupted iterations
+default   [  92% ] 50 VUs  0m55.0s/1m0s
+time="2026-11-10T12:34:57-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:57381->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (0m56.0s), 50/50 VUs, 972 complete and 0 interrupted iterations
+default   [  93% ] 50 VUs  0m56.0s/1m0s
+
+running (0m57.0s), 50/50 VUs, 991 complete and 0 interrupted iterations
+default   [  95% ] 50 VUs  0m57.0s/1m0s
+
+running (0m58.0s), 50/50 VUs, 1010 complete and 0 interrupted iterations
+default   [  97% ] 50 VUs  0m58.0s/1m0s
+
+running (0m59.0s), 50/50 VUs, 1033 complete and 0 interrupted iterations
+default   [  98% ] 50 VUs  0m59.0s/1m0s
+time="2026-11-10T12:35:01-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": EOF"
+
+running (1m00.0s), 50/50 VUs, 1051 complete and 0 interrupted iterations
+default   [ 100% ] 50 VUs  1m00.0s/1m0s
+time="2026-11-10T12:35:01-06:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8000/api/chat\": read tcp 127.0.0.1:61334->127.0.0.1:8000: wsarecv: An existing connection was forcibly closed by the remote host."
+
+running (1m01.0s), 34/50 VUs, 1067 complete and 0 interrupted iterations
+default ↓ [ 100% ] 50 VUs  1m0s
+
+running (1m02.0s), 11/50 VUs, 1090 complete and 0 interrupted iterations
+default ↓ [ 100% ] 50 VUs  1m0s
+
+running (1m03.0s), 01/50 VUs, 1100 complete and 0 interrupted iterations
+default ↓ [ 100% ] 50 VUs  1m0s
+
+
+  █ THRESHOLDS 
+
+    chat_latency
+    ✗ 'p(95)<5000' p(95)=5515.8818
+
+    checks
+    ✗ 'rate==1' rate=95.68%
+
+    http_req_failed
+    ✗ 'rate<0.01' rate=4.31%
+
+    non_ai_latency
+    ✗ 'p(95)<1000' p(95)=4827.4504
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 2202   34.934893/s
+    checks_succeeded...: 95.68% 2107 out of 2202
+    checks_failed......: 4.31%  95 out of 2202
+
+    ✗ directory 200
+      ↳  97% — ✓ 1068 / ✗ 33
+    ✗ chat 200
+      ↳  94% — ✓ 1039 / ✗ 62
+
+    CUSTOM
+    chat_latency...................: avg=1056.498913 min=0       med=353.8162 max=6844.974  p(90)=3399.0783 p(95)=5515.8818
+    non_ai_latency.................: avg=727.389924  min=0.7821  med=118.5182 max=6428.6119 p(90)=2387.1603 p(95)=4827.4504
+
+    HTTP
+    http_req_duration..............: avg=891.94ms    min=0s      med=250.7ms  max=6.84s     p(90)=2.96s     p(95)=5.29s    
+      { expected_response:true }...: avg=721.59ms    min=782.1µs med=245.92ms max=6.64s     p(90)=2.17s     p(95)=3.77s    
+    http_req_failed................: 4.31%  95 out of 2202
+    http_reqs......................: 2202   34.934893/s
+
+    EXECUTION
+    iteration_duration.............: avg=2.78s       min=1.02s   med=1.76s    max=13.62s    p(90)=7.02s     p(95)=7.41s    
+    iterations.....................: 1101   17.467447/s
+    vus............................: 1      min=1          max=50
+    vus_max........................: 50     min=50         max=50
+
+    NETWORK
+    data_received..................: 5.7 MB 91 kB/s
+    data_sent......................: 810 kB 13 kB/s
+
+
+
+
+running (1m03.0s), 00/50 VUs, 1101 complete and 0 interrupted iterations
+default ✓ [ 100% ] 50 VUs  1m0s
+time="2026-11-10T12:35:04-06:00" level=error msg="thresholds on metrics 'chat_latency, checks, http_req_failed, non_ai_latency' have been crossed"

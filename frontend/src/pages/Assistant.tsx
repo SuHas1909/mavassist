@@ -72,7 +72,7 @@ export default function Assistant({onOpen}:{onOpen:(id:number)=>void}){
         <section className="aside-block">
           <h2>How answers are built</h2>
           <ol className="how">
-            <li>Your question is matched against 50 curated UTA offices.</li>
+            <li>MavAssist reads your whole question, including how you’re feeling, and matches it to 50 curated UTA offices.</li>
             <li>The answer uses only that office’s official guidance, with numbered sources.</li>
             <li>If nothing matches confidently, MavAssist asks you for a detail instead of guessing.</li>
             <li>Questions outside UTA services get a clear “not found”, and safety concerns go straight to emergency and support contacts.</li>
@@ -97,8 +97,8 @@ function AnswerCard({answer:a,onOpen,onPick,onRate}:{answer:Answer;onOpen:(id:nu
   let n=0;
   return <div className={'answer answer-'+a.mode}>
     <div className="answer-head"><strong>MavAssist</strong><span className={'mode mode-'+a.mode}>{MODE_LABEL[a.mode]||'Answer'}</span></div>
-    {urgent&&<section className="urgent" aria-label="Get help now">
-      <p className="urgent-message">{a.message}</p>
+    {(urgent||actions.length>0)&&<section className="urgent" aria-label="Get help now">
+      <p className="urgent-message">{urgent?a.message:(a.urgent_message||'If you are in danger right now, call 911.')}</p>
       {actions.length>0&&<div className="urgent-actions">{actions.map((x,i)=><a key={x.href} className={'btn '+(i===0?'btn-urgent':'btn-secondary')} href={x.href}><Phone size={16} aria-hidden="true"/>{x.label}</a>)}</div>}
     </section>}
     {redirect?<>
@@ -108,6 +108,7 @@ function AnswerCard({answer:a,onOpen,onPick,onRate}:{answer:Answer;onOpen:(id:nu
         <button className="link-button" onClick={()=>onOpen(s.id)}>{s.name}</button><span>{s.reason}</span>
       </li>)}</ul></div>}
     </>:<>
+      {a.intro&&<p className="answer-intro answer-opening">{a.intro}</p>}
       {main&&<section className="slip" aria-label="Recommended office">
         <p className="slip-label">Go to</p>
         <h3><button className="slip-name" onClick={()=>onOpen(main.id)}>{main.name}</button></h3>

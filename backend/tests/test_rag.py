@@ -42,38 +42,55 @@ def test_archiving_excludes_source_passages(client,student,admin):
     assert not any(s['name']=='Student Accounts' for s in r['recommendations'])
     assert not any('/student-accounts/' in s['url'] for s in r['sources'])
 
-def test_valid_generated_answer_and_prompt_carries_context(client,student,monkeypatch):
-    captured=[]
+def router_client(make_result,captured):
     class FakeClient:
         def __init__(self,**kwargs): pass
         def __enter__(self): return self
         def __exit__(self,*args): pass
         def post(self,url,headers,json):
-            captured.append(json);context=__import__('json').loads(json['messages'][-1]['content']);sid=context['sources'][0]['source_id']
-            result={'answer':[{'text':'Check whether your account has a credit balance; Student Accounts handles refund questions.','source_ids':[sid]}],'steps':[{'text':'Review the cited official guidance.','source_ids':[sid]}]}
-            return httpx.Response(200,json={'choices':[{'message':{'content':__import__('json').dumps(result)}}]},request=httpx.Request('POST',url))
-    monkeypatch.setattr(ai.httpx,'Client',FakeClient);monkeypatch.setattr(ai,'API_KEY','test');monkeypatch.setattr(ai,'MODEL','test-model')
-    r=client.post('/api/chat',headers=student,json={'text':'How do I get it back?','history':[{'question':'I paid extra tuition and need a refund','answer':'Test Student 1002271374 student@example.com'}]}).json()
-    assert r['mode']=='rag' and r['answer'][0]['text'].startswith('Check whether')
-    raw=captured[0]['messages'][-1]['content'];payload=json.loads(raw);assert payload['sources'] and payload['conversation_history']
-    assert all(x not in raw for x in ['1002271374','student@example.com','Test Student'])
-    assert 'credit balance' in ' '.join(s['content'] for s in payload['sources']).lower()
+            captured.append(json);payload=__import__('json').loads(json['messages'][-1]['content'])
+            return httpx.Response(200,json={'choices':[{'message':{'content':__import__('json').dumps(make_result(payload))}}]},request=httpx.Request('POST',url))
+    return FakeClient
 
-@pytest.mark.parametrize('result',[
-    {'answer':[{'text':'Unsupported','source_ids':[]}],'steps':[]},
-    {'answer':[{'text':'Invented citation','source_ids':[999999]}],'steps':[]},
-    {'answer':[],'steps':[]},
-    {'service_ids':[1]},
+def first_passage(payload,name):
+    office=next(o for o in payload['knowledge'] if o['name']==name)
+    return office['service_id'],office['passages'][0]['source_id']
+
+def test_valid_routed_answer_and_prompt_carries_context(client,student,monkeypatch):
+    captured=[]
+    def make(payload):
+        sid,src=first_passage(payload,'Student Accounts')
+        return {'intent':'campus','urgency':'normal','opening':'That sounds frustrating.','primary_service_id':sid,'reason':'They handle tuition refunds.','alternatives':[],
+                'answer':[{'text':'Check whether your account has a credit balance; Student Accounts handles refund questions.','source_ids':[src]}],
+                'steps':[{'text':'Review the cited official guidance.','source_ids':[src]}],'clarifying_question':None,'message':None}
+    monkeypatch.setattr(ai.httpx,'Client',router_client(make,captured));monkeypatch.setattr(ai,'API_KEY','test');monkeypatch.setattr(ai,'MODEL','test-model')
+    r=client.post('/api/chat',headers=student,json={'text':'How do I get it back?','history':[{'question':'I paid extra tuition and need a refund','answer':'Test Student 1002271374 student@example.com'}]}).json()
+    assert r['mode']=='rag' and r['answer'][0]['text'].startswith('Check whether') and r['intro']=='That sounds frustrating.'
+    assert r['recommendations'][0]['name']=='Student Accounts' and r['sources']
+    raw=captured[0]['messages'][-1]['content'];payload=json.loads(raw)
+    assert payload['knowledge'] and payload['conversation_history'] and payload['retrieval_hints']
+    assert all(x not in raw for x in ['1002271374','student@example.com','Test Student'])
+    assert len(payload['knowledge'])==50
+
+@pytest.mark.parametrize('bad',[
+    {'intent':'campus','primary_service_id':999999,'answer':[{'text':'x','source_ids':[1]}],'steps':[]},
+    {'intent':'campus','primary_service_id':'SID','answer':[{'text':'Invented citation','source_ids':[999999]}],'steps':[]},
+    {'intent':'campus','primary_service_id':'SID','answer':[],'steps':[]},
+    {'intent':'campus','primary_service_id':'SID','answer':[{'text':'See https://evil.example','source_ids':['SRC']}],'steps':[]},
+    {'intent':'make_something_up'},
 ])
-def test_malformed_generation_rejected(client,monkeypatch,result):
-    with SessionLocal() as db: passages=ai.retrieve(db,'tuition refund')
-    class FakeClient:
-        def __init__(self,**kw): pass
-        def __enter__(self): return self
-        def __exit__(self,*args): pass
-        def post(self,url,**kw): return httpx.Response(200,json={'choices':[{'message':{'content':json.dumps(result)}}]},request=httpx.Request('POST',url))
-    monkeypatch.setattr(ai.httpx,'Client',FakeClient);monkeypatch.setattr(ai,'API_KEY','test');monkeypatch.setattr(ai,'MODEL','test')
-    with pytest.raises(ValueError): ai.generate('tuition refund',[],passages)
+def test_malformed_router_output_rejected(client,monkeypatch,bad):
+    def make(payload):
+        sid,src=first_passage(payload,'Student Accounts')
+        return json.loads(json.dumps(bad).replace('"SID"',str(sid)).replace('"SRC"',str(src)))
+    monkeypatch.setattr(ai.httpx,'Client',router_client(make,[]));monkeypatch.setattr(ai,'API_KEY','test');monkeypatch.setattr(ai,'MODEL','test')
+    with SessionLocal() as db:
+        with pytest.raises(ValueError): ai.route_and_answer(db,'tuition refund',[],ai.rank_services(db,'tuition refund'))
+
+def test_invalid_model_output_falls_back_to_sources(client,student,monkeypatch):
+    monkeypatch.setattr(ai.httpx,'Client',router_client(lambda p:{'intent':'campus','primary_service_id':-1},[]));monkeypatch.setattr(ai,'API_KEY','k');monkeypatch.setattr(ai,'MODEL','m')
+    r=client.post('/api/chat',headers=student,json={'text':'tuition refund'}).json()
+    assert r['mode']=='fallback' and r['recommendations'][0]['name']=='Student Accounts'
 
 def test_knowledge_import_idempotence_and_validation(client,tmp_path):
     with SessionLocal() as db:

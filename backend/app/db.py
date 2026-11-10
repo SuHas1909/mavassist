@@ -12,7 +12,10 @@ if DATABASE_URL.startswith('postgres://'):
     DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql+psycopg://', 1)
 elif DATABASE_URL.startswith('postgresql://'):
     DATABASE_URL = DATABASE_URL.replace('postgresql://', 'postgresql+psycopg://', 1)
-engine = create_engine(DATABASE_URL, pool_pre_ping=True, **({'connect_args': {'check_same_thread': False}} if DATABASE_URL.startswith('sqlite') else {}))
+# FastAPI runs sync endpoints on a 40-thread pool, so the connection pool must cover that many
+# concurrent requests; the SQLAlchemy default (5 + 10 overflow) caused HTTP 500s at 50 virtual users.
+POOL = {} if ':memory:' in DATABASE_URL else dict(pool_size=int(os.getenv('DB_POOL_SIZE', '20')), max_overflow=int(os.getenv('DB_MAX_OVERFLOW', '20')), pool_timeout=10)
+engine = create_engine(DATABASE_URL, pool_pre_ping=True, **POOL, **({'connect_args': {'check_same_thread': False}} if DATABASE_URL.startswith('sqlite') else {}))
 if DATABASE_URL.startswith('sqlite'):
     @event.listens_for(engine, 'connect')
     def sqlite_constraints(connection, _):
