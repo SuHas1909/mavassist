@@ -6,6 +6,7 @@ import os
 import re
 import time
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
 from functools import lru_cache
 import httpx
 from sqlalchemy import select
@@ -21,7 +22,19 @@ API_KEY=os.getenv('OPENROUTER_API_KEY') or os.getenv('LLM_API_KEY') or os.getenv
 IS_OPENROUTER=bool(os.getenv('OPENROUTER_API_KEY')) or API_KEY.startswith('sk-or-')
 BASE_URL=(os.getenv('LLM_BASE_URL') or ('https://openrouter.ai/api/v1' if IS_OPENROUTER else 'https://api.openai.com/v1')).rstrip('/')
 MODEL=os.getenv('OPENROUTER_MODEL') or os.getenv('LLM_MODEL') or os.getenv('OPENAI_MODEL') or ('openai/gpt-4o-mini' if IS_OPENROUTER else ('gpt-4o-mini' if API_KEY else ''))
-LLM_TIMEOUT=float(os.getenv('LLM_TIMEOUT','12'))
+LLM_TIMEOUT=float(os.getenv('LLM_TIMEOUT','12'))  # per network read
+# NFR-01: total time allowed for the hosted model per question; past it the student gets cited summaries instead.
+LLM_TOTAL_TIMEOUT=float(os.getenv('LLM_TOTAL_TIMEOUT','4.5'))
+_LLM_POOL=ThreadPoolExecutor(max_workers=int(os.getenv('LLM_WORKERS','8')),thread_name_prefix='llm')
+class LLMTimeLimit(Exception):
+    """The hosted model did not answer within LLM_TOTAL_TIMEOUT."""
+
+def chat_json_limited(system,user,max_tokens=900):
+    """chat_json with a total deadline. Only the HTTP call runs in the worker thread; database work stays on the caller's thread."""
+    if LLM_TOTAL_TIMEOUT<=0: return chat_json(system,user,max_tokens)
+    future=_LLM_POOL.submit(chat_json,system,user,max_tokens)
+    try: return future.result(timeout=LLM_TOTAL_TIMEOUT)
+    except FutureTimeout: future.cancel();raise LLMTimeLimit()
 SITE_URL=os.getenv('LLM_SITE_URL','https://github.com/SuHas1909/mavassist')
 THRESHOLD=float(os.getenv('SIMILARITY_THRESHOLD','0.28'))
 # Circuit breaker (NFR-05 / risk R-04): after a hosted-AI failure, answer from sources for a cool-down
@@ -277,7 +290,7 @@ def route_and_answer(db,question,history,ranked,safety_note=None):
     hints=[{'service_id':s.id,'name':s.name} for s,score,_ in ranked[:5]]
     payload={'current_question':question,'conversation_history':history,'retrieval_hints':hints,'knowledge':kb}
     if safety_note: payload['safety_note']=safety_note
-    r=chat_json(ROUTER_PROMPT,json.dumps(payload,ensure_ascii=False),max_tokens=1100)
+    r=chat_json_limited(ROUTER_PROMPT,json.dumps(payload,ensure_ascii=False),max_tokens=1100)
     intent=r.get('intent')
     if intent not in INTENTS: raise ValueError('Unknown intent')
     out={'intent':intent,'message':_clean(r.get('message') or '',500),'clarifying_question':_clean(r.get('clarifying_question') or '',300)}
@@ -382,6 +395,9 @@ def answer_question(db,question,history=None):
                 response['actions']=[guard.CALL_911,guard.CALL_POLICE,guard.CALL_MAVSTALK]
                 response['urgent_message']=response['urgent_message'] or 'If you are in danger right now, call 911 or UTA Police at 817-272-3003.'
             return response
+        except LLMTimeLimit:
+            # Slow is not down: answer this question from sources without tripping the circuit breaker.
+            log.warning('Hosted AI exceeded the %.1f s total time limit; answering from sources',LLM_TOTAL_TIMEOUT)
         except httpx.HTTPError as exc:
             # Status code / error class only: never the key, headers, prompt or response body.
             status=exc.response.status_code if isinstance(exc,httpx.HTTPStatusError) else type(exc).__name__
