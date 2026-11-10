@@ -444,7 +444,7 @@ DEFECT_FIX = {  # commit(s) that fixed each defect (verified against git history
     'D-08': (['a8c1032'], ['E2E-002', 'E2E-007', 'E2E-012']),
     'D-09': (['a8c1032', '73e1bc1'], ['E2E-001', 'E2E-002', 'E2E-006', 'E2E-007', 'E2E-011', 'E2E-012']),
     'D-10': (['a8c1032', '0f0f407'], ['PERF-001']),  # errors under load; PERF-003 also had 0% errors but fails on latency (D-15)
-    'D-11': ([], ['DOCKER-001', 'DOCKER-002']),
+    'D-11': (['73e1bc1'], ['DOCKER-001', 'DOCKER-002']),  # environment issue; 73e1bc1 holds the retest evidence
     'D-12': (['91414be', '72933dd'], ['AI-003', 'AI-004']),
     'D-13': ([], ['USAB-001']),
     'D-14': (['73e1bc1', '0f0f407'], ['FE-UNIT-001', 'FE-UNIT-002', 'FE-UNIT-003']),
@@ -461,9 +461,18 @@ def defect_rows(tests):
     out = []
     for l in lines:
         c = [x.strip() for x in l.strip().strip('|').split('|')]
-        did, found, where, summary, sev, story, cause, fix, status = c[:9]
-        found_date = dt.datetime.strptime(found + ' 2026', '%b %d %Y').date().isoformat()
+        if len(c) == 11:  # "Fixed defects" table
+            did, sev, sprint, found_date, summary, cause, fix, fixed_text, commit_text, _verified_text, status = c
+            check(sprint == sprint_for(found_date), f'{did}: sprint {sprint} does not match found date {found_date}')
+            story = {'D-07': '77, 83'}.get(did, '83' if did <= 'D-06' else '89')
+        else:  # "Open defects" table (original columns)
+            did, found, where, summary, sev, story, cause, fix, status = c[:9]
+            found_date = dt.datetime.strptime(found + ' 2026', '%b %d %Y').date().isoformat()
+            fixed_text = commit_text = ''
         commits, verifiers = DEFECT_FIX[did]
+        for sha in re.findall(r'\b[0-9a-f]{7}\b', commit_text):
+            check(sha in commits, f'{did}: commit {sha} in DEFECTS.md is not in the verified fix list')
+            commit_date(sha)  # fails if the hash is not in git history
         dates = [commit_date(s) for s in commits]
         ids, visual = [], []
         for v in verifiers:
@@ -481,8 +490,8 @@ def defect_rows(tests):
             check(not bad, f'{did} is marked fixed but its verifying tests did not pass: {bad}')
         out.append({'ID': did, 'Severity': sev, 'Sprint found': sprint_for(found_date), 'Found date': found_date,
                     'Summary': re.sub(r'`', '', summary), 'Root cause': re.sub(r'`', '', cause), 'Fix': re.sub(r'`', '', fix),
-                    'Fixed date': max(dates) if dates and state == 'Fixed' else ('' if state == 'Open' else 'n/a (environment)'),
-                    'Commit': ', '.join(commits) if commits else 'n/a', 'Status': state,
+                    'Fixed date': fixed_text or (max(dates) if dates and state == 'Fixed' else ''),
+                    'Commit': commit_text or (', '.join(commits) if commits else 'n/a'), 'Status': state,
                     'Status detail': status, 'Story': story.split('/')[0].strip(), 'Verified by (test ID)': ', '.join(ids + visual)})
     return out
 
