@@ -1,0 +1,26 @@
+{
+  "virtual_users": 50,
+  "duration_seconds": 60,
+  "requests": 3100,
+  "failed": 52,
+  "first_failure": "directory: HTTP 500: Internal Server Error",
+  "directory": {
+    "count": 1542,
+    "p50_ms": 64,
+    "p95_ms": 221,
+    "max_ms": 30243
+  },
+  "chat": {
+    "count": 1546,
+    "p50_ms": 119,
+    "p95_ms": 469,
+    "max_ms": 30809
+  },
+  "thresholds": {
+    "directory_p95_under_1000_ms": true,
+    "chat_p95_under_5000_ms": true,
+    "error_rate_under_1_percent": false
+  }
+}
+
+EXIT_CODE=1

@@ -1,0 +1,26 @@
+{
+  "virtual_users": 10,
+  "duration_seconds": 30,
+  "requests": 600,
+  "failed": 0,
+  "first_failure": null,
+  "directory": {
+    "count": 300,
+    "p50_ms": 70,
+    "p95_ms": 138,
+    "max_ms": 230
+  },
+  "chat": {
+    "count": 300,
+    "p50_ms": 113,
+    "p95_ms": 166,
+    "max_ms": 209
+  },
+  "thresholds": {
+    "directory_p95_under_1000_ms": true,
+    "chat_p95_under_5000_ms": true,
+    "error_rate_under_1_percent": true
+  }
+}
+
+EXIT_CODE=0

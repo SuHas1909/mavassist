@@ -1,0 +1,48 @@
+{
+  "run_date": "2026-11-09",
+  "target": "http://127.0.0.1:5173/",
+  "total_cases": 94,
+  "passed": 89,
+  "failed": 3,
+  "blocked": 2,
+  "by_type": {
+    "Component": {
+      "PASS": 1
+    },
+    "Unit": {
+      "PASS": 2
+    },
+    "Build / type check": {
+      "PASS": 1
+    },
+    "Backend API integration": {
+      "PASS": 79
+    },
+    "End-to-end": {
+      "FAIL": 1,
+      "PASS": 2
+    },
+    "Accessibility / responsive E2E": {
+      "FAIL": 1
+    },
+    "Mobile E2E / 360 px": {
+      "PASS": 1
+    },
+    "Local smoke": {
+      "PASS": 2
+    },
+    "Docker smoke": {
+      "BLOCKED": 1
+    },
+    "Docker live": {
+      "BLOCKED": 1
+    },
+    "Performance": {
+      "FAIL": 1
+    },
+    "Performance diagnostic": {
+      "PASS": 1
+    }
+  },
+  "overall": "NEEDS_ATTENTION"
+}

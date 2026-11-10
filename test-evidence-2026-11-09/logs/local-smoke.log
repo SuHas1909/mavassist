@@ -1,0 +1,4 @@
+Run date: 2026-11-09
+Frontend: HTTP 200, bytes=729
+Backend health: HTTP 200, bytes=64
+{"status":"ok","ai_mode":"keyword","llm":false,"llm_model":null}
