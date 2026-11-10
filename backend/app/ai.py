@@ -1,5 +1,6 @@
 """Small RAG pipeline: retrieve passages, generate cited answers, validate citations."""
 import json
+import logging
 import math
 import os
 import re
@@ -9,6 +10,8 @@ from functools import lru_cache
 import httpx
 from sqlalchemy import select
 from .db import KnowledgeChunk, Service
+
+log=logging.getLogger('mavassist.ai')
 
 MODE=os.getenv('AI_MODE','keyword')
 if MODE not in {'keyword','rag'}: raise RuntimeError('AI_MODE must be keyword or rag')
@@ -355,7 +358,11 @@ def answer_question(db,question,history=None):
                 response['actions']=[guard.CALL_911,guard.CALL_POLICE,guard.CALL_MAVSTALK]
                 response['urgent_message']=response['urgent_message'] or 'If you are in danger right now, call 911 or UTA Police at 817-272-3003.'
             return response
-        except httpx.HTTPError: AI_DOWN_UNTIL=time.monotonic()+BREAKER_SECONDS
+        except httpx.HTTPError as exc:
+            # Status code / error class only: never the key, headers, prompt or response body.
+            status=exc.response.status_code if isinstance(exc,httpx.HTTPStatusError) else type(exc).__name__
+            log.warning('Hosted AI request failed (%s); answering from sources for %.0f s',status,BREAKER_SECONDS)
+            AI_DOWN_UNTIL=time.monotonic()+BREAKER_SECONDS
         except (ValueError,KeyError,TypeError): pass
     if victim: return guard.respond(db,category,question)
     # Offline / fallback path: keyword + semantic retrieval with cited source summaries.

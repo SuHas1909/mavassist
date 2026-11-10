@@ -1,9 +1,9 @@
-﻿{
+{
     "backend":  {
-                    "ok":  false,
-                    "coverage":  0,
+                    "ok":  true,
+                    "coverage":  94,
                     "failed":  0,
-                    "passed":  0
+                    "passed":  101
                 },
     "build":  {
                   "ok":  true
@@ -18,11 +18,27 @@
                 "passed":  5
             },
     "load":  {
-                 "chat_p95":  5516,
-                 "error_rate":  4.31,
-                 "non_ai_p95":  4827,
-                 "ok":  false
+                 "chat_p95":  639,
+                 "error_rate":  0,
+                 "non_ai_p95":  192,
+                 "ok":  true
              },
+    "ai-evaluation-hosted-results":  {
+                                         "top3":  100.0,
+                                         "unknown":  0,
+                                         "ok":  false,
+                                         "errors":  0,
+                                         "all_rag":  false,
+                                         "top1":  98.0
+                                     },
+    "ai-evaluation-hosted-holdout-results":  {
+                                                 "top3":  100.0,
+                                                 "unknown":  0,
+                                                 "ok":  false,
+                                                 "errors":  0,
+                                                 "all_rag":  false,
+                                                 "top1":  90.0
+                                             },
     "docker":  {
                    "ok":  true
                },

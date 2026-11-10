@@ -1,12 +1,12 @@
 ﻿
 Running 5 tests using 1 worker
 
-(node:40820) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(node:12752) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 (Use `node --trace-warnings ...` to show where the warning was created)
-  ok 1 [chromium] › tests\flows.spec.ts:4:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating (8.3s)
-  ok 2 [chromium] › tests\flows.spec.ts:54:1 › primary student pages: no serious or critical WCAG issues; responsive navigation (6.6s)
-  ok 3 [chromium] › tests\flows.spec.ts:75:1 › assistant says not found instead of guessing on out-of-scope questions (1.8s)
-  ok 4 [chromium] › tests\flows.spec.ts:87:1 › admin: resource lifecycle, category and notice CRUD, analytics (4.5s)
-  ok 5 [chromium] › tests\mobile-360.spec.ts:3:1 › 360 px student flow stays within the viewport (2.4s)
+  ok 1 [chromium] › tests\flows.spec.ts:13:1 › student: registration, search/filter, detail, notices, bookmark, recent, chat and rating (5.9s)
+  ok 2 [chromium] › tests\flows.spec.ts:65:1 › primary student pages: no serious or critical WCAG issues; responsive navigation (4.6s)
+  ok 3 [chromium] › tests\flows.spec.ts:86:1 › assistant says not found instead of guessing on out-of-scope questions (1.3s)
+  ok 4 [chromium] › tests\flows.spec.ts:98:1 › admin: resource lifecycle, category and notice CRUD, analytics (3.1s)
+  ok 5 [chromium] › tests\mobile-360.spec.ts:3:1 › 360 px student flow stays within the viewport (1.4s)
 
-  5 passed (26.7s)
+  5 passed (19.0s)
