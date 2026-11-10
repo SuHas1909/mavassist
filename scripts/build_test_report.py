@@ -667,6 +667,18 @@ def crop_for_report(src, dst, max_ratio=1.0):
     return dst
 
 
+def totals_sentence(tests):
+    """One sentence with every case accounted for; README.md, docs/VERIFICATION.md and report section 8 must use it verbatim."""
+    by = collections.defaultdict(list)
+    for t in tests:
+        by[t['Status']].append(t['Test ID'])
+    not_exec = by['Blocked'] + by['Descoped'] + by['Not run']
+    check(len(tests) == len(by['Pass']) + len(by['Fail']) + len(not_exec), 'case totals do not reconcile')
+    parts = [f"{label}: {', '.join(by[k])}" for k, label in (('Blocked', 'blocked'), ('Descoped', 'descoped'), ('Not run', 'not run')) if by[k]]
+    return (f"{len(tests)} cases defined: {len(by['Pass'])} run and passed, {len(by['Fail'])} run and failed "
+            f"({', '.join(by['Fail'])}), {len(not_exec)} not executed ({'; '.join(parts)})")
+
+
 def limitation_lines(raw):
     kp, ks, diag = raw['k6_postgres'], raw['k6_sqlite'], raw['eval']['diag']
     hosted = [r for r in diag['results'] if r['mode'] == 'rag']
@@ -679,6 +691,8 @@ def limitation_lines(raw):
                          f"(directory p95 {ks['non_ai_p95']:,} ms, chat p95 {ks['chat_p95']:,} ms)."),
         ('Hosted-model diagnostic sample', f"{len(hosted)} hosted answers, {'all' if correct == len(hosted) else correct} correct, "
                          f"p95 {diag['hosted_latency_s']['p95']} s."),
+        ('Test case totals', TOTALS + '. The failed cases are the container-stack and hosted-latency limitations above; '
+                             'the cases not executed are future scope or not yet done.'),
         ('Usability study', 'A usability (SUS) study was not run because the site is a local demo and is not hosted. '
                             'It is future work once the site is deployed.'),
     ]
@@ -854,7 +868,10 @@ def verify(xlsx, docx_path, data):
     check(not any(n in body for n in PERSON_NAMES), 'report mentions a person')
     run = [t for t in data['tests'] if t['Status'] in ('Pass', 'Fail')]
     check(not any(t['Test ID'].startswith('USAB') or 'SUS' in t['Test Name'] for t in data['tests']), 'usability cases must not be in the inventory')
-    return {'Run': len(run), 'Passed': sum(t['Status'] == 'Pass' for t in run), 'Listed': len(listed)}
+    body8 = ' '.join(p.text for p in d.paragraphs)
+    check(TOTALS in body8, 'report section 8 does not state the totals sentence')
+    return {'Defined': len(data['tests']), 'Run': len(run), 'Passed': sum(t['Status'] == 'Pass' for t in run),
+            'Failed': sum(t['Status'] == 'Fail' for t in run), 'Not executed': len(data['tests']) - len(run), 'Listed': len(listed)}
 
 
 def main():
@@ -867,6 +884,10 @@ def main():
     FINAL = (ROOT / args.final) if args.final else (finals[-1] if finals else None)
     check(FINAL and FINAL.is_dir(), 'no test-evidence-final-* folder found')
     tests, raw = build_inventory(FINAL)          # full inventory: every status comes from a raw result
+    global TOTALS
+    TOTALS = totals_sentence(tests)
+    for doc_file in ('README.md', 'docs/VERIFICATION.md'):
+        check(TOTALS in read(ROOT / doc_file), f'{doc_file} must state the totals exactly as: "{TOTALS}"')
     listed = listed_cases(tests)                 # the workbook lists the passed cases only
     routing = routing_rows()
     defects = defect_rows(tests)
@@ -890,7 +911,7 @@ def main():
     if args.pdf:
         from docx2pdf import convert
         convert(str(docx_path), str(FINAL / DOCX_NAME.replace('.docx', '.pdf')))
-    (FINAL / 'report-totals.json').write_text(json.dumps({'totals': totals, 'summary': data['summary'], 'routing': data['routing_stats'],
+    (FINAL / 'report-totals.json').write_text(json.dumps({'totals': totals, 'sentence': TOTALS, 'summary': data['summary'], 'routing': data['routing_stats'],
         'traceability': [{k: t[k] for k in ('Requirement', 'Status')} for t in data['trace']]}, indent=2), encoding='utf-8')
     print(json.dumps(totals))
     print('Verified: every listed case is Pass in its raw result; xlsx and docx totals are identical. Wrote',
@@ -898,5 +919,6 @@ def main():
 
 
 FINAL = None
+TOTALS = ''
 if __name__ == '__main__':
     main()

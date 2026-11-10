@@ -1,9 +1,13 @@
 {
   "totals": {
+    "Defined": 152,
     "Run": 147,
     "Passed": 145,
+    "Failed": 2,
+    "Not executed": 5,
     "Listed": 145
   },
+  "sentence": "152 cases defined: 145 run and passed, 2 run and failed (PERF-003, AI-005), 5 not executed (blocked: AI-003; descoped: XB-001; not run: LABEL-001, STAGE-001, STAGE-002)",
   "summary": [
     {
       "Test Type": "Security / role",
