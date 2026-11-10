@@ -1,0 +1,15 @@
+
+> mavassist-web@1.0.0 test
+> vitest run --exclude 'tests/**'
+
+
+ RUN  v5.0.4 /Users/harmanpreetkaur/mavassist/mavassist/frontend
+
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  12:23:36
+   Duration  806ms (environment 75%, tests 12%, import 11%, transform 2%)
+
+
+EXIT_CODE=0
