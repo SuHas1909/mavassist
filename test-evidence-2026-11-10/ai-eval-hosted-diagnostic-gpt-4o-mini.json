@@ -1,0 +1,720 @@
+{
+ "label": "hosted diagnostic, before OpenRouter credit ran out",
+ "model": "openai/gpt-4o-mini (paid)",
+ "date": "2026-11-10",
+ "dataset": "docs/ai-evaluation-100.json",
+ "method": "Per-question timing script (not scripts/evaluate_ai.py): client timeout 90 s, no delay, rate limit off. Records id, latency (s), mode, top1, top3; returned office names were not stored.",
+ "note": "From AI-064 on the provider returned an error and the 60 s circuit breaker switched answers to the offline fallback; those 37 rows are mode \"fallback\" and are not hosted results.",
+ "cases": 100,
+ "hosted_answers": 63,
+ "fallback_answers": 37,
+ "hosted_top1_accuracy": 1.0,
+ "hosted_top3_accuracy": 1.0,
+ "hosted_latency_s": {
+  "p50": 6.3,
+  "p95": 15.8,
+  "max": 18.3
+ },
+ "results": [
+  {
+   "id": "AI-001",
+   "s": 3.5,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-002",
+   "s": 6.9,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-003",
+   "s": 5.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-004",
+   "s": 5.6,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-005",
+   "s": 10.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-006",
+   "s": 5.9,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-007",
+   "s": 17.4,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-008",
+   "s": 17.2,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-009",
+   "s": 5.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-010",
+   "s": 4.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-011",
+   "s": 18.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-012",
+   "s": 6.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-013",
+   "s": 5.5,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-014",
+   "s": 5.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-015",
+   "s": 14.1,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-016",
+   "s": 14.9,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-017",
+   "s": 9.1,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-018",
+   "s": 11.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-019",
+   "s": 5.0,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-020",
+   "s": 12.5,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-021",
+   "s": 12.8,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-022",
+   "s": 4.4,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-023",
+   "s": 4.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-024",
+   "s": 8.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-025",
+   "s": 7.0,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-026",
+   "s": 3.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-027",
+   "s": 5.6,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-028",
+   "s": 7.2,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-029",
+   "s": 5.4,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-030",
+   "s": 15.8,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-031",
+   "s": 4.6,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-032",
+   "s": 14.1,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-033",
+   "s": 4.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-034",
+   "s": 4.6,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-035",
+   "s": 6.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-036",
+   "s": 5.9,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-037",
+   "s": 11.8,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-038",
+   "s": 4.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-039",
+   "s": 15.4,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-040",
+   "s": 15.8,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-041",
+   "s": 13.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-042",
+   "s": 9.2,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-043",
+   "s": 4.6,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-044",
+   "s": 4.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-045",
+   "s": 11.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-046",
+   "s": 7.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-047",
+   "s": 4.4,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-048",
+   "s": 11.4,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-049",
+   "s": 8.9,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-050",
+   "s": 6.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-051",
+   "s": 6.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-052",
+   "s": 7.6,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-053",
+   "s": 6.5,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-054",
+   "s": 4.7,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-055",
+   "s": 7.2,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-056",
+   "s": 5.1,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-057",
+   "s": 6.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-058",
+   "s": 4.8,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-059",
+   "s": 5.0,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-060",
+   "s": 4.3,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-061",
+   "s": 5.6,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-062",
+   "s": 6.4,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-063",
+   "s": 4.1,
+   "mode": "rag",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-064",
+   "s": 0.6,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-065",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-066",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-067",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-068",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-069",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-070",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-071",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-072",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-073",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-074",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-075",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-076",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-077",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-078",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-079",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-080",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-081",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-082",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-083",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-084",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-085",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-086",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-087",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-088",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-089",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-090",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-091",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-092",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-093",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-094",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": false,
+   "top3": true
+  },
+  {
+   "id": "AI-095",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-096",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-097",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-098",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-099",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  },
+  {
+   "id": "AI-100",
+   "s": 0.0,
+   "mode": "fallback",
+   "top1": true,
+   "top3": true
+  }
+ ]
+}

@@ -20,6 +20,16 @@ Notes on this run:
 * **Docker / PostgreSQL load:** no errors, so the pool change holds on PostgreSQL, but both latency targets were missed. The Docker image runs `AI_MODE=rag` (semantic embedding per query on CPU) while the local run uses keyword mode, which is the likely cause; not yet confirmed by a separate run. Logs: `logs/k6-50vu-docker-postgres.log`.
 * An earlier local SQLite k6 run the same day (before this one) also passed: errors 0%, non-AI p95 854 ms, chat p95 1,608 ms.
 
+Additional AI evaluation records (2026-11-10):
+
+| Run | Answers | Top-1 | Top-3 | Unknown offices | Evidence |
+|---|---|---|---|---|---|
+| **Offline**, 100-question set (AI keys blank, rate limit off on the test server only) | 99 cited-source + 1 safety; 0 hosted | 97% | 100% | 0 | `test-evidence-2026-11-10/ai-eval-offline-100.json` |
+| **Offline**, 50-question holdout (same setup) | 49 cited-source + 1 safety; 0 hosted | 90% | 100% | 0 | `test-evidence-2026-11-10/ai-eval-offline-holdout-50.json` |
+| **Hosted diagnostic, before OpenRouter credit ran out** (gpt-4o-mini, timing script, 100-question set) | 63 hosted, then 37 fallback after a provider error | 100% of hosted (63 / 63) | 100% of hosted | not stored | `test-evidence-2026-11-10/ai-eval-hosted-diagnostic-gpt-4o-mini.json` |
+
+The offline rows measure keyword + semantic retrieval only, not the hosted model. Hosted latency in the diagnostic: p50 6.3 s, p95 15.8 s, max 18.3 s (NFR-01 target 5 s; D-15). Free-model probes (3 requests): Gemma 4 31B `:free` returned HTTP 429; Nemotron 3.5 Super `:free` replied in 8.5 s and 9.4 s but our parser rejected the JSON; no free-model sample was run.
+
 ---
 
 # Verification — November 9, 2026 run (Sprint 4)
